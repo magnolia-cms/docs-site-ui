@@ -1,0 +1,40 @@
+#feedback {
+  height: 3.35rem;
+  width: 6rem;
+  position: fixed;
+  top: 50%;
+  right: -0.7rem;
+  z-index: 400;
+  margin: -2rem;
+  margin-left: 0.5rem;
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  /* filter: progid:dximagetransform.microsoft.basicimage(rotation=3); */
+  padding-top: 5px;
+  padding-left: 0.9rem;
+  display: block;
+  background: var(--color-primary-blue);
+  /* border-radius: 50%; */
+  /* border-radius: 8px; */
+  font-family: inherit;
+  font-size: 1rem;
+  color: whitesmoke;
+  /* border: 1px solid whitesmoke; */
+  transition: all 0.275s ease-in-out;
+}
+
+#feedback a {
+  text-decoration: none;
+  font-weight: 300;
+  color: whitesmoke;
+}
+
+#feedback:hover {
+  background-color: var(--color-primary-green);
+  box-shadow: 3px 5px 7px -3px darkslategrey;
+  border: transparent;
+  transform: rotate(-90deg) translateY(-0.2rem);
+  font-weight: bolder;
+}

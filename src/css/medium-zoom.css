@@ -1,0 +1,12 @@
+.medium-zoom-overlay img.medium-zoom-image {
+  z-index: 1000;
+}
+
+.medium-zoom--opened .medium-zoom-overlay {
+  z-index: 500 !important;
+  opacity: 0.9 !important;
+}
+
+.medium-zoom--opened img.medium-zoom-image {
+  z-index: 500 !important;
+}

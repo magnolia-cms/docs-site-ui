@@ -1,0 +1,32 @@
+.listingblock:hover .clipboard {
+  display: block;
+}
+
+.clipboard {
+  display: none;
+  /* border: 0; */
+  font-size: 0.75em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 6px;
+  color: whitesmoke;
+  position: absolute;
+  top: 0.425rem;
+  right: 0.5rem;
+  background: transparent;
+  font-family: var(--body-font-family);
+  border-radius: 5px;
+  border: 1px solid lightgreen;
+}
+
+/* code + .clipboard {
+  top: 2rem !important;
+} */
+
+.clipboard:hover,
+.clipboard:focus,
+.clipboard:active {
+  outline: 0;
+  background-color: whitesmoke;
+  color: var(--color-primary-green);
+}

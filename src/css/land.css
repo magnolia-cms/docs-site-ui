@@ -1,0 +1,1147 @@
+.land {
+  flex: auto;
+  font-size: var(--doc-font-size--desktop);
+  margin: auto;
+  max-width: 100%;
+  min-width: 0;
+  background: white;
+  color: black;
+  overflow-x: hidden;
+}
+
+@media screen and (min-width: 1024px) {
+  .land {
+    flex: auto;
+    font-size: var(--doc-font-size--desktop);
+    margin: auto;
+    width: 100%;
+    background: white;
+    color: black;
+  }
+}
+
+.land h1,
+.land h2,
+.land h3,
+.land h4,
+.land h5,
+.land h6 {
+  color: var(--color-primary-green);
+  font-weight: var(--heading-font-weight);
+  hyphens: none;
+  line-height: 1.3;
+  margin: 1rem 0 0;
+}
+
+.land > h1.page:first-child {
+  font-size: calc(36 / var(--rem-base) * 1rem);
+  margin: 1.5rem 0;
+}
+
+@media screen and (min-width: 769px) {
+  .land > h1.page:first-child {
+    margin-top: 2.5rem;
+  }
+}
+
+#preamble + .sect1,
+.land .sect1 + .sect1 {
+  margin-top: 2rem;
+}
+
+.land h1.sect0 {
+  background: var(--abstract-background);
+  font-size: 1.8em;
+  margin: 1.5rem -1rem 0;
+  padding: 0.5rem 1rem;
+}
+
+.land h2:not(.discrete) {
+  border-bottom: 1px solid var(--color-primary-green);
+  margin-left: -1rem;
+  margin-right: -1rem;
+  padding: 0.4rem 1rem 0.1rem;
+}
+
+.land h3:not(.discrete) {
+  font-weight: var(--alt-heading-font-weight);
+}
+
+.land h1 .anchor,
+.land h2 .anchor,
+.land h3 .anchor,
+.land h4 .anchor,
+.land h5 .anchor,
+.land h6 .anchor {
+  position: absolute;
+  text-decoration: none;
+  width: 1.75ex;
+  margin-left: -1.5ex;
+  visibility: hidden;
+  font-size: 0.8em;
+  font-weight: normal;
+  padding-top: 0.05em;
+}
+
+.land h1 .anchor::before,
+.land h2 .anchor::before,
+.land h3 .anchor::before,
+.land h4 .anchor::before,
+.land h5 .anchor::before,
+.land h6 .anchor::before {
+  content: "\00a7";
+}
+
+.land h1:hover .anchor,
+.land h2:hover .anchor,
+.land h3:hover .anchor,
+.land h4:hover .anchor,
+.land h5:hover .anchor,
+.land h6:hover .anchor {
+  visibility: visible;
+}
+
+.land p {
+  margin: 0;
+}
+
+.land .tableblock p {
+  font-size: inherit;
+}
+
+.land a {
+  color: var(--link-font-color);
+}
+
+.land a:hover {
+  color: var(--link_hover-font-color);
+  text-decoration: none;
+}
+
+.land a.unresolved {
+  color: var(--link_unresolved-font-color);
+}
+
+.land i.fa {
+  font-style: normal;
+}
+
+.land p code,
+.land thead code {
+  color: var(--code-font-color);
+  background: var(--code-background);
+  border-radius: 0.25em;
+  font-size: 0.95em;
+  padding: 0.125em 0.25em;
+}
+
+.land pre {
+  font-size: calc(16 / var(--rem-base) * 1rem);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.land blockquote {
+  margin: 0;
+}
+
+.land .right {
+  float: right;
+}
+
+.land .left {
+  float: left;
+}
+
+.land .underline {
+  text-decoration: underline;
+}
+
+.land .line-through {
+  text-decoration: line-through;
+}
+
+.land .paragraph,
+.land .dlist,
+.land .olist,
+.land .ulist,
+.land .exampleblock,
+.land .imageblock,
+.land .listingblock,
+.land .literalblock,
+.land .sidebarblock,
+.land .verseblock,
+.land .quoteblock,
+.land .partintro {
+  margin: 1rem 0 0;
+}
+
+.land table.tableblock {
+  border-collapse: collapse;
+  font-size: calc(15 / var(--rem-base) * 1rem);
+  margin: 2rem 0;
+  /* enable table-layout: fixed if you want the table width to be enforced strictly */
+  /* alternative is to wrap table in div and set overflow-x: auto on the wrapper */
+  /* table-layout: fixed; */
+}
+
+.land table.stretch {
+  width: 100%;
+}
+
+.land table.tableblock thead th {
+  border-bottom: 2.5px solid var(--table-border-color);
+  padding: 0.5rem;
+}
+
+.land table.tableblock td,
+.land table.tableblock > :not(thead) th {
+  border-top: 1px solid var(--table-border-color);
+  border-bottom: 1px solid var(--table-border-color);
+  padding: 0.5rem;
+}
+
+.land .halign-left {
+  text-align: left;
+}
+
+.land .halign-right {
+  text-align: right;
+}
+
+.land .halign-center {
+  text-align: center;
+}
+
+.land .valign-top {
+  vertical-align: top;
+}
+
+.land .valign-bottom {
+  vertical-align: bottom;
+}
+
+.land .valign-middle {
+  vertical-align: middle;
+}
+
+.land .admonitionblock {
+  margin: 1.4rem 0 0;
+}
+
+.land .admonitionblock p,
+.land .admonitionblock td.content {
+  font-size: calc(16 / var(--rem-base) * 1rem);
+}
+
+.land .admonitionblock td.content > :first-child {
+  margin: 0;
+}
+
+.land .admonitionblock pre {
+  font-size: calc(15 / var(--rem-base) * 1rem);
+}
+
+.land .admonitionblock > table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  position: relative;
+  width: 100%;
+}
+
+.land .admonitionblock td.content {
+  padding: 1rem 1rem 0.75rem;
+  background: var(--admonition-background);
+  width: 100%;
+}
+
+.land .admonitionblock .icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: calc(15 / var(--rem-base) * 1rem);
+  padding: 0 0.5rem;
+  height: 1.25rem;
+  line-height: 1;
+  font-weight: var(--admonition-label-font-weight);
+  text-transform: uppercase;
+  border-radius: 0.45rem;
+  transform: translate(-0.5rem, -50%);
+}
+
+.land .admonitionblock.caution .icon {
+  background-color: var(--caution-color);
+  color: var(--caution-on-color);
+}
+
+.land .admonitionblock.important .icon {
+  background-color: var(--important-color);
+  color: var(--important-on-color);
+}
+
+.land .admonitionblock.note .icon {
+  background-color: var(--note-color);
+  color: var(--note-on-color);
+}
+
+.land .admonitionblock.tip .icon {
+  background-color: var(--tip-color);
+  color: var(--tip-on-color);
+}
+
+.land .admonitionblock.warning .icon {
+  background-color: var(--warning-color);
+  color: var(--warning-on-color);
+}
+
+.land .admonitionblock .icon i {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+}
+
+.land .admonitionblock .icon i::after {
+  content: attr(title);
+}
+
+.land .imageblock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.land .imageblock img {
+  display: block;
+}
+
+.land .imageblock img,
+.land .image > img {
+  margin: auto;
+  width: 100%;
+}
+
+#preamble .abstract blockquote {
+  background: var(--abstract-background);
+  border-left: 5px solid var(--abstract-border-color);
+  color: var(--abstract-font-color);
+  font-size: calc(16 / var(--rem-base) * 1rem);
+  padding: 0.75em 1em;
+}
+
+.land .quoteblock {
+  background: var(--quote-background);
+  border-left: 5px solid var(--quote-border-color);
+  color: var(--quote-font-color);
+  padding: 0.25rem 2rem 1.25rem;
+}
+
+.land .quoteblock .attribution {
+  color: var(--quote-attribution-font-color);
+  font-size: calc(15 / var(--rem-base) * 1rem);
+  margin-top: 0.75rem;
+}
+
+.land .quoteblock blockquote {
+  margin-top: 1rem;
+}
+
+.land .quoteblock .paragraph {
+  font-style: italic;
+}
+
+.land .quoteblock cite {
+  padding-left: 1em;
+}
+
+.land table.tableblock .paragraph {
+  margin: 0;
+  padding: 0;
+}
+
+.land table.tableblock .admonitionblock,
+.land .ulist .admonitionblock,
+.land .olist .admonitionblock {
+  padding: 0;
+}
+
+.land ol,
+.land ul {
+  margin: 0;
+  padding: 0 0 0 2rem;
+}
+
+.land ol.arabic {
+  list-style-type: decimal;
+}
+
+.land ol.decimal {
+  list-style-type: decimal-leading-zero;
+}
+
+.land ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+
+.land ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+
+.land ol.lowerroman {
+  list-style-type: lower-roman;
+}
+
+.land ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+.land ol.lowergreek {
+  list-style-type: lower-greek;
+}
+
+.land ul.checklist {
+  padding-left: 0.5rem;
+  list-style: none;
+}
+
+.land ul.checklist p > i.fa-check-square-o:first-child,
+.land ul.checklist p > i.fa-square-o:first-child {
+  display: inline-flex;
+  justify-content: center;
+  width: 1.25rem;
+}
+
+.land ul.checklist i.fa-check-square-o::before {
+  content: "\2713";
+}
+
+.land ul.checklist i.fa-square-o::before {
+  content: "\274f";
+}
+
+.land .dlist .dlist,
+.land .dlist .olist,
+.land .dlist .ulist,
+.land .olist .dlist,
+.land .olist .olist,
+.land .olist .ulist,
+.land .ulist .dlist,
+.land .ulist .olist,
+.land .ulist .ulist {
+  margin-top: 0.5rem;
+}
+
+.land .olist li,
+.land .ulist li {
+  margin-bottom: 0.5rem;
+}
+
+.land .ulist .listingblock,
+.land .olist .listingblock,
+.land .admonitionblock .listingblock {
+  padding: 0;
+}
+
+.land .admonitionblock .title,
+.land .exampleblock .title,
+.land .imageblock .title,
+.land .literalblock .title,
+.land .listingblock .title,
+.land .openblock .title,
+.land .tableblock caption {
+  color: var(--caption-font-color);
+  font-size: calc(16 / var(--rem-base) * 1rem);
+  font-weight: var(--caption-font-weight);
+  font-style: italic;
+  hyphens: none;
+  letter-spacing: 0.01em;
+  padding-bottom: 0.075rem;
+  text-align: left;
+}
+
+.land .imageblock .title {
+  margin-top: 0.5rem;
+  padding-bottom: 0;
+}
+
+.land .admonitionblock .title + .paragraph {
+  margin-top: 0;
+}
+
+.land .exampleblock > .content {
+  background: var(--example-background);
+  border: 0.25rem solid var(--example-border-color);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+.land .exampleblock > .content > :first-child {
+  margin-top: 0;
+}
+
+.land .sidebarblock {
+  background: var(--sidebar-background);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+}
+
+.land .sidebarblock > .content > .title {
+  font-size: calc(22.5 / var(--rem-base) * 1rem);
+  font-weight: var(--alt-heading-font-weight);
+  line-height: 1.3;
+  margin-bottom: -0.3em;
+  text-align: center;
+}
+
+.land .sidebarblock > .content > :not(.title):first-child {
+  margin-top: 0;
+}
+
+/* NEEDS REVIEW prevent pre in table from causing article to exceed bounds */
+.land .tableblock pre,
+.land .listingblock.wrap pre {
+  white-space: pre-wrap;
+}
+
+.land pre:not(.highlight),
+.land pre.highlight code {
+  background: var(--pre-background);
+  box-shadow: inset 0 0 1.75px var(--pre-border-color);
+  display: block;
+  overflow-x: auto;
+  padding: 0.75rem;
+  border-radius: 10px;
+}
+
+/* NOTE assume pre.highlight contains code[data-lang] */
+.land pre.highlight {
+  position: relative;
+}
+
+.land .listingblock code[data-lang]::before {
+  content: attr(data-lang);
+  display: none;
+  color: var(--pre-annotation-font-color);
+  font-size: calc(13.5 / var(--rem-base) * 1rem);
+  letter-spacing: 0.05em;
+  line-height: 1;
+  text-transform: uppercase;
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+}
+
+.land .listingblock:hover code[data-lang]::before {
+  display: block;
+}
+
+.land .dlist dt {
+  font-style: italic;
+}
+
+.land .dlist dd {
+  margin: 0 0 0.3rem 1.5rem;
+}
+
+.land .colist {
+  font-size: calc(16 / var(--rem-base) * 1rem);
+  margin: 0.25rem 0 -0.25rem;
+}
+
+.land .colist > table > tr > :first-child,
+.land .colist > table > tbody > tr > :first-child {
+  padding: 0.25em 0.5rem 0;
+  vertical-align: top;
+}
+
+.land .colist > table > tr > :last-child,
+.land .colist > table > tbody > tr > :last-child {
+  padding: 0.25rem 0;
+}
+
+.land .conum[data-value] {
+  border: 1px solid currentColor;
+  border-radius: 100%;
+  display: inline-block;
+  font-family: var(--body-font-family);
+  font-size: calc(13.5 / var(--rem-base) * 1rem);
+  font-style: normal;
+  height: 1.25em;
+  line-height: 1.2;
+  text-align: center;
+  width: 1.25em;
+  letter-spacing: -0.25ex;
+  text-indent: -0.25ex;
+}
+
+.land .conum[data-value]::after {
+  content: attr(data-value);
+}
+
+.land .conum[data-value] + b {
+  display: none;
+}
+
+.land b.button {
+  white-space: nowrap;
+}
+
+.land b.button::before {
+  content: "[";
+  padding-right: 0.25em;
+}
+
+.land b.button::after {
+  content: "]";
+  padding-left: 0.25em;
+}
+
+.land kbd {
+  display: inline-block;
+  font-size: calc(12 / var(--rem-base) * 1rem);
+  background: var(--kbd-background);
+  border: 1px solid var(--kbd-border-color);
+  border-radius: 0.25em;
+  box-shadow: 0 1px 0 var(--kbd-border-color), 0 0 0 0.1em var(--body-background) inset;
+  padding: 0.25em 0.5em;
+  vertical-align: text-bottom;
+  white-space: nowrap;
+}
+
+.land kbd,
+.land .keyseq {
+  line-height: 1;
+}
+
+.land .keyseq {
+  font-size: calc(16 / var(--rem-base) * 1rem);
+}
+
+.land .keyseq kbd {
+  margin: 0 0.125em;
+}
+
+.land .keyseq kbd:first-child {
+  margin-left: 0;
+}
+
+.land .keyseq kbd:last-child {
+  margin-right: 0;
+}
+
+.land .menuseq i.caret::before {
+  content: "\203a";
+  font-size: 1.1em;
+  font-weight: var(--body-font-weight-bold);
+  line-height: calc(1 / 1.1);
+}
+
+.land a.bare,
+.land b.button,
+.land code,
+.land .path,
+.land kbd,
+.land .menuseq,
+.land .icon i::after {
+  hyphens: none;
+}
+
+.land th.tableblock,
+.land td.tableblock {
+  word-break: break-word; /* overflow-wrap for table cells; gives space higher precedence than hyphen opportunity */
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 5px;
+  padding: 5px;
+}
+
+.grid-container a:hover {
+  text-decoration: none;
+}
+
+.grid-container img {
+  transition: 0.6s ease-in-out;
+}
+
+.grid-container img:hover {
+  transform: scale(1.06);
+  text-decoration: none;
+}
+
+@media only screen and (max-width: 1000px) {
+  .grid-container {
+    grid-template-columns: auto;
+  }
+}
+
+.sect1.personas.cards {
+  max-width: 1440px;
+  width: 100%;
+  margin: auto;
+}
+
+.sect1.personas.cards .sectionbody {
+  margin: 0 1.5rem;
+}
+
+.a-banner {
+  display: none;
+}
+
+/* .a-banner-small {
+  display: none;
+} */
+
+.a-banner-mobile {
+  display: none;
+}
+
+@media screen and (min-width: 1000px) {
+  .a-banner {
+    width: 100%;
+    height: 20vh;
+    display: block;
+  }
+}
+
+.a-banner img {
+  height: 100%;
+  width: 100%;
+}
+
+/* @media screen and (max-width: 999px) {
+  .a-banner-small {
+    width: 75%;
+    margin: auto;
+    height: fit-content;
+    display: block;
+  }
+}
+
+.a-banner-small img {
+  height: 100%;
+  width: 100%;
+} */
+
+@media screen and (max-width: 647px) {
+  .a-banner-mobile {
+    width: 100%;
+    margin: auto;
+    height: fit-content;
+    display: block;
+  }
+}
+
+.a-banner-mobile img {
+  height: 100%;
+  width: 100%;
+}
+
+.feedback-banner {
+  width: 100%;
+  background: white;
+  height: fit-content;
+  margin-top: none;
+  text-align: center;
+  padding-top: 1.93rem;
+  padding-bottom: 3.25rem;
+  color: white;
+}
+
+.feedback-banner .feedback-banner__text {
+  font-size: 1.75rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.feedback-banner button.migrate {
+  background: var(--color-primary-green);
+  border-radius: 25px;
+  color: white;
+  padding: 0.75rem 1.5rem 0.625rem;
+  transition: all 0.4s ease-in-out;
+  border: none;
+}
+
+.feedback-banner button.migrate:hover,
+.feedback-banner button.migrate:focus {
+  background-color: var(--color-primary-dark-green);
+}
+
+.feedback-banner button.migrate,
+.feedback-banner button.migrate:hover,
+.feedback-banner button.migrate:focus {
+  outline: none;
+}
+
+.feedback-banner a.banner-link {
+  color: var(--color-primary-gold);
+  font-size: 1rem;
+  transition: 0.2s ease;
+}
+
+.feedback-banner a.banner-link:hover {
+  color: var(--color-primary-blue);
+}
+
+.feedback-banner ul {
+  list-style-type: none; /* Remove bullets */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margins */
+}
+
+p.migration-notify {
+  font-size: 1.35rem;
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+}
+
+h2.welcome-header {
+  font-size: 2.75rem;
+  text-align: center;
+  content: none;
+}
+
+.land .cards > .sectionbody {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: -0.75rem 0 0 -0.75rem;
+}
+
+.land .card {
+  background: whitesmoke;
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  margin: 0;
+  min-width: 0;
+  padding-top: 88px;
+  transition: all 0.3s ease-in-out;
+  border-radius: 8px;
+  position: relative;
+}
+
+.land .card h3 {
+  font-size: 1.75rem;
+  padding: 1.5rem 0 0.7rem;
+}
+
+.land .card:hover {
+  box-shadow: 4px 11px 23px #c5c5c5;
+}
+
+.sect2.card::before {
+  content: "";
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  background-size: cover;
+  height: 40px;
+}
+
+.sect2.card:nth-of-type(1)::before {
+  width: 30px;
+  background-image: url("../img/welcome.svg");
+}
+
+.sect2.card:nth-of-type(2)::before {
+  width: 40px;
+  background-image: url("../img/developers.svg");
+}
+
+.sect2.card:nth-of-type(3)::before {
+  width: 40px;
+  background-image: url("../img/admin.svg");
+}
+
+.sect2.card:nth-of-type(4)::before {
+  width: 26px;
+  background-image: url("../img/author.svg");
+}
+
+.sect2.card:nth-of-type(1) {
+  background: var(--color-green-reflex);
+}
+
+.sect2.card:nth-of-type(2) {
+  background: var(--color-green-darker);
+}
+
+.sect2.card:nth-of-type(3) {
+  background: var(--color-primary-yellow);
+}
+
+.sect2.card:nth-of-type(4) {
+  background: var(--color-primary-ocean-blue);
+}
+
+.land .card .paragraph {
+  font-weight: var(--weight-light);
+  margin-top: 1rem;
+  flex: 1 0 auto; /* NOTE must specify flex-basis for IE 11 */
+  padding-bottom: 1rem;
+}
+
+.land .card .ulist {
+  font-weight: var(--weight-bold);
+  margin: 1.5rem 0 0.5rem;
+  word-wrap: normal; /* NOTE not sure why this is required, but without it, list items get spaced apart */
+}
+
+.land .card a,
+.land .tile .title a {
+  color: inherit;
+}
+
+.land .card a:hover {
+  color: var(--color-primary-blue);
+  /* font-weight: bolder; */
+}
+
+.land .card a::after {
+  width: 0;
+  display: inline-block;
+}
+
+.land .card .dark-pill {
+  color: whitesmoke;
+  border: none;
+  background-color: var(--color-primary-dark-green);
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  border-radius: 16px;
+  font-size: 0.75rem;
+}
+
+.land .card .light-pill {
+  color: var(--color-primary-dark-green);
+  border: none;
+  background-color: var(--color-primary-blue);
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  border-radius: 16px;
+  font-size: 0.75rem;
+}
+
+.land .tiles {
+  font-size: 1.125rem;
+  margin-top: 2.5rem;
+}
+
+.land .tiles > h2 {
+  font-size: 2rem;
+  hyphens: auto;
+  padding-bottom: 3.125rem;
+  text-align: center;
+}
+
+.sect2.card > h3,
+.sect2.card .paragraph,
+.sect2.card .ulist {
+  background: var(--color-gray-medium);
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-right: 1.4rem;
+  padding-left: 1.4rem;
+  color: var(--color-gray-dark);
+}
+
+.sect2.card .paragraph,
+.sect2.card .ulist {
+  font-size: 1rem;
+}
+
+.sect2.card .ulist {
+  border-radius: 0 0 8px 8px;
+  padding-bottom: 0.75rem;
+}
+
+.sect2.card .ulist li {
+  position: relative;
+  padding: 0;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.sect2.card .ulist li::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background-image: url("../img/chevron-right.svg");
+  background-size: cover;
+}
+
+.land .tiles > h2::after {
+  content: "";
+  display: block;
+  background-color: currentColor;
+  width: 5.625rem;
+  height: 1px;
+  margin: 0 auto;
+  margin-bottom: -1px;
+  position: relative;
+  top: 1.375rem;
+}
+
+.land .tiles > .sectionbody {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.land .tile {
+  flex: 1;
+  margin-bottom: 0.75rem;
+  min-width: 0;
+  flex-basis: auto;
+  width: 50%;
+}
+
+.land .tile .title {
+  font-weight: var(--weight-bold);
+  margin-bottom: 0.25rem;
+}
+
+@media screen and (min-width: 769px) {
+  .sect2.card::before {
+    height: 80px;
+  }
+
+  .sect2.card:nth-of-type(1)::before {
+    width: 60px;
+  }
+
+  .sect2.card:nth-of-type(2)::before {
+    width: 80px;
+  }
+
+  .sect2.card:nth-of-type(3)::before {
+    width: 80px;
+  }
+
+  .sect2.card:nth-of-type(4)::before {
+    width: 53px;
+  }
+
+  .land h1.page,
+  .land #preamble {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .land .cards > .sectionbody {
+    flex-direction: row;
+  }
+
+  .land .card {
+    flex-basis: 0;
+  }
+
+  .land .cards-4 .card {
+    flex-basis: calc(50% - 0.75rem);
+  }
+
+  .land .tiles {
+    padding: 0 10%;
+  }
+
+  .land .tiles > .sectionbody {
+    margin: 0 -0.5rem;
+  }
+
+  .land .tile {
+    flex-basis: 0;
+    margin-bottom: 0;
+    padding: 0 0.5rem;
+  }
+}
+
+.land .cards-4 .card {
+  flex-basis: 100%;
+  margin-bottom: 1rem;
+}
+
+body {
+  padding-top: 48px !important;
+}
+
+.title-cards {
+  margin-bottom: 2rem;
+  margin-top: 1.5rem;
+}
+
+@media screen and (min-width: 769px) {
+  .sect2.card::before {
+    top: 1rem;
+  }
+
+  .land .card {
+    padding-top: 120px;
+  }
+
+  .land .cards-4 .card {
+    flex-basis: calc(50% - 1.5rem);
+  }
+
+  .sect2.card:nth-last-of-type(2),
+  .sect2.card:nth-last-of-type(4) {
+    margin-right: 1.5rem;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  body {
+    padding-top: 4.4444rem !important;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .title-cards {
+    margin-bottom: 3rem;
+    margin-top: 1.5rem;
+  }
+
+  .sect2.card:nth-last-of-type(2),
+  .sect2.card:nth-last-of-type(4) {
+    margin-right: 0;
+  }
+
+  .sect2.card::before {
+    top: 5rem;
+  }
+
+  .land .card {
+    padding-top: 190px;
+  }
+
+  .land .cards-4 .card {
+    flex-basis: 0;
+    margin-bottom: 0;
+  }
+
+  .sect2.card + .sect2.card {
+    margin-left: 1.5rem;
+  }
+}
+
+.land a[rel*=noopener]::after {
+  content: "\f08e";
+  font-family: FontAwesome, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: none;
+  padding-left: 3px;
+}

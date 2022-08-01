@@ -1,0 +1,54 @@
+<script src="{{{uiRootPath}}}/js/site.js"></script>
+<script async src="{{{uiRootPath}}}/js/vendor/highlight.js"></script>
+<script async src="{{{uiRootPath}}}/js/vendor/clipboard.js"></script>
+<script async src="{{{uiRootPath}}}/js/vendor/medium-zoom.js"></script>
+<script async src="{{{uiRootPath}}}/js/vendor/collapse.js"></script>
+
+{{> initBeforeAfter}}
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+
+<script type="text/javascript">
+    docsearch({
+        appId: 'I8ZA7LF7BY',
+        apiKey: 'c1f47719c6fc53088f0944978e15a340',
+        indexName: 'major-tom-docs',
+        inputSelector: '#searchBar',
+        algoliaOptions: { hitsPerPage: 15 },
+        debug: true // prevent it from closing on inspection.
+    });
+
+    function toggleDropDown () {
+      var linkEl = document.querySelectorAll('.has-dropdown');
+      var allDrops =  document.querySelectorAll('.has-dropdown .navbar-dropdown');
+      for (var el of linkEl) {
+        el.addEventListener('click', function (e) {
+          for (var drop of allDrops) {
+            drop.style.display = "none";
+          }
+          e.stopPropagation()
+          e.target.nextElementSibling.style.display = "block";
+        })
+      }
+    }
+    if(window.innerWidth < 1200) {
+      toggleDropDown();
+    }
+
+</script>
+
+<script src="//www.eucookie.eu/public/gdpr-cookie-consent.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var cookieConsent = new cookieConsent({
+	clientId: '22aadf89-d87b-4277-83ac-f12dfee5eb1f'
+});
+cookieConsent.run();
+</script>
+
+<script src="//www.eucookie.eu/public/gdpr-cookie-consent.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var cookieConsent = new cookieConsent({
+	clientId: '22aadf89-d87b-4277-83ac-f12dfee5eb1f'
+});
+cookieConsent.run();
+</script>

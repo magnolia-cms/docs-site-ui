@@ -1,0 +1,25 @@
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  {{#if page.breadcrumbs}}
+  <span class="breadcrumbs-home">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 4L5 0L10 4V10H6V7H4V10H0V4Z" fill="#1E1F1C"/>
+    </svg>
+  </span>
+  <ul>
+    {{#with page.componentVersion}}
+    {{#if (and ./title (not (or ./root (eq ./title @root.page.breadcrumbs.0.content))))}}
+    <li><a href="{{{relativize ./url}}}">{{{./title}}}</a></li>
+    {{/if}}
+    {{/with}}
+    {{#each page.breadcrumbs}}
+    <li>
+    {{~#if (and ./url (eq ./urlType 'internal'))~}}
+    <a href="{{{relativize ./url}}}">{{{./content}}}</a>
+    {{~else~}}
+    {{{./content}}}
+    {{~/if~}}
+    </li>
+    {{/each}}
+  </ul>
+  {{/if}}
+</nav>

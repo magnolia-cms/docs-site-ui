@@ -1,0 +1,167 @@
+@media screen and (max-width: 1023px) {
+  aside.toc.sidebar {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  main {
+    flex: auto;
+    /* min-width: 0 required for flexbox to constrain overflowing elements */
+    min-width: 0;
+  }
+
+  main > .content {
+    display: flex;
+  }
+
+  aside.toc.embedded {
+    display: none;
+  }
+
+  aside.toc.sidebar {
+    flex: 0 0 var(--toc-width);
+  }
+}
+
+@media screen and (min-width: 1216px) {
+  aside.toc.sidebar {
+    flex-basis: var(--toc-width--widescreen);
+  }
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: scroll; /* Enable scroll if needed */
+  background-color: var(--color-primary-dark-green); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 1.5rem;
+  border: none;
+  width: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.8s;
+  margin-bottom: 1rem;
+  height: 50vh;
+}
+
+.modal-content p,
+.modal-content li {
+  font-size: 0.8rem;
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+.modal-content h1 {
+  color: var(--color-primary-green);
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.modal-content h2 {
+  color: var(--color-jet-20);
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+  font-size: 1.75rem;
+  text-align: center;
+}
+
+.modal-content h3 {
+  color: var(--color-primary-green);
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+/* The Close Button */
+.close {
+  color: var(--color-primary-green);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  transition: 0.3s ease-out;
+}
+
+.close:hover,
+.close:focus {
+  color: var(--color-primary-dark-green);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-content div.column {
+  float: left;
+  width: 50%;
+  padding: 2rem;
+  text-align: center;
+}
+
+.modal-content div.column a.review-button-customer button {
+  border-radius: 25px;
+  padding: 0.75rem 1.5rem 0.625rem;
+  background-color: var(--color-primary-green);
+  color: white;
+  text-decoration: none;
+  border: none;
+}
+
+.modal-content div.column a.review-button-partner button {
+  border-radius: 25px;
+  padding: 0.75rem 1.5rem 0.625rem;
+  background-color: var(--color-primary-blue);
+  color: white;
+  text-decoration: none;
+  border: none;
+}
+
+.modal-content a i {
+  color: white;
+  transition: 0.6s ease;
+}
+
+.modal-content a:hover i {
+  display: inline;
+  color: var(--color-primary-gold);
+}

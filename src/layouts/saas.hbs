@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {{> head defaultPageTitle='Untitled'}}
+    
+    {{!-- for saas during development stages; REMOVE after launch --}}
+    {{!-- <meta name="robots" content="noindex"> --}}
+  </head>
+  <body class="article{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
+    {{> header}}
+    {{> body}}
+    {{> footer}}
+    {{> feedback}}
+    {{> scroll-to-top}}
+  </body>
+  </html>

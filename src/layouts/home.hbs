@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+{{> head defaultPageTitle='Untitled'}}
+  </head>
+  <body class="article{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
+{{> header}}
+{{> body-home}}
+<div class="headless-announcement">
+    <h1>Calling all <span>frontend</span> developers</h1>
+    <h2>Use the headless approach for Magnolia</h2>
+    <p class="no-java">no Java required</p>
+    <div class="headless-center">
+        <a href="https://docs.magnolia-cms.com/headless/index.html"><button>Headless docs <i class="fa fa-code" aria-hidden="true"></i> </button></a>
+    </div>
+</div>
+{{!-- <div class="announcement">
+    <h1>Love Magnolia?</h1>
+    <h2>Review us & get a reward!</h2>
+      <div class="center">
+        <a href="https://mgnl.io/magnolia-customer-reviews" target="_blank"><button>Customers <i class="fa fa-star" aria-hidden="true"></i> </button></a>
+        <a href="https://mgnl.io/magnolia-partner-reviews" target="_blank"><button>Partners <i class="fa fa-star" aria-hidden="true"></i> </button></a>
+      </div>
+</div> --}}
+{{> footer}}
+{{> feedback}}
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h1>Love Magnolia?</h1>
+    <h2>Share your experience & get a reward!</h2>
+    <div class="column">
+      <a class="review-button-customer" href="https://mgnl.io/magnolia-customer-reviews" target="_blank"><button>Customer reviews <i class="fa fa-star" aria-hidden="true"></i></button></a> 
+    </div>
+    <div class="column">
+      <a class="review-button-partner" href="https://mgnl.io/magnolia-partner-reviews" target="_blank"><button>Partner reviews <i class="fa fa-star" aria-hidden="true"></i></button></a> 
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var navbarToggles = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0)
+  if (navbarToggles.length === 0) return
+  navbarToggles.forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.stopPropagation()
+      el.classList.toggle('is-active')
+      document.getElementById(el.dataset.target).classList.toggle('is-active')
+      document.documentElement.classList.toggle('is-clipped--navbar')
+    })
+  })
+})
+</script>
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+
+<script async src="{{{uiRootPath}}}/js/vendor/shrink.js"></script>
+
+  </body>
+</html>

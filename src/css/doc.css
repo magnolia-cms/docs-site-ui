@@ -1,0 +1,1136 @@
+.doc {
+  color: var(--doc-font-color);
+  font-size: var(--doc-font-size);
+  hyphens: auto;
+  line-height: var(--doc-line-height);
+  margin: var(--doc-margin);
+  max-width: var(--doc-max-width);
+  padding: 0 1rem 4rem;
+}
+
+@media screen and (min-width: 1024px) {
+  .doc {
+    flex: auto;
+    font-size: var(--doc-font-size--desktop);
+    margin: var(--doc-margin--desktop);
+    max-width: var(--doc-max-width--desktop);
+    min-width: 0;
+  }
+}
+
+.doc h1,
+.doc h2,
+.doc h3,
+.doc h4,
+.doc h5,
+.doc h6 {
+  color: var(--heading-font-color);
+  font-weight: var(--alt-heading-font-weight);
+  hyphens: none;
+  line-height: 1.3;
+  margin: 1rem 0 0;
+}
+
+/* .tester {
+  margin-left: 2rem;
+} */
+
+.doc > h1.page:first-child {
+  font-size: 3rem;
+  color: var(--color-gray-dark);
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+
+@media screen and (min-width: 769px) {
+  .doc > h1.page:first-child {
+    margin-top: 1.5rem;
+  }
+}
+
+#preamble + .sect1,
+.doc .sect1 + .sect1 {
+  margin-top: 2rem;
+}
+
+.doc h1.sect0 {
+  background: var(--abstract-background);
+  font-size: 1.8em;
+  margin: 1.5rem -1rem 0;
+  padding: 0.5rem 1rem;
+}
+
+.doc h2:not(.discrete) {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.doc h3:not(.discrete) {
+  font-weight: var(--alt-heading-font-weight);
+  font-size: 24px;
+}
+
+.doc h1 .anchor,
+.doc h2 .anchor,
+.doc h3 .anchor,
+.doc h4 .anchor,
+.doc h5 .anchor,
+.doc h6 .anchor {
+  position: absolute;
+  text-decoration: none;
+  width: 1.75ex;
+  margin-left: -1.5ex;
+  visibility: hidden;
+  font-size: 0.8em;
+  font-weight: normal;
+  padding-top: 0.05em;
+}
+
+.doc h1 .anchor::before,
+.doc h2 .anchor::before,
+.doc h3 .anchor::before,
+.doc h4 .anchor::before,
+.doc h5 .anchor::before,
+.doc h6 .anchor::before {
+  content: "\00a7";
+}
+
+.doc h1:hover .anchor,
+.doc h2:hover .anchor,
+.doc h3:hover .anchor,
+.doc h4:hover .anchor,
+.doc h5:hover .anchor,
+.doc h6:hover .anchor {
+  visibility: visible;
+}
+
+.doc p {
+  margin: 0;
+}
+
+.doc .tableblock p {
+  font-size: inherit;
+}
+
+.doc a {
+  color: var(--link-font-color);
+}
+
+.doc a:hover {
+  color: var(--link_hover-font-color);
+}
+
+.doc a.unresolved {
+  color: var(--link_unresolved-font-color);
+}
+
+.doc a[rel*=noopener]::after {
+  content: "\f08e";
+  font-family: FontAwesome, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: none;
+  padding-left: 3px;
+}
+
+.doc i.fa {
+  font-style: normal;
+  font-family: FontAwesome, sans-serif;
+}
+
+.doc p code,
+.doc thead code {
+  color: var(--code-font-color);
+  background: whitesmoke;
+  border-radius: 0.25em;
+  font-size: 0.95em;
+}
+
+.doc pre {
+  font-size: calc(14 / var(--rem-base) * 1rem);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.doc blockquote {
+  margin: 0;
+}
+
+.doc .right {
+  float: right;
+}
+
+.doc .left {
+  float: left;
+}
+
+.doc .underline {
+  text-decoration: underline;
+}
+
+.doc .line-through {
+  text-decoration: line-through;
+}
+
+.doc .dlist,
+.doc .olist,
+.doc .ulist,
+.doc .exampleblock,
+.doc .imageblock,
+.doc .listingblock,
+.doc .literalblock,
+.doc .sidebarblock,
+.doc .verseblock,
+.doc .quoteblock,
+.doc .partintro {
+  margin: 1rem 0 0;
+}
+
+.doc .paragraph {
+  margin: 1.2rem 0 0;
+}
+
+.doc li .paragraph {
+  margin-top: 0.5rem;
+  margin-bottom: 0.7rem;
+}
+
+.doc table.tableblock {
+  border-collapse: collapse;
+  font-size: calc(15 / var(--rem-base) * 1rem);
+  margin: 2rem 0;
+  /* enable table-layout: fixed if you want the table width to be enforced strictly */
+  /* alternative is to wrap table in div and set overflow-x: auto on the wrapper */
+  /* table-layout: fixed; */
+}
+
+.doc table.stretch {
+  width: 100%;
+}
+
+.doc table.tableblock thead th {
+  border-bottom: 2.5px solid lightgrey;
+  padding: 0.5rem;
+}
+
+.doc table.tableblock td,
+.doc table.tableblock > :not(thead) th {
+  border-top: 1px solid var(--table-border-color);
+  border-bottom: 1px solid lightgrey;
+  padding: 0.5rem;
+}
+
+.doc .halign-left {
+  text-align: left;
+}
+
+.doc .halign-right {
+  text-align: right;
+}
+
+.doc .halign-center {
+  text-align: center;
+}
+
+.doc .valign-top {
+  vertical-align: top;
+}
+
+.doc .valign-bottom {
+  vertical-align: bottom;
+}
+
+.doc .valign-middle {
+  vertical-align: middle;
+}
+
+.doc .admonitionblock {
+  margin: 2.2rem 0 0;
+}
+
+.doc .admonitionblock code {
+  color: var(--color-primary-green);
+}
+
+.doc .admonitionblock p,
+.doc .admonitionblock td.content {
+  font-size: calc(16 / var(--rem-base) * 1rem);
+}
+
+.doc .admonitionblock td.content > :first-child {
+  margin: 0;
+  font-weight: inherit;
+  font-size: 0.88889rem;
+}
+
+.doc .admonitionblock pre {
+  font-size: calc(15 / var(--rem-base) * 1rem);
+}
+
+.doc .admonitionblock > table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  position: relative;
+  width: 100%;
+}
+
+.doc .admonitionblock td.content {
+  padding: 1.2rem 1rem 1.3rem;
+  background: var(--color-smoke-50);
+  width: 100%;
+}
+
+.doc .admonitionblock .icon {
+  position: absolute;
+  top: -4px;
+  left: 7px;
+  font-size: 14px;
+  padding: 0 1rem;
+  height: 26px;
+  line-height: 1;
+  font-weight: var(--admonition-label-font-weight);
+  text-transform: uppercase;
+  transform: translate(-0.5rem, -50%);
+}
+
+.doc .admonitionblock.caution {
+  border-left: 2px solid var(--caution-color);
+  border-radius: 5px;
+}
+
+.doc .admonitionblock.caution .icon {
+  background-color: var(--caution-color);
+  color: var(--caution-on-color);
+}
+
+.admonitionblock.caution td.icon .icon-caution::before {
+  content: "\f06d";
+  color: var(--caution-on-color);
+  padding-right: 5px;
+  margin-left: -4px;
+}
+
+.doc .admonitionblock.important {
+  border-left: 2px solid var(--important-color);
+}
+
+.doc .admonitionblock.important .icon {
+  background-color: var(--important-color);
+  color: var(--important-on-color);
+}
+
+.admonitionblock.important td.icon .icon-important::before {
+  content: "\f12a";
+  color: var(--important-on-color);
+  padding-right: 5px;
+  margin-left: -4px;
+}
+
+.doc .admonitionblock.note {
+  border-left: 2px solid var(--color-primary-ocean-blue);
+}
+
+.doc .admonitionblock.note .icon {
+  background-color: var(--color-primary-ocean-blue);
+  color: var(--note-on-color);
+}
+
+.admonitionblock.note td.icon .icon-note::before {
+  content: "\f040";
+  color: var(--note-on-color);
+  padding-right: 5px;
+  margin-left: -4px;
+}
+
+.doc .admonitionblock.best {
+  border-left: 2px solid var(--best-color);
+}
+
+.doc .admonitionblock.best .icon {
+  background-color: var(--best-color);
+  color: var(--best-on-color);
+}
+
+.admonitionblock.best td.icon .icon-note::before {
+  content: "\f00c";
+  color: var(--best-on-color);
+  padding-right: 5px;
+  margin-left: -4px;
+}
+
+.admonitionblock.best td.icon .icon-note::after {
+  content: "Best Practice";
+}
+
+.doc .admonitionblock.tip {
+  border-left: 2px solid var(--tip-color);
+}
+
+.doc .admonitionblock.tip .icon {
+  background-color: var(--tip-color);
+  color: var(--tip-on-color);
+}
+
+.admonitionblock.tip td.icon .icon-tip::before {
+  content: "\f0eb";
+  color: var(--tip-on-color);
+  padding-right: 5px;
+  margin-left: -4px;
+}
+
+.doc .admonitionblock.warning {
+  border-left: 2px solid var(--color-red);
+}
+
+.doc .admonitionblock.warning .icon {
+  background-color: var(--color-red);
+  color: var(--warning-on-color);
+}
+
+.admonitionblock.warning td.icon .icon-warning::before {
+  content: "\f071";
+  color: var(--warning-on-color);
+  padding-right: 5px;
+  margin-left: -4px;
+}
+
+.doc .admonitionblock.alt {
+  border-left: 2px solid var(--alt-color);
+}
+
+.doc .admonitionblock.alt .icon {
+  background-color: var(--alt-color);
+  color: var(--alt-on-color);
+}
+
+.admonitionblock.alt td.icon .icon-note::before {
+  content: "\f256";
+  color: var(--alt-on-color);
+  padding-right: 5px;
+  margin-left: -4px;
+}
+
+.doc .admonitionblock .icon i {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+}
+
+.doc .admonitionblock .icon i::after {
+  content: attr(title);
+}
+
+.doc .imageblock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: ease 1s;
+}
+
+/* .doc .imageblock:active {
+  transform: scale(1.5);
+} */
+
+.doc .imageblock img {
+  display: block;
+}
+
+/* .doc .imageblock img:active {
+  transform: scale(1.8);
+} */
+
+.doc .imageblock img,
+.doc .image > img {
+  height: auto;
+  max-width: 100%;
+  transition: ease 1s;
+  position: relative;
+}
+
+/* .doc .imageblock img:active,
+.doc .image > img:active {
+  transform: scale(1.8) translateX(5rem);
+  z-index: 11;
+} */
+
+.doc .videoblock iframe {
+  width: 100%;
+  height: 25rem;
+}
+
+#preamble .abstract blockquote {
+  background: var(--abstract-background);
+  border-left: 5px solid var(--abstract-border-color);
+  color: var(--abstract-font-color);
+  font-size: calc(16 / var(--rem-base) * 1rem);
+  padding: 0.75em 1em;
+}
+
+.doc .quoteblock {
+  background: var(--quote-background);
+  border-left: 5px solid var(--quote-border-color);
+  color: var(--quote-font-color);
+  padding: 0.25rem 2rem 1.25rem;
+}
+
+.doc .quoteblock .title {
+  font-weight: bolder;
+}
+
+.doc .quoteblock .attribution {
+  color: var(--quote-attribution-font-color);
+  font-size: calc(15 / var(--rem-base) * 1rem);
+  margin-top: 0.75rem;
+}
+
+.doc .quoteblock blockquote {
+  margin-top: 1rem;
+}
+
+.doc .quoteblock .paragraph {
+  font-style: italic;
+}
+
+.doc .quoteblock cite {
+  padding-left: 1em;
+}
+
+.doc table.tableblock .paragraph {
+  margin: 0;
+  padding: 0;
+}
+
+.doc table.tableblock .admonitionblock,
+.doc .ulist .admonitionblock,
+.doc .olist .admonitionblock {
+  padding: 0;
+}
+
+.doc ol,
+.doc ul {
+  margin: 0;
+  padding: 0 0 0 1.5rem;
+}
+
+.doc ol.arabic {
+  list-style-type: decimal;
+}
+
+.doc ol.decimal {
+  list-style-type: decimal-leading-zero;
+}
+
+.doc ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+
+.doc ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+
+.doc ol.lowerroman {
+  list-style-type: lower-roman;
+}
+
+.doc ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+.doc ol.lowergreek {
+  list-style-type: lower-greek;
+}
+
+.doc ul.checklist {
+  padding-left: 0.5rem;
+  list-style: none;
+}
+
+.doc ul.checklist p > i.fa-check-square-o:first-child,
+.doc ul.checklist p > i.fa-square-o:first-child {
+  display: inline-flex;
+  justify-content: center;
+  width: 1.25rem;
+}
+
+.doc ul.checklist i.fa-check-square-o::before {
+  content: "\2713";
+}
+
+.doc ul.checklist i.fa-square-o::before {
+  content: "\274f";
+}
+
+.doc .olist li,
+.doc .ulist li,
+.doc .dlist .dlist,
+.doc .dlist .olist,
+.doc .dlist .ulist,
+.doc .olist .dlist,
+.doc .olist .olist,
+.doc .olist .ulist,
+.doc .ulist .dlist,
+.doc .ulist .olist,
+.doc .ulist .ulist {
+  margin-top: 0.5rem;
+}
+
+.sectionbody > .dlist li {
+  font-weight: 700;
+}
+
+.doc .olist li,
+.doc .ulist li {
+  font-size: 12px;
+}
+
+.doc .olist li > p,
+.doc .ulist li > p {
+  font-size: 0.88889rem;
+}
+
+.doc .olist li .paragraph p,
+.doc .ulist li .paragraph p {
+  font-size: 0.88889rem;
+}
+
+.doc .olist li::marker {
+  font-size: 0.88889rem;
+}
+
+.doc .admonitionblock .olist li + li,
+.doc .admonitionblock .ulist li + li {
+  margin-top: 0.25rem;
+}
+
+.doc .ulist .listingblock,
+.doc .olist .listingblock,
+.doc .admonitionblock .listingblock {
+  padding: 0;
+}
+
+.doc .admonitionblock .title,
+.doc .exampleblock .title,
+.doc .imageblock .title,
+.doc .literalblock .title,
+.doc .listingblock .title,
+.doc .openblock .title,
+.doc .tableblock caption {
+  color: var(--caption-font-color);
+  font-size: calc(16 / var(--rem-base) * 1rem);
+  font-weight: var(--caption-font-weight);
+  font-style: italic;
+  hyphens: none;
+  letter-spacing: 0.01em;
+  padding-bottom: 0.075rem;
+  text-align: left;
+}
+
+.doc .imageblock .title {
+  margin-top: 0.5rem;
+  padding-bottom: 0;
+}
+
+.doc .admonitionblock .title + .paragraph {
+  margin-top: 0;
+}
+
+.doc .exampleblock > .content {
+  background: var(--example-background);
+  border-left: 5px solid darkslategrey;
+  padding: 1.25rem;
+  box-shadow: -4px 2px 7px 0 lightgrey;
+}
+
+.doc .exampleblock > .content > :first-child {
+  margin-top: 0;
+}
+
+.doc .sidebarblock {
+  background: var(--color-smoke-70);
+  /* border-radius: 0.75rem; */
+  padding: 0.45rem 1.5rem;
+  /* box-shadow: 0 10px 13px -7px #000000c5, 1px 0 3px 4px rgba(0, 0, 0, 0); */
+}
+
+.doc .sidebarblock > .content > .title {
+  font-size: calc(18.5 / var(--rem-base) * 1rem);
+  font-weight: var(--alt-heading-font-weight);
+  line-height: 1.3;
+  margin-bottom: 0.5em;
+  text-align: left;
+  background-color: var(--color-primary-dark-green);
+  color: whitesmoke;
+  margin-left: -2rem;
+  padding: 10px;
+  max-width: fit-content;
+  box-shadow: 0 10px 13px -7px #000000c5, 1px 0 3px 4px rgba(0, 0, 0, 0);
+}
+
+.doc .sidebarblock > .content > :not(.title):first-child {
+  margin-top: 0;
+}
+
+/* NEEDS REVIEW prevent pre in table from causing article to exceed bounds */
+.doc .tableblock pre,
+.doc .listingblock.wrap pre {
+  white-space: pre-wrap;
+}
+
+.doc pre:not(.highlight),
+.doc pre.highlight code {
+  background: darkslategrey;
+  box-shadow: inset -1px -2px 12px 2px rgba(89, 153, 12, 0.6);
+  display: block;
+  overflow-x: auto;
+  padding: 0.75rem;
+  border-radius: 0.15rem;
+  color: whitesmoke;
+}
+
+/* NOTE assume pre.highlight contains code[data-lang] */
+.doc pre.highlight {
+  position: relative;
+}
+
+.doc .listingblock code[data-lang]::before {
+  content: attr(data-lang);
+  display: none;
+  color: var(--pre-annotation-font-color);
+  font-size: calc(13.5 / var(--rem-base) * 1rem);
+  letter-spacing: 0.05em;
+  line-height: 1;
+  text-transform: uppercase;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.25rem;
+  font-family: var(--body-font-family);
+}
+
+.doc .listingblock:hover code[data-lang]::before {
+  display: block;
+}
+
+.doc .dlist dt {
+  font-size: 18px;
+}
+
+.doc .dlist dd {
+  margin-bottom: 0.3rem;
+  margin-inline-start: 0;
+}
+
+.doc .colist {
+  font-size: calc(16 / var(--rem-base) * 1rem);
+  margin: 0.25rem 0 -0.25rem;
+}
+
+.doc .colist > table > tr > :first-child,
+.doc .colist > table > tbody > tr > :first-child {
+  padding: 0.25em 0.5rem 0;
+  vertical-align: top;
+}
+
+.doc .colist > table > tr > :last-child,
+.doc .colist > table > tbody > tr > :last-child {
+  padding: 0.25rem 0;
+}
+
+.doc .conum[data-value] {
+  border: 2px solid whitesmoke;
+  border-radius: 100%;
+  display: inline-block;
+  font-family: var(--monospace-font-family);
+  font-size: calc(14.5 / var(--rem-base) * 1rem);
+  font-style: normal;
+  height: 1.5em;
+  line-height: 1.2;
+  text-align: center;
+  width: 1.5em;
+  letter-spacing: -0.25ex;
+  text-indent: -0.25ex;
+  background-color: var(--color-primary-green);
+  margin-top: 1px;
+  color: whitesmoke;
+}
+
+.doc .conum[data-value]::after {
+  content: attr(data-value);
+}
+
+.doc .conum[data-value] + b {
+  display: none;
+}
+
+.doc b.button {
+  white-space: nowrap;
+}
+
+.doc b.button::before {
+  content: "[";
+  padding-right: 0.25em;
+}
+
+.doc b.button::after {
+  content: "]";
+  padding-left: 0.25em;
+}
+
+.doc kbd {
+  display: inline-block;
+  font-size: calc(12 / var(--rem-base) * 1rem);
+  background: var(--kbd-background);
+  border: 1px solid var(--kbd-border-color);
+  border-radius: 0.25em;
+  box-shadow: 0 1px 0 var(--kbd-border-color), 0 0 0 0.1em var(--body-background) inset;
+  padding: 0.25em 0.5em;
+  vertical-align: text-bottom;
+  white-space: nowrap;
+}
+
+.doc kbd,
+.doc .keyseq {
+  line-height: 1;
+}
+
+.doc .keyseq {
+  font-size: calc(16 / var(--rem-base) * 1rem);
+}
+
+.doc .keyseq kbd {
+  margin: 0 0.125em;
+}
+
+.doc .keyseq kbd:first-child {
+  margin-left: 0;
+}
+
+.doc .keyseq kbd:last-child {
+  margin-right: 0;
+}
+
+.doc .menuseq i.caret::before {
+  content: "\203a";
+  font-size: 1.1em;
+  font-weight: var(--body-font-weight-bold);
+  line-height: calc(1 / 1.1);
+}
+
+.doc a.bare,
+.doc b.button,
+.doc code,
+.doc .path,
+.doc kbd,
+.doc .menuseq,
+.doc .icon i::after {
+  hyphens: none;
+}
+
+.doc th.tableblock,
+.doc td.tableblock {
+  word-break: break-word; /* overflow-wrap for table cells; gives space higher precedence than hyphen opportunity */
+}
+
+.d-post {
+  font-size: smaller;
+  background: green;
+  color: white;
+  padding: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+  box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+}
+
+.d-put {
+  font-size: smaller;
+  background: purple;
+  color: white;
+  padding: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+  box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+}
+
+.d-get {
+  font-size: smaller;
+  background: blue;
+  color: white;
+  padding: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+  box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+}
+
+.d-delete {
+  font-size: smaller;
+  background: red;
+  color: white;
+  padding: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+  box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+}
+
+.doc .tabs li,
+.doc .tabs ul {
+  margin-bottom: 0;
+  display: -webkit-inline-box;
+}
+
+.doc .tabs ul {
+  /* display: flex;
+  flex-wrap: wrap; */
+  list-style: none;
+  margin: 0 -0.25rem 0 0;
+  padding: 0;
+}
+
+.doc .tabs li {
+  align-items: center;
+  border: 1px solid lightgray;
+  border-bottom: 0;
+  cursor: pointer;
+  /* display: flex; */
+  font-weight: var(--weight-bold);
+  height: 2.5rem;
+  line-height: 1;
+  margin-right: 0.25rem;
+  padding: 0 1.5rem;
+  position: relative;
+}
+
+.doc .tabs li + li {
+  margin-top: 0;
+}
+
+.doc .tabset.is-loading .tabs li:not(:first-child),
+.doc .tabset:not(.is-loading) .tabs li:not(.is-active) {
+  background-color: darkslategrey;
+  color: lightgrey;
+}
+
+.doc .tabset.is-loading .tabs li:first-child::after,
+.doc .tabs li.is-active::after {
+  background-color: var(--color-white);
+  content: "";
+  display: block;
+  height: 3px; /* Chrome doesn't always paint the line accurately, so add a little extra */
+  position: absolute;
+  bottom: -1.5px;
+  left: 0;
+  right: 0;
+  transition: 1s ease;
+}
+
+.doc .tabset > .content {
+  border: 1px solid lightgray;
+  padding: 1.25rem;
+}
+
+.doc .tabset.is-loading .tab-pane:not(:first-child),
+.doc .tabset:not(.is-loading) .tab-pane:not(.is-active) {
+  display: none;
+}
+
+.doc .tab-pane > :first-child {
+  margin-top: 0;
+}
+
+.doc .smalltext {
+  font-size: smaller;
+}
+
+.doc .i1 {
+  margin-left: 1rem;
+}
+
+.doc .i2 {
+  margin-left: 2rem;
+}
+
+.doc .i3 {
+  margin-left: 3rem;
+}
+
+.doc .i4 {
+  margin-left: 4rem;
+}
+
+.doc .red {
+  color: var(--color-red);
+}
+
+.doc .red-bg {
+  background-color: var(--color-red);
+  padding: 5px;
+  color: whitesmoke;
+  border-radius: 10%;
+  border: none;
+}
+
+.doc .blue {
+  color: var(--color-primary-ocean-blue);
+}
+
+.doc .blue-bg {
+  background-color: blue;
+  padding: 5px;
+  color: whitesmoke;
+  border-radius: 10%;
+  border: none;
+}
+
+.doc .blue-bg a {
+  text-decoration: none;
+  color: whitesmoke;
+}
+
+.doc .blue-bg a:hover {
+  text-decoration: none;
+  color: var(--color-white);
+  text-shadow:
+    0 0 10px var(--glow-color),
+    0 0 20px var(--glow-color),
+    0 0 40px var(--glow-color),
+    0 0 60px var(--glow-color),
+    0 0 80px var(--glow-color);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.doc .plum {
+  color: var(--color-primary-plum);
+}
+
+.doc .plum-bg {
+  background-color: var(--color-primary-plum);
+  padding: 5px;
+  color: whitesmoke;
+  border-radius: 10%;
+  border: none;
+}
+
+.doc .green {
+  color: var(--color-primary-green);
+}
+
+.doc .green-bg {
+  background-color: var(--color-primary-green);
+  padding: 5px;
+  color: whitesmoke;
+  border: none;
+}
+
+.doc .green-bg a {
+  color: whitesmoke;
+}
+
+.doc .green-bg a:hover {
+  text-decoration: underline;
+}
+
+.doc .dark-green {
+  color: var(--color-primary-dark-green);
+}
+
+.doc .yellow {
+  color: var(--color-primary-gold);
+}
+
+.doc .yellow-bg {
+  background-color: var(--color-primary-gold);
+  padding: 5px;
+  color: whitesmoke;
+  border-radius: 10%;
+  border: none;
+}
+
+.doc .collapse {
+  font-size: larger;
+  color: var(--color-primary-green);
+  background-color: var(--color-smoke-90);
+  padding: 0.8rem !important;
+  cursor: pointer;
+  border-left: 5px solid var(--color-primary-green);
+  font-weight: bold;
+  transition: 0.75s ease;
+  margin-top: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.doc .collapse:hover {
+  background-color: var(--color-primary-light-green);
+}
+
+/* .doc .collapse p {
+  border-bottom: 2px solid white;
+  width: fit-content;
+} */
+
+.doc .collapse-content {
+  font-size: inherit;
+  background-color: var(--color-smoke-50);
+  margin-top: -5px;
+  padding: 0.8rem;
+  display: none;
+}
+
+.doc .focus {
+  font-size: larger;
+  color: var(--color-green-darker);
+  background-color: var(--color-smoke-90);
+  padding: 0.8rem;
+  cursor: auto;
+  border-left: 5px solid var(--color-primary-green);
+  font-weight: bold;
+  transition: 0.55s ease;
+}
+
+.doc .focus:hover {
+  background-color: var(--color-primary-light-green);
+  border-left: 15px solid var(--color-primary-green);
+}
+
+.doc .focus a {
+  color: var(--color-green-reflex);
+}
+
+.doc .focus a:hover {
+  text-decoration: underline;
+}
+
+.doc .scenario {
+  background-color: inherit;
+  color: var(--color-gray-50);
+  border-left: 5px solid lightgrey;
+  padding: 1rem;
+}
+
+.doc .scenario .title {
+  font-size: larger;
+  font-weight: bold;
+}
+
+.doc .celebrate {
+  background-color: var(--color-primary-green);
+  color: white;
+  padding: 1.75rem;
+  border-radius: 10px;
+  border-left: none !important;
+  box-shadow: none !important;
+}
+
+.doc .celebrate .title {
+  font-size: larger;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.doc .celebrate .title::after {
+  content: "\1F389";
+  margin-left: 2px;
+}
