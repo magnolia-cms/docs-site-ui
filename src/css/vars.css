@@ -161,3 +161,8 @@
   --z-index-page-version-menu: 3;
   --z-index-navbar: 4;
 }
+
+[data-theme="dark"] {
+  --body-background: var(--color-black);
+  --body-font-color: whitesmoke;
+}
