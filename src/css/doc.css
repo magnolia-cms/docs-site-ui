@@ -875,6 +875,17 @@
   box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
 }
 
+.d-grey {
+  font-size: smaller;
+  background: grey;
+  color: white;
+  padding: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+  box-shadow: -1px 1px 6px -1px rgba(0, 0, 0, 0.75);
+}
+
 .doc .tabs li,
 .doc .tabs ul {
   margin-bottom: 0;
