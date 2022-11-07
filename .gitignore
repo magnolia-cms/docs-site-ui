@@ -9,3 +9,7 @@
 .nvmrc
 gulpfile.js
 index.js
+docs-site-ui.iml
+/src/.DS_Store
+pom.xml
+.gitignore
