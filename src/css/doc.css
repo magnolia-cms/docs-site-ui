@@ -1145,3 +1145,18 @@
   content: "\1F389";
   margin-left: 2px;
 }
+
+.doc .rn-label {
+  color: whitesmoke;
+  padding: 6px;
+  font-size: smaller;
+}
+
+.doc .rn-label.updated {
+  background-color: var(--color-primary-gold);
+}
+
+.doc .updated-text {
+  font-size: smaller;
+  font-style: italic;
+}

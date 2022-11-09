@@ -10,6 +10,18 @@ Author Name
 
 == Heading A
 
+:rn-date: 2022-11-08
+:rn-updated-text: This page was updated post-release to ensure all development was captured.
+// the above is in the playbook
+
+ifeval::["{localdate}" > "{rn-date}"]
+[.rn-label.updated]#Updated#
+[.updated-text]#{rn-updated-text}#
+endif::[]
+
+{localdate}
+{rn-date}
+
 text
 
 testing push only
