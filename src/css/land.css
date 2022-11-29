@@ -458,6 +458,10 @@
   text-align: left;
 }
 
+.doc .admonitionblock .title {
+    padding-bottom: 1.075rem;
+}
+
 .land .imageblock .title {
   margin-top: 0.5rem;
   padding-bottom: 0;
