@@ -10,6 +10,18 @@
   {{/with}}
   {{/if}}
 
+  {{#if (eq page.attributes.toggle 'yes')}}
+        <script>
+          let mainContent = document.querySelector('#main_content');
+          let secondaryContent = document.querySelector('#secondary_content');
+
+          document.querySelector('.toggle input').addEventListener('change', e => {
+          mainContent.style.display = e.target.checked ? 'block' : 'none';
+          secondaryContent.style.display = e.target.checked ? 'none' : 'block';
+          });
+        </script>
+  {{/if}}
+
 <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
 
 {{> beforeAfter}}
