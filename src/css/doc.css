@@ -1150,6 +1150,11 @@
   margin-left: 2px;
 }
 
+.doc .celebrate a {
+  color: var(--color-primary-gold);
+  text-decoration: none;
+}
+
 .doc .rn-label {
   color: whitesmoke;
   padding: 6px;

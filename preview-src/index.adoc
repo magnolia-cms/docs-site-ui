@@ -10,6 +10,10 @@ Author Name
 
 == Heading A
 
+[.celebrate]
+.Heading
+text xref:404.adoc[xref] gap link:https://www.google.com[link^].
+
 :rn-date: 2022-11-08
 :rn-updated-text: This page was updated post-release to ensure all development was captured.
 // the above is in the playbook
