@@ -40,7 +40,7 @@ svg.polygons {
 }
 
 .buttons-con .action-link-wrap a {
-  background: var(--color-green-reflex);
+  background: var(--color-primary-green);
   padding: 8px 25px;
   border-radius: 4px;
   color: #fff;
