@@ -10,17 +10,6 @@ Author Name
 
 == Heading A
 
-[source,subs="normal"]
-----
-package info.magnolia.norsu.domain;
-
-import info.magnolia.norsu.functional.Result;
-
-public interface GetNode {
-  <<withChildCount>>
-}
-----
-
 [.celebrate]
 .Heading
 text xref:404.adoc[xref] gap link:https://www.google.com[link^].
