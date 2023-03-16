@@ -6,9 +6,20 @@ Author Name
 :!example-caption:
 :!table-caption:
 :page-pagination:
-:page-layout: 404
+:page-layout: default
 
 == Heading A
+
+[source,subs="normal"]
+----
+package info.magnolia.norsu.domain;
+
+import info.magnolia.norsu.functional.Result;
+
+public interface GetNode {
+  <<withChildCount>>
+}
+----
 
 [.celebrate]
 .Heading
@@ -29,6 +40,10 @@ endif::[]
 text
 
 testing push only
+
+== xref link
+
+[[withChildCount,withChildCount]] withChildCount
 
 === Subheading
 

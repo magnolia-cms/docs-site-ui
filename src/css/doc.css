@@ -711,6 +711,17 @@
   font-family: var(--body-font-family);
 }
 
+pre code a {
+  color: var(--color-primary-ocean-blue) !important;
+  font-style: normal;
+  transition: 0.3s ease;
+}
+
+pre code a:hover {
+  color: lightblue !important;
+  text-decoration: none !important;
+}
+
 .doc .listingblock:hover code[data-lang]::before {
   display: block;
 }
