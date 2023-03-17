@@ -10,6 +10,12 @@ Author Name
 
 == Heading A
 
+[source,yaml,subs="normal,attributes"]
+----
+<<withChildCount>>: true
+bolognaGood: false
+----
+
 [.celebrate]
 .Heading
 text xref:404.adoc[xref] gap link:https://www.google.com[link^].
