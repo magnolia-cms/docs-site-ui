@@ -1166,6 +1166,38 @@ pre code a:hover {
   text-decoration: none;
 }
 
+.doc .thanks {
+  background-color: black;
+  color: white;
+  padding: 1.75rem;
+  border-radius: 10px;
+  border-left: none !important;
+  box-shadow: none !important;
+}
+
+.doc .thanks .title {
+  font-size: larger;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.doc .thanks .title::after {
+  content: "\2618";
+  margin-left: 2px;
+  color: var(--color-green-reflex);
+}
+
+.doc .thanks a {
+  color: var(--color-primary-gold);
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.doc .thanks a:hover {
+  color: var(--color-green-reflex);
+  text-decoration: none;
+}
+
 .doc .rn-label {
   color: whitesmoke;
   padding: 6px;

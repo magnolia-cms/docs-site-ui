@@ -10,6 +10,14 @@ Author Name
 
 == Heading A
 
+[.celebrate]
+.Celebrate
+Good times. C'mon!
+
+[.thanks]
+.Thanks a mill!
+Thanks to blah blah.
+
 [source,yaml,subs="normal,attributes"]
 ----
 <<withChildCount>>: true
