@@ -1167,8 +1167,8 @@ pre code a:hover {
 }
 
 .doc .thanks {
-  background-color: black;
-  color: white;
+  background-color: #e9ebe8;
+  color: black;
   padding: 1.75rem;
   border-radius: 10px;
   border-left: none !important;
