@@ -1217,6 +1217,7 @@ pre code a:hover {
   margin-left: 2px;
   color: var(--color-primary-green);
   font-size: 2rem;
+  font-weight: 500;
 }
 
 .doc .announce a {
