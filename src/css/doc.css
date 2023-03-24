@@ -1198,6 +1198,38 @@ pre code a:hover {
   text-decoration: none;
 }
 
+.doc .announce {
+  background-color: #e9ebe8;
+  color: black;
+  padding: 0.35rem 1.5rem 0.85rem;
+  border-left: none !important;
+  box-shadow: none !important;
+}
+
+.doc .announce .title {
+  font-size: larger;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.doc .announce .title::after {
+  content: "\1F56C";
+  margin-left: 2px;
+  color: var(--color-primary-green);
+  font-size: 2rem;
+}
+
+.doc .announce a {
+  color: var(--color-primary-green);
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.doc .announce a:hover {
+  color: var(--color-primary-gold);
+  text-decoration: none;
+}
+
 .doc .rn-label {
   color: whitesmoke;
   padding: 6px;

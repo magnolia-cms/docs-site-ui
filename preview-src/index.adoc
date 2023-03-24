@@ -10,6 +10,12 @@ Author Name
 
 == Heading A
 
+[.announce]
+.Upcoming changes!
+To further improve upon our WAF feature, we're happy to announce the **_NextGen_ WAF** will be released into production icon:calendar-check-o[] mid-April 2023. Check back here and in the xref:paas:ROOT:changelog.adoc[{solution} Changelog] for updates.
+
+---
+
 [.celebrate]
 .Celebrate
 Good times. C'mon!
