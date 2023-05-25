@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SaaS Documentation</title>
+  <style>
+    /* General styles */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      color: darkslategrey;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Navbar styles */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background-color: #222222;
+      color: whitesmoke;
+    }
+
+    .navbar .logo {
+      margin-right: auto;
+    }
+
+    .navbar .logo img {
+      width: 50px;
+      height: auto;
+    }
+
+    .navbar nav {
+      margin-left: auto;
+    }
+
+    .navbar nav a {
+      margin-left: 10px;
+      color: whitesmoke;
+      text-decoration: none;
+    }
+
+    .toggle-dark-mode {
+      background-color: inherit;
+      padding: 5px;
+      border-radius: 50%;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .toggle-dark-mode:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Search Bar styles */
+    .search-bar {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .search-bar input[type="text"] {
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      background-color: rgb(204, 204, 204);
+      width: 300px;
+      transition: width 0.3s;
+    }
+
+    .search-bar input[type="text"]:focus {
+      width: 400px;
+    }
+
+    /* Hero Section styles */
+    .hero-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    /* Get Started button styles */
+    .hero-section button {
+      margin-top: 20px;
+      padding: 12px 22px;
+      border: none;
+      border-radius: 4px;
+      background-color: #46c442;
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+      transition: background-color 0.5s ease;
+    }
+
+    .hero-section button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Card Section styles */
+    .card-section {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: darkslategrey;
+    }
+
+    /* Developer Section styles */
+    .developer-section {
+      display: flex;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .developer-image {
+      width: 200px;
+      height: auto;
+      margin-right: 20px;
+      animation: floating 3s ease-in-out infinite;
+    }
+
+    .developer-info {
+      flex: 1;
+      color: darkslategrey;
+    }
+
+    /* Frameworks Section styles */
+    .frameworks-section {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .frameworks-section img {
+      width: 50px;
+      height: 50px;
+      margin: 0 10px;
+    }
+
+    /* Dark mode styles */
+    .dark-mode {
+      background-color: #333333;
+      color: whitesmoke;
+    }
+
+    .dark-mode .navbar {
+      background-color: #222222;
+      color: whitesmoke;
+    }
+
+    .dark-mode nav a {
+      color: whitesmoke;
+    }
+
+    .dark-mode .toggle-dark-mode {
+      background-color: #222222;
+    }
+
+    .dark-mode .toggle-dark-mode:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .dark-mode .search-bar input[type="text"] {
+      background-color: #444444;
+    }
+
+    .dark-mode .card {
+      background-color: #222222;
+      color: whitesmoke;
+    }
+
+    .dark-mode .developer-info {
+      color: whitesmoke;
+    }
+
+    /* Signup Section styles */
+    .signup-section {
+      position: relative;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    .signup-section .signup-image {
+      width: 150px;
+      height: auto;
+      margin-right: 20px;
+      object-fit: cover;
+    }
+
+    .signup-section .signup-form {
+      flex: 1;
+    }
+
+    .signup-section .signup-form label,
+    .signup-section .signup-form input,
+    .signup-section .signup-form button {
+      display: block;
+      width: 100%;
+    }
+
+    .signup-section .signup-form label {
+      margin-top: 10px;
+      color: darkslategrey;
+    }
+
+    .signup-section .signup-form input {
+      padding: 10px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 4px;
+      background-color: #f2f2f2;
+    }
+
+    .signup-section .signup-form button {
+      margin-top: 20px;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      background-color: darkgreen;
+      color: #fff;
+      cursor: pointer;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <script>
+    function toggleDarkMode() {
+      var body = document.querySelector("body");
+      body.classList.toggle("dark-mode");
+
+      var toggleButton = document.querySelector(".toggle-dark-mode");
+      toggleButton.innerHTML = body.classList.contains("dark-mode") ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Navbar -->
+    <div class="navbar">
+      <div class="logo">
+        <img src="placeholder_logo_url" alt="Logo">
+      </div>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">Documentation</a>
+        <a href="#">API Reference</a>
+        <a href="#">Support</a>
+      </nav>
+      <div class="toggle-dark-mode" onclick="toggleDarkMode()">
+        <i class="fas fa-sun"></i>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <h1>Welcome to our SaaS Documentation</h1>
+      <p>Get started with our comprehensive documentation and explore our powerful features.</p>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+        <input type="text" placeholder="Search documentation...">
+        </div>
+      
+      <button>Get Started</button>
+    </div>
+
+    <!-- Card Section -->
+    <div class="card-section">
+      <div class="card">
+        <h3>Getting Started</h3>
+        <p>Learn how to get started with our SaaS platform and set up your account.</p>
+      </div>
+      <div class="card">
+        <h3>API Reference</h3>
+        <p>Explore our API documentation and learn how to integrate our services.</p>
+      </div>
+      <div class="card">
+        <h3>Troubleshooting</h3>
+        <p>Find solutions to common issues and get help with troubleshooting.</p>
+      </div>
+    </div>
+
+    <!-- Developer Section -->
+    <div class="developer-section">
+      <img class="developer-image" src="placeholder_developer_image_url" alt="Developer Image">
+      <div class="developer-info">
+        <h3>Meet Our Developers</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac nunc euismod, congue mi id, tempor metus.</p>
+      </div>
+    </div>
+
+    <!-- Frameworks Section -->
+    <div class="frameworks-section">
+      <img src="framework_icon_1_url" alt="Framework Icon">
+      <img src="framework_icon_2_url" alt="Framework Icon">
+      <img src="framework_icon_3_url" alt="Framework Icon">
+      <img src="framework_icon_4_url" alt="Framework Icon">
+    </div>
+
+    <!-- Signup Section -->
+    <div class="signup-section">
+      <img class="signup-image" src="https://fastly.picsum.photos/id/5/5000/3334.jpg?hmac=R_jZuyT1jbcfBlpKFxAb0Q3lof9oJ0kREaxsYV3MgCc" alt="Signup Image">
+      <form class="signup-form" action="#" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="company">Company:</label>
+        <input type="text" id="company" name="company" required><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        <button type="submit">Sign up</button>
+      </form>
+    </div>
+
+  </div>
+</body>
+</html>
