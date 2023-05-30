@@ -24,23 +24,32 @@ body {
   transition: 0.4s ease;
 }
 
+.navbar.saas-nav {
+  box-shadow: 0 4px 8px #599900;
+}
+
+.navbar.paas-nav {
+  box-shadow: 0 4px 8px #FFC226;
+}
+
 .navbar.headless-nav {
-  background: var(--color-gray-dark);
-  color: whitesmoke;
+  background: var(--navbar-background);
+  color: var(--navbar-font-color);
+  box-shadow: 0 4px 8px #000;
 }
 
 .navbar.headless-nav .navbar-item {
-  color: white;
+  color: #1e1f1c;
 }
 
 .navbar.headless-nav .navbar-item:hover {
-  color: var(--color-green-reflex);
+  color: var(--color-primary-dark-green);
 }
 
 .navbar.headless-nav .button {
   display: inline-flex;
   align-items: center;
-  background: var(--color-green-reflex);
+  background: var(--navbar-button-background);
   border-radius: 45px;
   height: 1.75rem;
   color: whitesmoke;
@@ -51,8 +60,7 @@ body {
 }
 
 .navbar.headless-nav .button:hover {
-  background-color: #fff;
-  color: black;
+  background-color: var(--color-primary-dark-green);
 }
 
 .navbar.trials-nav {
