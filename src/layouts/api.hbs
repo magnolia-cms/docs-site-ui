@@ -19,15 +19,22 @@
         background-color: white !important;
         scroll-behavior: auto !important;
       }
+
+      div.api-buffer {
+        height: 2vh;
+      }
     </style>
   </head>
   <body class="redoc">
     <a name="top"></a>
     {{> header}}
     <div id="redoc-container"></div>
-    {{!-- <redoc spec-url='{{{page.attributes.spec}}}'></redoc> --}}
+    <div class="api-buffer">
+
+    </div>
+    <redoc spec-url='{{{page.attributes.spec}}}'></redoc>
     <script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
-    <script>
+    {{!-- <script>
       Redoc.init("{{{siteRootPath}}}/{{{page.component.name}}}/_attachments/{{{lowercase page.title}}}.yaml", {
         scrollYOffset: '#topbar',
         noAutoAuth: true,
@@ -72,7 +79,7 @@
           }
         },
       }, document.getElementById('redoc-container'))
-    </script>
+    </script> --}}
     {{> footer}}
   </body>
 </html>
