@@ -1,6 +1,7 @@
 .search-input-wrapper {
   position: relative;
   display: flex;
+  margin-left: 1.5rem;
 }
 
 .search-input-wrapper__icon {
@@ -22,19 +23,27 @@
   color: var(--color-gray-light);
 }
 
-#searchBar {
-  border: 1px solid var(--color-gray-light);
-  background-color: var(--color-smoke-50);
+#searchBar.ds-input {
+  border: none;
+  background-color: var(--color-smoke-70);
   height: 44px;
-  min-width: 300px;
-  border-radius: 40px;
+  min-width: 17rem;
+  width: 18rem;
+  border-radius: 5px;
   font-family: var(--body-font-family);
   font-size: 0.875rem;
-  transition: 1s ease;
   cursor: auto;
   outline: none;
   padding: 0 1rem;
   padding-left: 2.5rem;
+  transition: width 0.5s ease;
+}
+
+#searchBar.ds-input:focus {
+  width: 30rem;
+  margin-right: 2px;
+  border: 1px solid var(--color-gray-light);
+  background-color: var(--color-smoke-50);
 }
 
 .search-input-wrapper span.algolia-autocomplete {
