@@ -16,7 +16,7 @@ body {
   width: 100%;
   word-wrap: break-word;
   z-index: var(--z-index-navbar);
-  box-shadow: 0 -13px 33px rgba(30, 31, 28, 0.25);
+  box-shadow: 0 4px 8px rgba(30, 31, 28, 0.25);
 }
 
 #topbar {
