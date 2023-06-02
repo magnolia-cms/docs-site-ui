@@ -48,7 +48,7 @@
 }
 
 #location:hover i {
-  color: var(--color-green-reflex);
+  color: var(--color-primary-blue);
 }
 
 /* PAAS */
@@ -69,7 +69,7 @@
   padding-left: 0.9rem;
   padding-right: 0.5rem;
   display: block;
-  background: var(--color-primary-dark-green);
+  background: var(--color-gray-dark);
   /* border-radius: 50%; */
   /* border-radius: 8px; */
   font-family: inherit;
@@ -100,7 +100,7 @@
 }
 
 #location-paas:hover i {
-  color: var(--color-green-reflex);
+  color: var(--color-primary-yellow);
 }
 
 /* SAAS */
@@ -121,7 +121,7 @@
   padding-left: 0.9rem;
   padding-right: 0.5rem;
   display: block;
-  background: var(--color-primary-green);
+  background: var(--color-gray-dark);
   /* border-radius: 50%; */
   /* border-radius: 8px; */
   font-family: inherit;
@@ -152,7 +152,7 @@
 }
 
 #location-saas:hover i {
-  color: var(--color-primary-yellow);
+  color: var(--color-primary-green);
 }
 
 /* HEADLESS */
