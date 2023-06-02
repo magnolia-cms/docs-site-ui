@@ -29,7 +29,7 @@
   height: 44px;
   min-width: 17rem;
   width: 18rem;
-  border-radius: 5px;
+  border-radius: 45px;
   font-family: var(--body-font-family);
   font-size: 0.875rem;
   cursor: auto;
@@ -42,7 +42,7 @@
 #searchBar.ds-input:focus {
   width: 30rem;
   margin-right: 2px;
-  border: 1px solid var(--color-gray-light);
+  border: 2px solid var(--color-primary-green);
   background-color: var(--color-smoke-50);
 }
 
