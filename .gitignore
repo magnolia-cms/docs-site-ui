@@ -3,7 +3,4 @@
 /public/
 /local-build/
 .local-playbook.yml
-.editorconfig
-.stylelintrc
-.nvmrc
 
