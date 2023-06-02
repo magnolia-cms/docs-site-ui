@@ -4,8 +4,6 @@
 /local-build/
 .local-playbook.yml
 .editorconfig
-.eslintrc
 .stylelintrc
 .nvmrc
-gulpfile.js
-index.js
+
