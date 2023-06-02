@@ -1,24 +1,29 @@
-{{#if (eq page.layout 'headless')}}
+{{#if (eq page.layout 'default')}}
 <div id="location">
-        <p>Headless <i class="fa fa-map-marker" aria-hidden="true"></i></p>
-    {{!-- {{/if}}
-    {{#if (eq page.component 'product-docs')}}
         <p>DX Core <i class="fa fa-map-marker" aria-hidden="true"></i></p>
-    {{/if}}
-    {{#if (eq page.component 'saas')}}
-        <p>SaaS <i class="fa fa-map-marker" aria-hidden="true"></i></p>
-    {{/if}}
-    {{#if (eq page.component 'paas')}}
-        <p>PaaS <i class="fa fa-map-marker" aria-hidden="true"></i></p>
-    {{/if}}
-    {{#if (eq page.component 'legacy-cloud')}}
-        <p>Cloud <i class="fa fa-map-marker" aria-hidden="true"></i></p>
-    {{else}} --}}
+</div>
+{{/if}}
+
+{{#if (eq page.layout 'headless')}}
+<div id="location-headless">
+        <p>Headless <i class="fa fa-map-marker" aria-hidden="true"></i></p>
 </div>
 {{/if}}
 
 {{#if (eq page.layout 'trials')}}
 <div id="location-trials">
         <p>Trials <i class="fa fa-map-marker" aria-hidden="true"></i></p>
+</div>
+{{/if}}
+
+{{#if (eq page.layout 'saas')}}
+<div id="location-saas">
+        <p>SaaS <i class="fa fa-map-marker" aria-hidden="true"></i></p>
+</div>
+{{/if}}
+
+{{#if (eq page.layout 'paas')}}
+<div id="location-paas">
+        <p>PaaS <i class="fa fa-map-marker" aria-hidden="true"></i></p>
 </div>
 {{/if}}
