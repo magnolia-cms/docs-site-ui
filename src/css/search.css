@@ -9,6 +9,7 @@
   left: 17px;
   top: 52%;
   transform: translateY(-50%);
+  color: var(--color-gray-30);
 }
 
 ::-webkit-input-placeholder { /* Edge */
@@ -35,7 +36,7 @@
   cursor: auto;
   outline: none;
   padding: 0 1rem;
-  padding-left: 2.5rem;
+  padding-left: 5.75rem;
   transition: width 0.5s ease;
 }
 
@@ -44,6 +45,26 @@
   margin-right: 2px;
   border: 2px solid var(--color-primary-green);
   background-color: var(--color-smoke-50);
+}
+
+.search-input-wrapper__icon kbd {
+  margin-left: 0.15rem;
+  color: var(--color-gray-30);
+  opacity: 0.5;
+  border: 2px solid rgba(47, 79, 79, 0.438); 
+  box-shadow: 2px 2px rgba(47, 79, 79, 0.438); 
+  font-size: .85em; 
+  line-height: .85em; 
+  display: inline-block;
+  font-weight: 600;
+  letter-spacing: .05em; 
+  padding: 3px 5px;
+  white-space: nowrap;
+  font-family: var(--body-font-family);
+}
+
+.search-input-wrapper__icon i {
+  opacity: 0.5;
 }
 
 .search-input-wrapper span.algolia-autocomplete {
@@ -82,3 +103,4 @@
     background: var(--color-gray-10);
   }
 }
+
