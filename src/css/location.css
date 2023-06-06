@@ -48,7 +48,7 @@
 }
 
 #location:hover i {
-  color: var(--color-primary-blue);
+  color: var(--color-primary-green);
 }
 
 /* PAAS */
@@ -100,7 +100,7 @@
 }
 
 #location-paas:hover i {
-  color: var(--color-primary-yellow);
+  color: var(--color-primary-ocean-blue);
 }
 
 /* SAAS */
@@ -152,7 +152,7 @@
 }
 
 #location-saas:hover i {
-  color: var(--color-primary-green);
+  color: var(--color-primary-yellow);
 }
 
 /* HEADLESS */
@@ -205,7 +205,7 @@
 }
 
 #location-headless:hover i {
-  color: var(--color-green-reflex);
+  color: var(--color-red);
 }
 
 /* TRIALS */
