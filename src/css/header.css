@@ -33,7 +33,7 @@ body {
 }
 
 .navbar.headless-nav {
-  box-shadow: 0 -13px 33px var(--color-red);
+  box-shadow: 0 -13px 33px var(--color-orange);
 }
 
 .navbar.headless-nav .navbar-item {
