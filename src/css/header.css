@@ -25,17 +25,15 @@ body {
 }
 
 .navbar.saas-nav {
-  box-shadow: 0 -13px 33px #599900;
+  box-shadow: 0 -13px 33px var(--color-primary-yellow);
 }
 
 .navbar.paas-nav {
-  box-shadow: 0 -13px 33px #ffc226;
+  box-shadow: 0 -13px 33px var(--color-primary-ocean-blue);
 }
 
 .navbar.headless-nav {
-  background: var(--navbar-background);
-  color: var(--navbar-font-color);
-  box-shadow: 0 -13px 33px #000;
+  box-shadow: 0 -13px 33px var(--color-red);
 }
 
 .navbar.headless-nav .navbar-item {
