@@ -36,7 +36,7 @@
   cursor: auto;
   outline: none;
   padding: 0 1rem;
-  padding-left: 5.75rem;
+  padding-left: 3rem;
   transition: width 0.5s ease;
 }
 
@@ -70,6 +70,11 @@
 .search-input-wrapper span.algolia-autocomplete {
   display: flex !important;
   align-items: center;
+}
+
+#keyboardShortcut,
+#keyboardShortcutMac {
+  display: none;
 }
 
 @media screen and (max-width: 1200px) {
