@@ -108,3 +108,9 @@
     background: var(--color-gray-10);
   }
 }
+
+@media screen and (max-width: 900px) {
+  .search-input-wrapper__icon {
+    display: none;
+  }
+}
