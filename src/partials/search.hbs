@@ -16,6 +16,7 @@
 
 <script>
     var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+    var searchInputWrapper = document.querySelector('.search-input-wrapper__icon');
     var keyboardShortcutElement = document.getElementById('keyboardShortcut');
     var keyboardShortcutMacElement = document.getElementById('keyboardShortcutMac');
 
@@ -27,6 +28,10 @@
       keyboardShortcutMacElement.style.display = 'none';
     }
 
+    searchInputWrapper.addEventListener('click', function() {
+      searchBar.focus();
+    });
+  
     searchBar.addEventListener('focus', function() {
       keyboardShortcutElement.style.opacity = '0.2';
       keyboardShortcutMacElement.style.opacity = '0.2';
