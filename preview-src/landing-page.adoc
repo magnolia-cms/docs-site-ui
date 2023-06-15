@@ -1,0 +1,11 @@
+:idprefix:
+:idseparator: -
+:!example-caption:
+:page-layout: home-sass
+
+
+= Magnolia SaaS
+
+[.section-hero__paragraph]
+Welcome to the lightspeed Magnolia in the cloud. A platform for developers to build amazing websites and digital experiences — and have fun while you're at it.
+
