@@ -30,22 +30,24 @@
   {{#if page.component}}
   <div class="context">
     <span class="title">{{page.component.title}}</span>
-    <span class="version">{{page.componentVersion.displayVersion}}</span>
+    <span class="version">{{#unless (eq page.componentVersion.displayVersion 'default')}}{{page.componentVersion.displayVersion}}{{/unless}}</span>
   </div>
   {{/if}}
   <ul class="components">
-    {{#each site.components}}
+    {{#each (rearrange site.components 'name' componentOrder)}}
     <li class="component{{#if (eq this @root.page.component)}} is-current{{/if}}">
-      <span class="title">{{{./title}}}</span>
+      <a class="title" href="{{{relativize ./url}}}">{{{./title}}}</a>
+      {{#if (or ./versions.[1] (and (ne ./versions.[0].displayVersion 'default') (ne ./versions.[0].displayVersion 'pre-spec')))}}
       <ul class="versions">
         {{#each ./versions}}
         <li class="version
           {{~#if (and (eq .. @root.page.component) (eq this @root.page.componentVersion))}} is-current{{/if~}}
-          {{~#if (eq this ../latestVersion)}} is-latest{{/if}}">
+          {{~#if (eq this ../latest)}} is-latest{{/if}}">
           <a href="{{{relativize ./url}}}">{{./displayVersion}}</a>
         </li>
         {{/each}}
       </ul>
+      {{/if}}
     </li>
     {{/each}}
   </ul>
