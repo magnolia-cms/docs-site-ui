@@ -1,7 +1,7 @@
 :idprefix:
 :idseparator: -
 :!example-caption:
-:page-layout: home-sass
+:page-layout: home-saas
 
 
 = Magnolia SaaS
