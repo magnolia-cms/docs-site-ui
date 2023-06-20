@@ -593,7 +593,7 @@ h3 {
 }
 
 .info-label {
-  padding: 5px;
+  padding: 8px;
   background-color: whitesmoke;
   color: var(--color-jet-70);
   font-size: smaller;
