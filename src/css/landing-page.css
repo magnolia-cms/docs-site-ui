@@ -592,6 +592,13 @@ h3 {
   }
 }
 
+.info-label {
+  padding: 5px;
+  background-color: whitesmoke;
+  color: var(--color-jet-70);
+  font-size: smaller;
+}
+
 /* @media only screen and (min-width: 1000px) {
 
 } */
