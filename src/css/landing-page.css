@@ -422,7 +422,6 @@ h3 {
 }
 
 .card-block:where(.--bg-yellow, .--outlined) {
-  border: 1px solid var(--color-gray-medium);
   border-radius: 8px;
   padding: 10px;
 }
@@ -433,7 +432,7 @@ h3 {
   display: flex;
   flex-direction: column;
   align-content: space-around;
-  transition: 0.5s ease;
+  transition: 0.525s ease;
 }
 
 .card-block.--bg-yellow:hover {
