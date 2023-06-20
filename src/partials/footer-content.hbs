@@ -31,7 +31,12 @@
   </ul>
 </div>
 
-
+{{#if (eq page.layout 'home-saas')}}
+<div class="footer-terms">
+  <span>{{{year}}} Magnolia International Ltd. Some rights reserved.</span>
+  <a href="https://www.magnolia-cms.com/legal/privacy.html" target="_blank">Privacy policy</a>
+</div>
+{{else}}
 <div class="footer-terms">
   <p>Love Magnolia? Review us and get a reward!</p>
   <a href="https://mgnl.io/magnolia-customer-reviews" target="_blank"><button>Customers <i class="fa fa-star" aria-hidden="true"></i> </button></a>
@@ -43,4 +48,4 @@
   <span>{{{year}}} Magnolia International Ltd. Some rights reserved.</span>
   <a href="https://www.magnolia-cms.com/legal/privacy.html" target="_blank">Privacy policy</a>
 </div>
-
+{{/if}}

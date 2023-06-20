@@ -28,6 +28,10 @@ body {
   box-shadow: 0 -13px 33px var(--color-primary-yellow);
 }
 
+.navbar.saas-nav .navbar-item {
+  font-size: larger;
+}
+
 .navbar.paas-nav {
   box-shadow: 0 -13px 33px var(--color-primary-ocean-blue);
 }
