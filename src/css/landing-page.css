@@ -608,6 +608,6 @@ h3 {
   font-size: smaller;
 }
 
-/* @media only screen and (min-width: 1000px) {
-
-} */
+span.landingSpans {
+  margin-top: 1vh;
+}
