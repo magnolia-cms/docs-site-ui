@@ -41,10 +41,19 @@
 }
 
 #searchBar.ds-input:focus {
-  width: 30rem;
+  width: 29rem;
   margin-right: 2px;
   border: 2px solid var(--color-primary-green);
   background-color: var(--color-smoke-50);
+}
+
+@media screen and (max-width: 1220px) {
+  #searchBar.ds-input:focus {
+    width: 22.35rem;
+    margin-right: 2px;
+    border: 2px solid var(--color-primary-green);
+    background-color: var(--color-smoke-50);
+  }
 }
 
 .search-input-wrapper__icon kbd {
