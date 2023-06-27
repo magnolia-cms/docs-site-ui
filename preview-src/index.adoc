@@ -8,6 +8,106 @@ Author Name
 :page-pagination:
 :page-layout: default
 
+// ++++
+//   <style>
+//     .card-test {
+//       display: inline-block;
+//       width: 350px;
+//       height: 300px;
+//       background-color: #222;
+//       margin: 10px;
+//       text-align: center;
+//       color: whitesmoke !important;
+//       transition: transform 0.4s;
+//     }
+
+//     .card-test:hover {
+//       transform: scale(1.1);
+//       box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+//     }
+
+//     .card-test h2 {
+//       color: #f6c34d;
+//       font-size: 1.8rem;
+//     }
+
+//     .card-test p {
+//       color: whitesmoke;
+//       font-size: 1.2rem
+//     }
+
+//     .card-test a {
+//       color: whitesmoke;
+//       text-decoration: underline;
+//     }
+
+//     .card-test a:hover {
+//       color: #ffd87e;
+//       text-decoration: underline;
+//     }
+
+//     @media (max-width: 1000px) {
+//       .card-test {
+//         display: block;
+//       }
+//     }
+//   </style>
+
+
+//   <div class="card-test">
+//     <h2>Content Modeling</h1>
+//     <p>Test content</p>
+//     <a href="#">Test link</a>
+//   </div>
+
+//   <div class="card-test">
+//     <h2>Light development</h1>
+//     <p>Test content</p>
+//     <a href="#">Test link</a>
+//   </div>
+
+// ++++
+
+[.doc-card]
+.Jamstack icon:laptop[]
+Magnolia brings a great authoring experience to static site creation. Authors can have a live ``WYSIWYG`` visual authoring experience, with instant updates, and developers still enjoy a fully headless workflow with true static site generation.
+[.label]#xref:saas:ROOT:concepts/jamstack.adoc[Learn more]#
+
+[.doc-card]
+.Jamstack icon:laptop[]
+Magnolia brings a great authoring experience to static site creation. Authors can have a live ``WYSIWYG`` visual authoring experience, with instant updates, and developers still enjoy a fully headless workflow with true static site generation.
+[.label]#xref:saas:ROOT:concepts/jamstack.adoc[Learn more]#
+
+[.doc-card]
+.Light development icon:code[]
+Go to xref:saas:ROOT:concepts/light-development.adoc[]
+
+[.doc-card]
+.YAML hyper config icon:file-code-o[]
+Go to xref:saas:ROOT:concepts/yaml-hyper-config.adoc[]
+
+[.doc-card]
+.Content modelling icon:cubes[]
+Go to xref:saas:ROOT:concepts/yaml-hyper-config.adoc[]
+
+[.doc-card]
+.Author templating icon:columns[]
+Go to xref:saas:ROOT:concepts/templating.adoc[]
+
+[.doc-card]
+.Customization icon:cogs[]
+Go to xref:saas:ROOT:concepts/customization.adoc[]
+
+[.doc-card]
+.Customization icon:plug[]
+Go to xref:saas:ROOT:concepts/integration.adoc[]
+
+
+---
+
+
+Card content
+
 == Heading A
 
 [.announce]

@@ -1278,3 +1278,62 @@ pre code a:hover {
   line-height: 1.5;
   padding: 0 0.5rem;
 }
+
+.doc-card {
+  display: inline-block;
+  width: 350px;
+  height: 300px;
+  background-color: var(--color-jet-50);
+  text-align: center;
+  color: whitesmoke !important;
+  transition: transform 0.4s;
+  padding: 10px;
+}
+
+.doc-card:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.doc-card .title {
+  color: var(--color-primary-gold);
+  font-size: 1.8rem;
+  margin-top: 5%;
+}
+
+.doc-card .title i {
+  color: whitesmoke;
+  font-size: 1.8rem;
+}
+
+.doc-card p {
+  color: whitesmoke;
+  font-size: 1rem
+}
+
+.doc-card a {
+  color: whitesmoke;
+  text-decoration: underline;
+}
+
+.doc-card .label {
+  background-color: var(--color-primary-green);
+  padding: 5px;
+  color: whitesmoke;
+  border: none;
+  display: block;
+}
+
+.doc-card .label a {
+  color: whitesmoke;
+}
+
+.doc-card .label a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 1000px) {
+  .doc-card {
+    display: block;
+  }
+}
