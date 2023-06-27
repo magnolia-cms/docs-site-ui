@@ -1312,27 +1312,21 @@ pre code a:hover {
 }
 
 .doc-card a {
-  color: whitesmoke;
-  text-decoration: underline;
-}
-
-.doc-card .label {
   background-color: var(--color-primary-green);
   padding: 5px;
   color: whitesmoke;
   border: none;
   display: block;
+  border-radius: 10px;
+  margin-bottom: 2px;
 }
 
-.doc-card .label a {
-  color: whitesmoke;
+.doc-card a:hover {
+  background-color: var(--color-primary-gold);
+  text-decoration: none !important;
 }
 
-.doc-card .label a:hover {
-  text-decoration: underline;
-}
-
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
   .doc-card {
     display: block;
   }

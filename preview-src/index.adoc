@@ -68,40 +68,42 @@ Author Name
 
 // ++++
 
-[.doc-card]
-.Jamstack icon:laptop[]
-Magnolia brings a great authoring experience to static site creation. Authors can have a live ``WYSIWYG`` visual authoring experience, with instant updates, and developers still enjoy a fully headless workflow with true static site generation.
-[.label]#xref:saas:ROOT:concepts/jamstack.adoc[Learn more]#
+---
 
 [.doc-card]
 .Jamstack icon:laptop[]
-Magnolia brings a great authoring experience to static site creation. Authors can have a live ``WYSIWYG`` visual authoring experience, with instant updates, and developers still enjoy a fully headless workflow with true static site generation.
-[.label]#xref:saas:ROOT:concepts/jamstack.adoc[Learn more]#
+Authors get a live `WYSIWYG` visual editing experience with instant updates, while the developers enjoy a fully headless workflow with true static site generation.
+xref:saas:ROOT:concepts/jamstack.adoc[Learn more]
 
 [.doc-card]
 .Light development icon:code[]
-Go to xref:saas:ROOT:concepts/light-development.adoc[]
+Developers, declare what you want in `YAML` configuration files. There's no need to click around a GUI. Magnolia watches and reacts instantly to your file changes.
+xref:saas:ROOT:concepts/light-development.adoc[Learn more]
 
 [.doc-card]
 .YAML hyper config icon:file-code-o[]
-Go to xref:saas:ROOT:concepts/yaml-hyper-config.adoc[]
+Extra YAML-based features to make your light development experience even more powerful helping you keep your coding best practices.
+xref:saas:ROOT:concepts/yaml-hyper-config.adoc[Learn more]
 
 [.doc-card]
 .Content modelling icon:cubes[]
-Go to xref:saas:ROOT:concepts/yaml-hyper-config.adoc[]
+Create future-proof content models that work across all current channels, creating a shared understanding across your critical project domains.
+xref:saas:ROOT:concepts/content-modelling.adoc[Learn more]
 
 [.doc-card]
 .Author templating icon:columns[]
-Go to xref:saas:ROOT:concepts/templating.adoc[]
+Provision frontend components that authors can dynamically add, edit, and manage the components that are included as well as what content they render.
+xref:saas:ROOT:concepts/templating.adoc[Learn more]
 
 [.doc-card]
 .Customization icon:cogs[]
-Go to xref:saas:ROOT:concepts/customization.adoc[]
+Customize the project to suit your needs. Common customizations are done with Light Development, mostly with `YAML` configuration files. 
+xref:saas:ROOT:concepts/customization.adoc[Learn more]
 
 [.doc-card]
 .Customization icon:plug[]
-Go to xref:saas:ROOT:concepts/integration.adoc[]
-
+SaaS fits into your network diagram. Run your entire digital experience on Magnolia or integrate it with a few of your existing content sources and marketing stack.
+xref:saas:ROOT:concepts/integration.adoc[Learn more]
 
 ---
 
