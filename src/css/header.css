@@ -65,6 +65,24 @@ body {
   background-color: var(--color-primary-dark-green);
 }
 
+.navbar.saas-nav .button {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-jet-70);
+  border-radius: 45px;
+  height: 1.75rem;
+  color: whitesmoke;
+  padding: 1.4rem;
+  white-space: nowrap;
+  /* box-shadow: var(--color-primary-green) 0 2px 4px; */
+  transition: all 0.4s ease-in-out;
+}
+
+.navbar.saas-nav .button:hover {
+  color: var(--color-primary-gold);
+  background-color: var(--color-jet-70);
+}
+
 .navbar.trials-nav {
   background: var(--color-trials);
   color: whitesmoke;
