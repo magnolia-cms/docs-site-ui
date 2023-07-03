@@ -70,6 +70,22 @@ Author Name
 
 ---
 
+[source,json]
+----
+{
+  "stuff": "here",
+  "yo": [true, 12, "late"]
+}
+----
+
+[source,yaml]
+----
+this: that
+turd:
+  me: you
+  twenty: 20
+----
+
 NOTE: This is a note.
 
 TIP: This is a note.

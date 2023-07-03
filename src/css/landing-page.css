@@ -1,13 +1,5 @@
 :root {
   --base-12: 12;
-  --s-yellow: var(--color-primary-yellow);
-  --s-black: #1e1f1c;
-  --s-gray-light: var(--color-gray-medium);
-}
-
-body * {
-  color: var(--s-black);
-  margin: 0;
 }
 
 .body :where(h1, h2, h3, blockquote) {
@@ -147,7 +139,7 @@ h3 {
 }
 
 .section.section--hero {
-  padding: 82px 0 92px 0;
+  padding: 0px 0 65px 0;
 }
 
 .section.section--hero .row {
@@ -289,7 +281,7 @@ h3 {
 }
 
 .section--video__card-content {
-  background-color: var(--s-gray-light);
+  background-color: lightgrey;
   border-radius: 8px;
   padding: 24px;
 }
@@ -427,7 +419,7 @@ h3 {
 }
 
 .card-block.--bg-yellow {
-  background-color: var(--s-yellow);
+  background-color: var(--color-primary-yellow);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -514,14 +506,16 @@ h3 {
 
 .link.--white {
   background-color: white;
+  color: black;
 }
 
 .link.--yellow {
-  background-color: var(--s-yellow);
+  background-color: var(--color-primary-yellow);
+  color: black;
 }
 
 .link.--black {
-  background-color: var(--s-black);
+  background-color: black;
   color: white;
 }
 
