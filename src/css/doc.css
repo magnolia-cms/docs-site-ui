@@ -251,7 +251,7 @@
 
 .doc .admonitionblock code {
   color: var(--color-primary-green);
-}
+}admonition
 
 .doc .admonitionblock p,
 .doc .admonitionblock td.content {
@@ -419,6 +419,7 @@
 
 .doc .admonitionblock .icon i::after {
   content: attr(title);
+  color: white !important;
 }
 
 .doc .imageblock {

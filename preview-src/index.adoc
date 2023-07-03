@@ -70,6 +70,14 @@ Author Name
 
 ---
 
+NOTE: This is a note.
+
+TIP: This is a note.
+
+IMPORTANT: This is a note.
+
+CAUTION: This is a note.
+
 [.doc-card]
 .Jamstack icon:laptop[]
 Authors get a live `WYSIWYG` visual editing experience with instant updates, while the developers enjoy a fully headless workflow with true static site generation.
