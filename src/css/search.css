@@ -40,6 +40,13 @@
   transition: width 0.5s ease;
 }
 
+nav.saas-nav #searchBar.ds-input:focus {
+  width: 29rem;
+  margin-right: 2px;
+  border: 2px solid var(--color-jet-80);
+  background-color: var(--color-smoke-50);
+}
+
 #searchBar.ds-input:focus {
   width: 29rem;
   margin-right: 2px;

@@ -44,7 +44,7 @@
   --body-line-height: 1.15;
   --body-font-color: var(--color-jet-70);
   --body-font-family: "Roboto", sans-serif;
-  --saas-land-font-family: "NationalCompressed", sans-serif;
+  --saas-land-font-family: "NationalCompressed", "Roboto", sans-serif;
   --body-font-weight-bold: 700;
   --monospace-font-family: "Roboto Mono", monospace;
   --monospace-font-weight-bold: 500;
