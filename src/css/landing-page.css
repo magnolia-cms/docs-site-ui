@@ -139,7 +139,10 @@ h3 {
 }
 
 .section.section--hero {
-  padding: 0px 0 65px 0;
+  padding-top: 0;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  padding-bottom: 10vh;
 }
 
 .section.section--hero .row {
