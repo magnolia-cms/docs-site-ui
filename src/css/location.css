@@ -31,7 +31,7 @@
   text-decoration: none;
   font-weight: 500;
   color: whitesmoke;
-  padding-top: 0.8rem;
+  /* padding-top: 0.8rem; */
 }
 
 #location a {
@@ -94,7 +94,7 @@
   text-decoration: none;
   font-weight: 500;
   color: whitesmoke;
-  padding-top: 0.8rem;
+  /* padding-top: 0.8rem; */
 }
 
 #location-paas a {
@@ -157,7 +157,7 @@
   text-decoration: none;
   font-weight: 500;
   color: whitesmoke;
-  padding-top: 0.8rem;
+  /* padding-top: 0.8rem; */
 }
 
 #location-saas a {
@@ -220,7 +220,7 @@
   text-decoration: none;
   font-weight: 500;
   color: whitesmoke;
-  padding-top: 0.8rem;
+  /* padding-top: 0.8rem; */
 }
 
 #location-headless a {
@@ -283,7 +283,7 @@
   text-decoration: none;
   font-weight: 500;
   color: whitesmoke;
-  padding-top: 0.8rem;
+  /* padding-top: 0.8rem; */
 }
 
 #location-trials a {

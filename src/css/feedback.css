@@ -62,7 +62,7 @@
   /* border-radius: 8px; */
   font-family: inherit;
   font-size: 1rem;
-  color: whitesmoke;
+  color: var(--color-jet-80);
   /* border: 1px solid whitesmoke; */
   transition: all 0.275s ease-in-out;
 }
@@ -70,15 +70,20 @@
 #feedback-saas a {
   text-decoration: none;
   font-weight: 300;
-  color: whitesmoke;
+  color: var(--color-jet-80);
 }
 
 #feedback-saas:hover {
-  background-color: var(--color-primary-green);
+  background-color: var(--color-jet-80);
   box-shadow: 3px 5px 7px -3px darkslategrey;
   border: transparent;
   transform: rotate(-90deg) translateY(-0.2rem);
   font-weight: bolder;
+  color: whitesmoke;
+}
+
+#feedback-saas:hover a {
+  color: var(--color-primary-yellow);
 }
 
 /* PaaS feedback label */
