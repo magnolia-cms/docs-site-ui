@@ -1,0 +1,110 @@
+:location: 
+= Commenting
+Author Name
+:idprefix:
+:idseparator: -
+:!example-caption:
+:!table-caption:
+:page-pagination:
+:page-layout: headless
+
+== Heading A
+
+[.announce]
+.Upcoming changes!
+To further improve upon our WAF feature, we're happy to announce the **_NextGen_ WAF** will be released into production icon:calendar-check-o[] mid-April 2023. Check back here and in the xref:paas:ROOT:changelog.adoc[{solution} Changelog] for updates.
+
+---
+
+[.celebrate]
+.Celebrate
+Good times. C'mon!
+
+[.thanks]
+.Thanks a mill!
+Thanks to blah blah.
+
+[source,yaml,subs="normal,attributes"]
+----
+<<withChildCount>>: true
+bolognaGood: false
+----
+
+[.celebrate]
+.Heading
+text xref:404.adoc[xref] gap link:https://www.google.com[link^].
+
+:rn-date: 2022-11-08
+:rn-updated-text: This page was updated post-release to ensure all development was captured.
+// the above is in the playbook
+
+ifeval::["{localdate}" > "{rn-date}"]
+[.rn-label.updated]#Updated#
+[.updated-text]#{rn-updated-text}#
+endif::[]
+
+{localdate}
+{rn-date}
+
+text
+
+testing push only
+
+== xref link
+
+[[withChildCount,withChildCount]] withChildCount
+
+=== Subheading
+
+text
+
+++++
+<div class="beforeAfter">
+  <img src="raccoon.png" />
+  <img src="sketch-arrows.png" />
+</div>
+++++
+
+[.cards.cards-4.personas.conceal-title]
+== {empty}
+
+[.blue-bg]#blah#
+
+[.green-bg]#blah#
+
+[.yellow-bg]#blah#
+
+[.collapse]
+collapse me 
+
+[.collapse-content]
+now you see me
+
+.Sidebar
+****
+Sidebar content
+
+Goes here
+****
+
+[.scenario]
+.Scenario
+We received the UX from our design team, but they still haven't decided on the details yet. However the content from our travel packages is already defined and we do not want to hold our marketers back from writing their content.
+
+[.celebrate]
+.Congratulations
+Ceeeeeellllebrate good times. Come on!!!! icon:cake[]
+
+
+[NOTE.best]
+====
+testing testing
+====
+
+// note, you can only use it while using the block call for admonition blocks - inline won't work (ex: NOTE:)
+[NOTE.alt,caption=Whatever you need to talk about]
+====
+stuff goes here
+====
+
+image::raccoon.png[role="zoom"]
