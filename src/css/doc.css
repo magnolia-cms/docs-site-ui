@@ -1332,3 +1332,25 @@ pre code a:hover {
     display: block;
   }
 }
+
+.keyboard-key {
+  display: inline-block;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: monospace;
+  transition: transform 0.1s, box-shadow 0.1s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.keyboard-key:hover {
+  transform: translateY(2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.keyboard-key span {
+  font-size: 16px;
+  color: #555;
+}
