@@ -42,7 +42,7 @@ Author Name
 // ++++
 
 [.keyboard-key]
-Sign up
+link:www.google.com[sign up^]
 
 ---
 

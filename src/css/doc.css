@@ -1354,3 +1354,11 @@ pre code a:hover {
   font-size: 16px;
   color: #555;
 }
+
+.keyboard-key a {
+  text-decoration: none;
+}
+
+.keyboard-key a:hover {
+  color: black;
+}
