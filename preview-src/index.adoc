@@ -41,6 +41,11 @@ Author Name
 
 // ++++
 
+[quote,Ilgun]
+____
+We know how to party, what can I say?
+____
+
 [.keyboard-key]
 link:www.google.com[sign up^]
 

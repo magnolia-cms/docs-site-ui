@@ -491,6 +491,7 @@
 
 .doc .quoteblock .paragraph {
   font-style: italic;
+  font-size: 1.65rem !important;
 }
 
 .doc .quoteblock cite {
