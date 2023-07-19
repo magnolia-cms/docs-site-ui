@@ -10,6 +10,12 @@
   top: 52%;
   transform: translateY(-50%);
   color: var(--color-gray-30);
+  transition: opacity 0.2s ease-in-out;
+  opacity: 0.5;
+}
+
+.search-input-wrapper.focused .search-input-wrapper__icon {
+  opacity: 0.25;
 }
 
 ::-webkit-input-placeholder { /* Edge */
@@ -90,7 +96,7 @@ nav.saas-nav #searchBar.ds-input:focus {
 
 #keyboardShortcut,
 #keyboardShortcutMac {
-  display: none;
+  display: inline-block;
 }
 
 @media screen and (max-width: 1200px) {

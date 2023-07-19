@@ -1,44 +1,60 @@
-{{!-- <form>
-    <input type="text" placeholder="Search.." name="search" id="#searchBar">
-    <button type="submit"><i class="fa fa-search"></i></button>
-</form> --}}
+<style>
+  .search-input-wrapper__icon {
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .search-input-wrapper.focused .search-input-wrapper__icon {
+    opacity: 0.25;
+  }
+</style>
+
 <div class="search-input-wrapper">
-  <input type="search" placeholder="" name="search" id="searchBar" accesskey="k">
+  <input type="search" placeholder="" name="search" id="searchBar">
   <span class="search-input-wrapper__icon">
-     {{!-- <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M11.5674 3.36217C13.8338 5.63019 13.8338 9.30738 11.5674 11.5754C9.30093 13.8434 5.62629 13.8434 3.35984 11.5754C1.09339 9.30738 1.09339 5.63019 3.35984 3.36217C5.62629 1.09415 9.30093 1.09415 11.5674 3.36217ZM13.4909 11.8755C15.6297 8.95372 15.3798 4.82804 12.7412 2.18756C9.82645 -0.729186 5.10076 -0.729186 2.18604 2.18756C-0.72868 5.1043 -0.72868 9.83327 2.18604 12.75C4.8246 15.3904 8.94724 15.6406 11.867 13.5005L14.3648 16L15.9887 14.375L13.4909 11.8755Z" fill="#A8A8A8"/>
-     </svg> --}}
-        <p id="keyboardShortcut"><i class="fa fa-search" aria-hidden="true"></i> <kbd>alt</kbd><kbd>k</kbd></p>
-        <p id="keyboardShortcutMac"><i class="fa fa-search" aria-hidden="true"></i> <kbd>ctrl</kbd> <kbd>opt</kbd> <kbd>k</kbd></p>
+    <p><i class="fa fa-search" aria-hidden="true"></i> <kbd>/</kbd></p>
   </span>
 </div>
-{{!-- &#x1F50E --}}
 
 <script>
-    var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-    var searchInputWrapper = document.querySelector('.search-input-wrapper__icon');
-    var keyboardShortcutElement = document.getElementById('keyboardShortcut');
-    var keyboardShortcutMacElement = document.getElementById('keyboardShortcutMac');
+  document.addEventListener('DOMContentLoaded', function() {
+    var searchWrapper = document.querySelector('.search-input-wrapper');
+    var searchInput = document.getElementById('searchBar');
+    var searchIcon = document.querySelector('.search-input-wrapper__icon');
 
-    if (isMac) {
-      keyboardShortcutElement.style.display = 'none';
-      keyboardShortcutMacElement.style.display = 'block';
-    } else {
-      keyboardShortcutElement.style.display = 'block';
-      keyboardShortcutMacElement.style.display = 'none';
+    function focusSearchBar() {
+      searchWrapper.classList.add('focused');
+      searchInput.focus();
     }
 
-    searchInputWrapper.addEventListener('click', function() {
+    function unfocusSearchBar() {
+      searchWrapper.classList.remove('focused');
+      searchInput.blur();
+    }
+
+    searchIcon.addEventListener('click', function() {
       searchBar.focus();
     });
-  
-    searchBar.addEventListener('focus', function() {
-      keyboardShortcutElement.style.opacity = '0.2';
-      keyboardShortcutMacElement.style.opacity = '0.2';
+
+    searchInput.addEventListener('focus', function() {
+      focusSearchBar();
     });
 
-    searchBar.addEventListener('blur', function() {
-      keyboardShortcutElement.style.opacity = '1';
-      keyboardShortcutMacElement.style.opacity = '1';
+    searchInput.addEventListener('blur', function() {
+      unfocusSearchBar();
     });
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === '/') {
+        event.preventDefault(); // Prevent the default '/' behavior (e.g., page search)
+        if (searchWrapper.classList.contains('focused')) {
+          unfocusSearchBar();
+        } else {
+          focusSearchBar();
+        }
+      } else if (event.key === 'Escape') {
+        unfocusSearchBar();
+      }
+    });
+  });
 </script>
