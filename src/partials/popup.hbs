@@ -1,0 +1,56 @@
+<style>
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  z-index: 100;
+  display: none;
+}
+
+.popup .icon {
+  float: left;
+  margin-right: 10px;
+  display: block;
+}
+
+.popup .text {
+  margin-top: 10px;
+}
+
+.popup .close {
+  float: right;
+  cursor: pointer;
+}
+</style>
+
+
+<div id="popup" class="popup">
+  <div class="text"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Due to some Nexus issues, Javadoc links and some war files aren't accessible.</div>
+  <div class="text">Please bear with us while we address these issues. <i class="fa fa-hand-peace-o" aria-hidden="true"></i></div>
+  <button class="close">x</button>
+</div>
+
+<script>
+    window.onload = function() {
+  // Check if the user has visited the page before
+  var hasVisitedBefore = localStorage.getItem("hasVisitedBefore");
+
+  if (!hasVisitedBefore) {
+    // If it's the first visit, show the popup
+    document.getElementById("popup").style.display = "block";
+
+    // Set the flag in localStorage to indicate that the user has visited before
+    localStorage.setItem("hasVisitedBefore", true);
+  }
+};
+
+document.getElementById("popup").querySelector(".close").onclick = function() {
+  // Hide the popup when the close button is clicked
+  document.getElementById("popup").style.display = "none";
+};
+</script>
