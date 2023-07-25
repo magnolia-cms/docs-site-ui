@@ -1366,7 +1366,7 @@ pre code a:hover {
 
 .banner {
   width: 100%;
-  background-color: var(--color-green-darker); /* Choose your desired background color */
+  background-color: var(--color-primary-dark-green); /* Choose your desired background color */
   color: whitesmoke; /* Choose your desired text color */
   text-align: center;
   padding-top: 20px;
@@ -1387,14 +1387,13 @@ pre code a:hover {
   margin: 5px 0;
 }
 
-.banner-link {
-  display: inline-block;
-  background-color: whitesmoke; /* Choose your desired button color */
-  color: var(--color-green-darker); /* Choose your desired button text color */
-  padding: 8px 20px;
-  text-decoration: none;
-  border-radius: 5px;
-  margin-top: 10px;
+.banner a {
+  color: whitesmoke !important;
+  text-decoration: underline;
+}
+
+.banner a:hover {
+  font-weight: bolder;
 }
 
 /* Media query for mobile devices */
@@ -1404,10 +1403,6 @@ pre code a:hover {
   }
 
   .banner p {
-    font-size: 14px;
-  }
-
-  .banner-link {
     font-size: 14px;
   }
 }
