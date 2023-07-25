@@ -5,6 +5,9 @@
   </head>
   <body class="article{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
 {{> header}}
+{{#if (eq page.component.name 'cloud')}}
+{{> banner}}
+{{/if}}
 {{> body}}
 {{> footer}}
 {{> feedback}}

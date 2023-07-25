@@ -1363,3 +1363,51 @@ pre code a:hover {
 .keyboard-key a:hover {
   color: black;
 }
+
+.banner {
+  width: 100%;
+  background-color: var(--color-green-darker); /* Choose your desired background color */
+  color: whitesmoke; /* Choose your desired text color */
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+.banner-content {
+  padding: 10px;
+}
+
+.banner h2 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.banner p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.banner-link {
+  display: inline-block;
+  background-color: whitesmoke; /* Choose your desired button color */
+  color: var(--color-green-darker); /* Choose your desired button text color */
+  padding: 8px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  .banner h2 {
+    font-size: 20px;
+  }
+
+  .banner p {
+    font-size: 14px;
+  }
+
+  .banner-link {
+    font-size: 14px;
+  }
+}
