@@ -1090,6 +1090,16 @@ pre code a:hover {
   margin-bottom: 1rem;
 }
 
+.doc .collapse p::after {
+  content: '+';
+  margin-left: 10px;
+}
+
+.doc .collapse.active p::after {
+  content: '-';
+  margin-left: 10px;
+}
+
 .doc .collapse:hover {
   background-color: var(--color-primary-light-green);
 }

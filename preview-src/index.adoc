@@ -41,6 +41,12 @@ Author Name
 
 // ++++
 
+[.collapse]
+Text
+
+[.collapse-content]
+Hello there!
+
 [quote,Ilgun]
 ____
 We know how to party, what can I say?
