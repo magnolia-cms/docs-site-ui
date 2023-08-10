@@ -1416,3 +1416,29 @@ pre code a:hover {
     font-size: 14px;
   }
 }
+
+#countdown {
+  color: var(--color-primary-green);
+  font-family: Roboto-mono, monospace;
+  font-size: 1.5rem;
+  background-color: inherit;
+  padding: 10px;
+  outline: none !important;
+  font-weight: bold;
+  display: none;
+}
+
+#countdown::before {
+  content: 'Countdown: ';
+}
+
+#targetDate {
+  color: var(--color-primary-green);
+  font-family: Roboto-mono, monospace;
+  font-size: 1.5rem;
+  background-color: inherit;
+  padding: 10px;
+  outline: none !important;
+  font-weight: bold;
+  display: none;
+}
