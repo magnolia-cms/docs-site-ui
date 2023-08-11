@@ -1,8 +1,5 @@
-{{!-- <h1>Next Magnolia Release</h1>
-<div id="countdown" class="countdown"></div> --}}
-
 <script>
-    // Set the target date and time for the countdown
+    // *** CHANGE WHEN RELEASE DATE IS KNOWN *** Set the target date and time for the countdown 
     const targetDate = new Date("2023-08-24T18:00:00").getTime();
 
     // Update the countdown every second
@@ -19,10 +16,20 @@
             const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-            document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            const countdownElement = document.getElementById("countdown");
+            countdownElement.innerHTML = `
+                <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                <span class="countdown-number">${days}d</span>
+                <span class="countdown-number">${hours}h</span>
+                <span class="countdown-number">${minutes}m</span>
+                <span class="countdown-number">${seconds}s</span>
+            `;
 
             const targetDateFormatted = new Date(targetDate).toLocaleDateString();
-            document.getElementById("targetDate").innerHTML = `Target Date: ${targetDateFormatted}`;
+            document.getElementById("targetDate").innerHTML = `
+                <span><i class="fa fa-bullseye" aria-hidden="true"></i></span>
+                ${targetDateFormatted}
+            `;
 
             document.getElementById("countdown").style.display = "block";
             document.getElementById("targetDate").style.display = "block";

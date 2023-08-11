@@ -1420,25 +1420,32 @@ pre code a:hover {
 #countdown {
   color: var(--color-primary-green);
   font-family: Roboto-mono, monospace;
-  font-size: 1.5rem;
+  font-size: 1rem;
   background-color: inherit;
   padding: 10px;
   outline: none !important;
   font-weight: bold;
   display: none;
+  margin-top: -0.75rem;
 }
 
 #countdown::before {
   content: 'Countdown: ';
+  color: var(--color-jet-50);
 }
 
 #targetDate {
   color: var(--color-primary-green);
   font-family: Roboto-mono, monospace;
-  font-size: 1.5rem;
+  font-size: 1rem;
   background-color: inherit;
   padding: 10px;
   outline: none !important;
   font-weight: bold;
   display: none;
+}
+
+#targetDate::before {
+  content: 'Target Date: ';
+  color: var(--color-jet-50);
 }
