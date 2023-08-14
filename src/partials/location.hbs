@@ -28,6 +28,18 @@
 </div>
 {{/if}}
 
+{{#if (eq page.layout 'incubate')}}
+<div id="location-incubate">
+        <p title="Location on docs site. Click for more info."><i class="fa fa-map-marker" aria-hidden="true"></i> Incubators</p>
+</div>
+{{/if}}
+
+{{#if (eq page.layout 'cloud')}}
+<div id="location-cloud">
+        <p title="Location on docs site. Click for more info."><i class="fa fa-map-marker" aria-hidden="true"></i> Legacy Cloud</p>
+</div>
+{{/if}}
+
 {{!-- *** START MODAL STUFF *** --}}
 
 <!-- The Modal -->
@@ -80,6 +92,50 @@ window.onclick = function(event) {
 <script>
 const modal = document.getElementById("myModal");
 const btn = document.getElementById("location-paas");
+const span = document.getElementsByClassName("location-modal-close")[0];
+
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+{{/if}}
+
+{{#if (eq page.layout 'incubate')}}
+<script>
+const modal = document.getElementById("myModal");
+const btn = document.getElementById("location-incubate");
+const span = document.getElementsByClassName("location-modal-close")[0];
+
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+{{/if}}
+
+{{#if (eq page.layout 'cloud')}}
+<script>
+const modal = document.getElementById("myModal");
+const btn = document.getElementById("location-cloud");
 const span = document.getElementsByClassName("location-modal-close")[0];
 
 btn.onclick = function() {
