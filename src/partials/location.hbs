@@ -28,18 +28,33 @@
 </div>
 {{/if}}
 
+{{!-- *** START MODAL STUFF *** --}}
+
 <!-- The Modal -->
 <div id="myModal" class="location-modal">
 
   <!-- Modal content -->
   <div class="location-modal-content">
     <span class="location-modal-close">&times;</span>
-    <h2>Modal heading</h2>
-    <p>Some text in the Modal..</p>
+    <h2>Location <i class="fa fa-map-marker" aria-hidden="true"></i></h2>
+    <p>This wee widget just lets you know <strong>where</strong> you are on the docs site.</p>
+    <p>You are currently perusing through the <span class="currentLocation">{{page.component.title}}</span> docs.</p>
+    <h3>All doc sections:</h3>
+    <a href="{{{siteRootPath}}}/welcome/index.html" class="linkLabel dxCore">DX Core</a>
+    <a href="{{{siteRootPath}}}/headless/index.html" class="linkLabel headless">Headless</a>
+{{#if (eq page.layout 'saas')}}
+    <a href="{{{siteRootPath}}}/saas/index.html" class="linkLabel saas">SaaS</a>
+{{/if}}
+    <a href="{{{siteRootPath}}}/paas/index.html" class="linkLabel paas">PaaS</a>
+    <a href="{{{siteRootPath}}}/cloud/index.html" class="linkLabel legacyCloud">Legacy Cloud</a>
+    <a href="{{{siteRootPath}}}/incubator-modules/index.html" class="linkLabel incubators">Incubator modules</a>
   </div>
 
 </div>
 
+{{!-- *** END MODAL STUFF *** --}}
+
+{{#if (eq page.layout 'default')}}
 <script>
 const modal = document.getElementById("myModal");
 const btn = document.getElementById("location");
@@ -59,3 +74,70 @@ window.onclick = function(event) {
   }
 }
 </script>
+{{/if}}
+
+{{#if (eq page.layout 'paas')}}
+<script>
+const modal = document.getElementById("myModal");
+const btn = document.getElementById("location-paas");
+const span = document.getElementsByClassName("location-modal-close")[0];
+
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+{{/if}}
+
+{{#if (eq page.layout 'headless')}}
+<script>
+const modal = document.getElementById("myModal");
+const btn = document.getElementById("location-headless");
+const span = document.getElementsByClassName("location-modal-close")[0];
+
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+{{/if}}
+
+{{#if (eq page.layout 'saas')}}
+<script>
+const modal = document.getElementById("myModal");
+const btn = document.getElementById("location-saas");
+const span = document.getElementsByClassName("location-modal-close")[0];
+
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+{{/if}}
