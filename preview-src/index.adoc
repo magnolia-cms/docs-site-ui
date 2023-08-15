@@ -6,7 +6,7 @@ Author Name
 :!example-caption:
 :!table-caption:
 :page-pagination:
-:page-layout: incubate
+:page-layout: default
 
 
 // ++++
