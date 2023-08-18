@@ -1449,3 +1449,10 @@ pre code a:hover {
   content: 'Target Date: ';
   color: var(--color-jet-50);
 }
+
+button.clipboard i {
+  color: var(--color-primary-green);
+  font-weight: bold;
+  font-size: larger;
+  transition: 0.3s ease-in-out;
+}
