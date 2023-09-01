@@ -1458,6 +1458,6 @@ button.clipboard i {
 }
 
 .inlineBean {
-  color: var(--color-primary-dark-green);
+  color: var(--color-green-darker);
   font-family: monospace;
 }
