@@ -1457,7 +1457,8 @@ button.clipboard i {
   transition: 0.3s ease-in-out;
 }
 
-#inlineBean {
-  color: var(--color-green-darker);
-  font-family: monospace;
+.inlineBean {
+  color: var(--color-green-darker) !important;
+  font-family: monospace !important;
+  font-weight: bold;
 }

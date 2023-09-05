@@ -54,6 +54,10 @@ ifeval::["(localdate)" < "{nextReleaseDate}"]
 
 endif::[]
 
+[#inlineBean]#test.info.blah#
+
+[.inlineBean]#test.info.blah#
+
 // [.collapse]
 // Text
 
