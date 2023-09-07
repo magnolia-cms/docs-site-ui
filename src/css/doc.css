@@ -1458,7 +1458,6 @@ button.clipboard i {
 }
 
 .inlineBean {
-  color: var(--color-green-darker) !important;
+  color: black !important;
   font-family: monospace !important;
-  font-weight: bold;
 }
