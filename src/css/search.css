@@ -34,7 +34,6 @@
   border: none;
   background-color: var(--color-smoke-70);
   height: 44px;
-  min-width: 17rem;
   width: 18rem;
   border-radius: 45px;
   font-family: var(--body-font-family);
@@ -44,6 +43,12 @@
   padding: 0 1rem;
   padding-left: 3rem;
   transition: width 0.5s ease;
+}
+
+@media screen and (max-width: 615px) {
+  #searchBar.ds-input {
+    width: 14rem;
+  }
 }
 
 nav.saas-nav #searchBar.ds-input:focus {
@@ -65,6 +70,20 @@ nav.saas-nav #searchBar.ds-input:focus {
     width: 22.35rem;
     margin-right: 2px;
     border: 2px solid var(--color-primary-green);
+    background-color: var(--color-smoke-50);
+  }
+}
+
+@media screen and (max-width: 615px) {
+  #searchBar.ds-input:focus {
+    width: 14rem;
+    border: 2px solid var(--color-primary-green);
+    background-color: var(--color-smoke-50);
+  }
+
+  nav.saas-nav #searchBar.ds-input:focus {
+    width: 14rem;
+    border: 2px solid var(--color-jet-80);
     background-color: var(--color-smoke-50);
   }
 }
