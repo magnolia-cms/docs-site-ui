@@ -154,6 +154,10 @@ nav.saas-nav #searchBar.ds-input:focus {
     display: none;
   }
 
+  .search-input-wrapper__icon {
+    display: none;
+  }
+
   .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
     overflow: scroll !important;
     width: 90vw;
