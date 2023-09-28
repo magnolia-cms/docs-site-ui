@@ -144,6 +144,27 @@ nav.saas-nav #searchBar.ds-input:focus {
   }
 }
 
+@media screen and (max-width: 600px) {
+  #searchBar,
+  span.algolia-autocomplete {
+    width: 100%;
+  }
+
+  .navbar-brand svg {
+    display: none;
+  }
+
+  .search-input-wrapper__icon {
+    display: none;
+  }
+
+  .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
+    overflow: scroll !important;
+    width: 90vw;
+    margin-left: -10vw;
+  }
+}
+
 @media screen and (min-width: 1200px) {
   #searchBar:disabled {
     background: var(--color-gray-10);
