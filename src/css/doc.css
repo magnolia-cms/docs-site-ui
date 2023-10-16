@@ -1253,7 +1253,7 @@ pre code a:hover {
   background-color: var(--color-primary-gold);
 }
 
-.doc .updated-text {
+.doc .rn-crumbs {
   font-size: smaller;
   font-style: italic;
 }
