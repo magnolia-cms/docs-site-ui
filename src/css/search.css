@@ -111,6 +111,15 @@ nav.saas-nav #searchBar.ds-input:focus {
 .search-input-wrapper span.algolia-autocomplete {
   display: flex !important;
   align-items: center;
+  border: none !important;
+  background: none !important;
+}
+
+#searchBar,
+span.algolia-autocomplete {
+  width: 100%;
+  border: none !important;
+  background: none !important;
 }
 
 #keyboardShortcut,
@@ -122,6 +131,8 @@ nav.saas-nav #searchBar.ds-input:focus {
   #searchBar,
   span.algolia-autocomplete {
     width: 100%;
+    border: none !important;
+    background: none !important;
   }
 
   .search-input-wrapper {
