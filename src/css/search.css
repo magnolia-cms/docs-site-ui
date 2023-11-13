@@ -109,6 +109,7 @@ button.DocSearch.DocSearch-Button:focus {
     border: 2px solid var(--color-jet-80);
     background-color: var(--color-smoke-50);
   }
+
   .DocSearch-Button .DocSearch-Search-Icon {
     width: 5vw !important;
   }
