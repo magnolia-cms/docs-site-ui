@@ -263,7 +263,7 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
 
 .DocSearch-Container {
   background-color: rgba(47, 79, 79, 0.397);
-  z-index: 420 !important
+  z-index: 420 !important;
 }
 
 .DocSearch-Modal {
