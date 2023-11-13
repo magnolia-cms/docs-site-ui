@@ -239,10 +239,6 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
   background-color: var(--color-primary-green) !important;
  }
 
-.DocSearch-Dropdown li.DocSearch-Hit#docsearch-item-0 a {
-  background-color: var(--color-primary-green) !important;
-}
-
 .DocSearch-Dropdown li.DocSearch-Hit a:hover {
   background-color: var(--color-primary-green) !important;
   opacity: 0.8;
@@ -253,11 +249,29 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
   opacity: 0.8;
 }
 
+.DocSearch-Logo {
+  visibility: hidden;
+}
+
 .DocSearch-Hits .DocSearch-Hit-source {
   color: var(--color-primary-green) !important;
 }
 
 .DocSearch-Hits mark {
   color: var(--color-primary-yellow) !important;
+}
+
+.DocSearch-Container {
+  background-color: rgba(47, 79, 79, 0.397);
+}
+
+.DocSearch-Modal {
+  width: 100vw !important;
+}
+
+@media screen and (min-width: 768px) {
+  .DocSearch-Modal {
+    max-width: 55vw !important;
+  }
 }
 /* } */
