@@ -69,6 +69,19 @@ nav.saas-nav #searchBar.ds-input:focus {
   padding: 1.25rem !important;
 }
 
+button.DocSearch.DocSearch-Button {
+  background: whitesmoke !important;
+  outline: none !important;
+}
+
+button.DocSearch.DocSearch-Button:hover,
+button.DocSearch.DocSearch-Button:active,
+button.DocSearch.DocSearch-Button:focus {
+  box-shadow: 1px -1px 8px -1px var(--color-primary-green) !important;
+  background: whitesmoke !important;
+  outline: none !important;
+}
+
 @media screen and (max-width: 1220px) {
   #searchBar.ds-input:focus {
     width: 22.35rem;
