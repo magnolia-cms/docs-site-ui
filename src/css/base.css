@@ -213,4 +213,66 @@ button::-moz-focus-inner {
     width: 70vw !important;
   }
 }
+
+form.DocSearch-Form {
+  box-shadow: 1px 1px 6px -1px var(--color-primary-green) !important;
+  margin-bottom: 5px !important;
+}
+
+form.DocSearch-Form svg {
+  color: var(--color-primary-green) !important;
+}
+
+.DocSearch-Modal button.DocSearch-Cancel {
+  color: var(--color-primary-green) !important;
+}
+
+footer.DocSearch-Footer svg {
+  color: var(--color-primary-green) !important;
+}
+
+footer.DocSearch-Footer div.DocSearch-Logo a {
+  color: var(--color-primary-green) !important;
+}
+
+.DocSearch-Hit[aria-selected="true"] a {
+  background-color: var(--color-primary-green) !important;
+}
+
+.DocSearch-Dropdown li.DocSearch-Hit a:hover {
+  background-color: var(--color-primary-green) !important;
+  opacity: 0.8;
+}
+
+.DocSearch-Dropdown li.DocSearch-Hit a:focus {
+  background-color: var(--color-primary-green) !important;
+  opacity: 0.8;
+}
+
+.DocSearch-Logo {
+  visibility: hidden;
+}
+
+.DocSearch-Hits .DocSearch-Hit-source {
+  color: var(--color-primary-green) !important;
+}
+
+.DocSearch-Hits mark {
+  color: var(--color-primary-yellow) !important;
+}
+
+.DocSearch-Container {
+  background-color: rgba(47, 79, 79, 0.397);
+  z-index: 420 !important;
+}
+
+.DocSearch-Modal {
+  width: 100vw !important;
+}
+
+@media screen and (min-width: 768px) {
+  .DocSearch-Modal {
+    max-width: 55vw !important;
+  }
+}
 /* } */

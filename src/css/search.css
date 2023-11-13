@@ -65,6 +65,29 @@ nav.saas-nav #searchBar.ds-input:focus {
   background-color: var(--color-smoke-50);
 }
 
+.DocSearch-Button {
+  padding: 1.25rem !important;
+}
+
+button.DocSearch.DocSearch-Button {
+  background: whitesmoke !important;
+  outline: none !important;
+  transition: 0.3s ease;
+}
+
+button.DocSearch.DocSearch-Button:hover,
+button.DocSearch.DocSearch-Button:active,
+button.DocSearch.DocSearch-Button:focus {
+  box-shadow: 1px 1px 5px -1px var(--color-primary-green) !important;
+  background: whitesmoke !important;
+  outline: none !important;
+}
+
+.DocSearch-Button .DocSearch-Search-Icon {
+  width: 3vw;
+  display: block !important;
+}
+
 @media screen and (max-width: 1220px) {
   #searchBar.ds-input:focus {
     width: 22.35rem;
@@ -85,6 +108,10 @@ nav.saas-nav #searchBar.ds-input:focus {
     width: 14rem;
     border: 2px solid var(--color-jet-80);
     background-color: var(--color-smoke-50);
+  }
+
+  .DocSearch-Button .DocSearch-Search-Icon {
+    width: 5vw !important;
   }
 }
 
@@ -111,6 +138,15 @@ nav.saas-nav #searchBar.ds-input:focus {
 .search-input-wrapper span.algolia-autocomplete {
   display: flex !important;
   align-items: center;
+  border: none !important;
+  background: none !important;
+}
+
+#searchBar,
+span.algolia-autocomplete {
+  width: 100%;
+  border: none !important;
+  background: none !important;
 }
 
 #keyboardShortcut,
@@ -122,6 +158,8 @@ nav.saas-nav #searchBar.ds-input:focus {
   #searchBar,
   span.algolia-autocomplete {
     width: 100%;
+    border: none !important;
+    background: none !important;
   }
 
   .search-input-wrapper {
@@ -148,10 +186,6 @@ nav.saas-nav #searchBar.ds-input:focus {
   #searchBar,
   span.algolia-autocomplete {
     width: 100%;
-  }
-
-  .navbar-brand svg {
-    display: none;
   }
 
   .search-input-wrapper__icon {

@@ -6,7 +6,8 @@
 
 {{> initBeforeAfter}}
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+{{!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 
 {{#if (eq page.layout 'headless')}}
 <script type="text/javascript">
@@ -14,9 +15,9 @@
         appId: 'IIQKXJ786V',
         apiKey: '450fd6db7d4e2f26607012f0d8683a29',
         indexName: 'headless',
-        inputSelector: '#searchBar',
-        algoliaOptions: { hitsPerPage: 12 },
-        // debug: true // prevent it from closing on inspection.
+        container: '#searchBar',
+        searchParameters: { hitsPerPage: 12 },
+        debug: true // prevent it from closing on inspection.
     });
 
     function toggleDropDown () {
@@ -45,9 +46,9 @@
         appId: 'IIQKXJ786V',
         apiKey: '450fd6db7d4e2f26607012f0d8683a29',
         indexName: 'saas',
-        inputSelector: '#searchBar',
-        algoliaOptions: { hitsPerPage: 12 },
-        // debug: true // prevent it from closing on inspection.
+        container: '#searchBar',
+        searchParameters: { hitsPerPage: 12 },
+        debug: true // prevent it from closing on inspection.
     });
 
     function toggleDropDown () {
@@ -76,9 +77,9 @@
         appId: 'IIQKXJ786V',
         apiKey: '450fd6db7d4e2f26607012f0d8683a29',
         indexName: 'saas',
-        inputSelector: '#searchBar',
-        algoliaOptions: { hitsPerPage: 12 },
-        // debug: true // prevent it from closing on inspection.
+        container: '#searchBar',
+        searchParameters: { hitsPerPage: 12 },
+        debug: true // prevent it from closing on inspection.
     });
 
     function toggleDropDown () {
@@ -107,9 +108,9 @@
         appId: 'IIQKXJ786V',
         apiKey: '450fd6db7d4e2f26607012f0d8683a29',
         indexName: 'saas',
-        inputSelector: '#searchBar',
-        algoliaOptions: { hitsPerPage: 12 },
-        // debug: true // prevent it from closing on inspection.
+        container: '#searchBar',
+        searchParameters: { hitsPerPage: 12 },
+        debug: true // prevent it from closing on inspection.
     });
 
     function toggleDropDown () {
@@ -138,8 +139,8 @@
         appId: 'IIQKXJ786V',
         apiKey: '450fd6db7d4e2f26607012f0d8683a29',
         indexName: 'dev_DOCS',
-        inputSelector: '#searchBar',
-        algoliaOptions: { hitsPerPage: 12 },
+        container: '#searchBar',
+        searchParameters: { hitsPerPage: 12 },
         debug: true // prevent it from closing on inspection.
     });
 
@@ -169,8 +170,8 @@
         appId: 'IIQKXJ786V',
         apiKey: '450fd6db7d4e2f26607012f0d8683a29',
         indexName: 'dev_DOCS',
-        inputSelector: '#searchBar',
-        algoliaOptions: { hitsPerPage: 12 },
+        container: '#searchBar',
+        searchParameters: { hitsPerPage: 12 },
         debug: true // prevent it from closing on inspection.
     });
 
@@ -200,8 +201,8 @@
         appId: 'IIQKXJ786V',
         apiKey: '450fd6db7d4e2f26607012f0d8683a29',
         indexName: 'dev_DOCS',
-        inputSelector: '#searchBar',
-        algoliaOptions: { hitsPerPage: 12 },
+        container: '#searchBar',
+        searchParameters: { hitsPerPage: 12 },
         debug: true // prevent it from closing on inspection.
     });
 
@@ -231,9 +232,9 @@
         appId: 'IIQKXJ786V',
         apiKey: '450fd6db7d4e2f26607012f0d8683a29',
         indexName: 'dev_DOCS',
-        inputSelector: '#searchBar',
-        algoliaOptions: { hitsPerPage: 12 },
-        // debug: true // prevent it from closing on inspection.
+        container: '#searchBar',
+        searchParameters: { hitsPerPage: 12 },
+        debug: true // prevent it from closing on inspection.
     });
 
     function toggleDropDown () {
@@ -262,9 +263,9 @@
         appId: 'IIQKXJ786V',
         apiKey: '450fd6db7d4e2f26607012f0d8683a29',
         indexName: 'landing_page',
-        inputSelector: '#searchBar',
-        algoliaOptions: { hitsPerPage: 12 },
-        // debug: true // prevent it from closing on inspection.
+        container: '#searchBar',
+        searchParameters: { hitsPerPage: 12 },
+        debug: true // prevent it from closing on inspection.
     });
 
     function toggleDropDown () {
