@@ -445,13 +445,13 @@ span.icon-wrapper {
   -webkit-transform: rotate(45deg);
 }
 
-@media (min-width: 600px) {
+@media (min-width: 401px) {
   nav svg {
     display: block;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 400px) {
   nav svg {
     display: none;
   }

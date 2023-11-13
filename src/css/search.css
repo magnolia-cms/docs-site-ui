@@ -83,6 +83,11 @@ button.DocSearch.DocSearch-Button:focus {
   outline: none !important;
 }
 
+.DocSearch-Button .DocSearch-Search-Icon {
+  width: 3vw;
+  display: block !important;
+}
+
 @media screen and (max-width: 1220px) {
   #searchBar.ds-input:focus {
     width: 22.35rem;
@@ -103,6 +108,9 @@ button.DocSearch.DocSearch-Button:focus {
     width: 14rem;
     border: 2px solid var(--color-jet-80);
     background-color: var(--color-smoke-50);
+  }
+  .DocSearch-Button .DocSearch-Search-Icon {
+    width: 5vw !important;
   }
 }
 
@@ -177,10 +185,6 @@ span.algolia-autocomplete {
   #searchBar,
   span.algolia-autocomplete {
     width: 100%;
-  }
-
-  .navbar-brand svg {
-    display: none;
   }
 
   .search-input-wrapper__icon {
