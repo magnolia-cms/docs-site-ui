@@ -235,11 +235,20 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
   color: var(--color-primary-green) !important;
 }
 
+.DocSearch-Hit[aria-selected="true"] a {
+  background-color: var(--color-primary-green) !important;
+ }
+
 .DocSearch-Dropdown li.DocSearch-Hit#docsearch-item-0 a {
   background-color: var(--color-primary-green) !important;
 }
 
 .DocSearch-Dropdown li.DocSearch-Hit a:hover {
+  background-color: var(--color-primary-green) !important;
+  opacity: 0.8;
+}
+
+.DocSearch-Dropdown li.DocSearch-Hit a:focus {
   background-color: var(--color-primary-green) !important;
   opacity: 0.8;
 }
