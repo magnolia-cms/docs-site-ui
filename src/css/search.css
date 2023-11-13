@@ -65,6 +65,10 @@ nav.saas-nav #searchBar.ds-input:focus {
   background-color: var(--color-smoke-50);
 }
 
+.DocSearch-Button {
+  padding: 1.25rem !important;
+}
+
 @media screen and (max-width: 1220px) {
   #searchBar.ds-input:focus {
     width: 22.35rem;
