@@ -239,11 +239,16 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
   background-color: var(--color-primary-green) !important;
 }
 
+.DocSearch-Dropdown li.DocSearch-Hit a:hover {
+  background-color: var(--color-primary-green) !important;
+  opacity: 0.8;
+}
+
 .DocSearch-Hits .DocSearch-Hit-source {
   color: var(--color-primary-green) !important;
 }
 
 .DocSearch-Hits mark {
-  color: var(--color-primary-green) !important;
+  color: var(--color-primary-yellow) !important;
 }
 /* } */
