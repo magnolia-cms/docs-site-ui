@@ -241,7 +241,7 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
 
 .DocSearch-Dropdown li.DocSearch-Hit a:hover {
   background-color: var(--color-primary-green) !important;
-  opacity: 0.8;
+  text-decoration: none !important;
 }
 
 .DocSearch-Dropdown li.DocSearch-Hit a:focus {
