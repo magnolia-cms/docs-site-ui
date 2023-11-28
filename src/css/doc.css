@@ -109,7 +109,15 @@
 }
 
 .doc .tableblock p {
-  font-size: inherit;
+  font-size: var(--doc-font-size--table);
+}
+
+.doc .tableblock li p {
+  font-size: var(--doc-font-size--table) !important;
+}
+
+.doc .tableblock .admonitionblock td.content {
+  font-size: var(--doc-font-size--table) !important;
 }
 
 .doc a {

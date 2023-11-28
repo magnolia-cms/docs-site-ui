@@ -58,6 +58,19 @@ endif::[]
 
 [.inlineBean]#test.info.blah#
 
+[cols="3s,7a"]
+|===
+|Blah |Blah
+
+|bdd
+|ddd
+
+* this
+* is a test
+* for font-size
+
+|===
+
 // [.collapse]
 // Text
 
