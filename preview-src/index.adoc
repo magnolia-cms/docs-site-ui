@@ -39,11 +39,11 @@ Author Name
 //   <span>Enter</span>
 // </div>
 
-[.green-reflex-latest-badge]#Published#
+[.status.published]#Published#
 
-[.yellow-badge]#Modified#
+[.status.modified]#Modified#
 
-[.red-badge]#Draft#
+[.status.draft]#Draft#
 
 // ++++
 :nextReleaseDate: 2023-08-25
