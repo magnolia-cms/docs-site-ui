@@ -6,7 +6,7 @@ Author Name
 :!example-caption:
 :!table-caption:
 :page-pagination:
-:page-layout: headless
+:page-layout: default
 
 
 // ++++
@@ -38,6 +38,12 @@ Author Name
 // <div class="keyboard-key">
 //   <span>Enter</span>
 // </div>
+
+[.green-reflex-latest-badge]#Published#
+
+[.yellow-badge]#Modified#
+
+[.red-badge]#Draft#
 
 // ++++
 :nextReleaseDate: 2023-08-25

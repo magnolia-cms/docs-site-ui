@@ -1288,6 +1288,42 @@ pre code a:hover {
   padding: 0 0.5rem;
 }
 
+.doc .green-reflex-latest-badge {
+  background: var(--color-green-reflex-latest);
+  border-radius: 0.375rem;
+  color: black;
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 0 0.5rem;
+  text-transform: uppercase;
+}
+
+.doc .yellow-badge {
+  background: var(--color-primary-yellow);
+  border-radius: 0.375rem;
+  color: black;
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 0 0.5rem;
+  text-transform: uppercase;
+}
+
+.doc .red-badge {
+  background: var(--color-red);
+  border-radius: 0.375rem;
+  color: black;
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 0 0.5rem;
+  text-transform: uppercase;
+}
+
 .doc .grey-badge {
   background: #656565;
   border-radius: 0.5rem;
