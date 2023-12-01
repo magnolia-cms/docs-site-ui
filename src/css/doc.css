@@ -1303,12 +1303,15 @@ pre code a:hover {
   border-radius: 6px;
   color: black;
   display: inline-block;
-  font-size: 0.85rem;
+  font-size: 0.65rem;
   font-weight: 410;
   line-height: 1.5;
   padding: 3px 5px 3px 5px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  min-width: fit-content;
+  width: 6vw;
+  text-align: center;
 }
 
 .doc .status.published {
