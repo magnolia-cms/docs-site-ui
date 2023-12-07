@@ -1,0 +1,25 @@
+<div class="changelog-filter">
+    <input type="month" id="monthPicker">
+    <button onclick="filterByMonth()">Filter</button>
+    <button onclick="clearFilter()">Clear Filter</button>
+</div>
+
+<script>
+    function filterByMonth() {
+        var selectedMonth = $('#monthPicker').val();
+
+        $('.date').each(function() {
+            var spanDate = $(this).text().slice(0, 7); // Extract year-month (YYYY-MM) from the date span
+            if (spanDate === selectedMonth) {
+                $(this).closest('.sect1').show(); // Show the parent div of the selected element
+            } else {
+                $(this).closest('.sect1').hide(); // Hide other parent divs
+            }
+        });
+    }
+
+    function clearFilter() {
+        $('#monthPicker').val(''); // Reset the selected value to an empty string
+        location.reload(); // Refresh the page
+    }
+</script>
