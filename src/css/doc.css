@@ -1527,3 +1527,7 @@ input#monthPicker {
 .ui-datepicker-month:hover {
   background-color: var(--color-primary-dark-green) !important;
 }
+
+span.changelogDate {
+  display: none !important;
+}
