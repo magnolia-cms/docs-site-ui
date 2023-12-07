@@ -1496,3 +1496,34 @@ button.clipboard i {
   color: black !important;
   font-family: monospace !important;
 }
+
+button.changelog {
+  font-family: inherit;
+  font-size: inherit;
+  background-color: var(--color-primary-green);
+  color: whitesmoke;
+  transition: 0.3s ease;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+}
+
+button.changelog:hover {
+  background-color: var(--color-primary-dark-green);
+}
+
+input#monthPicker {
+  padding: 6px;
+  border-radius: 5px;
+  border: none;
+  background-color: #f5f5f5;
+}
+
+.ui-datepicker-month {
+  background-color: var(--color-primary-green) !important;
+  transition: 0.2s ease;
+}
+
+.ui-datepicker-month:hover {
+  background-color: var(--color-primary-dark-green) !important;
+}
