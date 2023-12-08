@@ -39,6 +39,9 @@ Author Name
 //   <span>Enter</span>
 // </div>
 
+[.iconSet]
+link:dude[icon:laptop[5x]] icon:laptop[5x] icon:laptop[5x]
+
 [.status.published]#Published#
 
 [.status.modified]#Modified#

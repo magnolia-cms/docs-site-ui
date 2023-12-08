@@ -1541,3 +1541,17 @@ input#monthPicker i:hover {
 span.changelogDate {
   display: none !important;
 }
+
+.iconSet {
+  letter-spacing: 0.5rem;
+  text-align: center;
+}
+
+.iconSet a {
+  transition: 0.3s ease;
+}
+
+.iconSet a:hover {
+  color: var(--color-primary-yellow);
+  text-decoration: none !important;
+}
