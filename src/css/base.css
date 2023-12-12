@@ -275,4 +275,14 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
     max-width: 55vw !important;
   }
 }
+
+.DocSearch-NoResults-Prefill-List ul li button {
+  color: var(--color-primary-green);
+  transition: 0.3s ease;
+}
+
+.DocSearch-NoResults-Prefill-List ul li button:hover {
+  color: var(--color-primary-dark-green);
+  text-decoration: none !important;
+}
 /* } */
