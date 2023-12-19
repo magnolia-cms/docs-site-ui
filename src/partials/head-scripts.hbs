@@ -14,3 +14,24 @@
 
 {{> beforeAfter}}
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const kbdElements = document.querySelectorAll('.DocSearch-Button-Key');
+
+    // Hide existing <kbd> elements
+    kbdElements.forEach(function(element) {
+        element.style.display = 'none';
+    });
+
+    // Create a new <kbd> element with "/" text
+    const newKbdElement = document.createElement('kbd');
+    newKbdElement.className = 'DocSearch-Button-Key-new';
+    newKbdElement.textContent = '/';
+    
+    // Insert the new <kbd> element
+    const buttonKeys = document.querySelector('.DocSearch-Button-Keys');
+    buttonKeys.appendChild(newKbdElement);
+});
+
+</script>
+
