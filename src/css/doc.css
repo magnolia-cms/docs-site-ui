@@ -932,7 +932,7 @@ pre code a:hover {
   /* display: flex; */
   font-weight: var(--weight-bold);
   height: 2.5rem;
-  line-height: 1;
+  line-height: 1.5;
   margin-right: 0.25rem;
   padding: 0 1.5rem;
   position: relative;
