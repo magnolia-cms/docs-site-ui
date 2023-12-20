@@ -86,10 +86,10 @@ endif::[]
 // [.collapse-content]
 // Hello there!
 
-// [quote,Ilgun]
-// ____
-// We know how to party, what can I say?
-// ____
+[quote,Ilgun]
+____
+We know how to party, what can I say?
+____
 
 [.keyboard-key]
 link:www.google.com[sign up^]

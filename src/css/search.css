@@ -78,7 +78,7 @@ button.DocSearch.DocSearch-Button {
 button.DocSearch.DocSearch-Button:hover,
 button.DocSearch.DocSearch-Button:active,
 button.DocSearch.DocSearch-Button:focus {
-  box-shadow: 1px 1px 5px -1px var(--color-primary-green) !important;
+  box-shadow: 1px 1px 2px -1px var(--color-primary-dark-green) !important;
   background: whitesmoke !important;
   outline: none !important;
 }
