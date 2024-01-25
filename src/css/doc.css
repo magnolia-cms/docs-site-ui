@@ -1298,6 +1298,17 @@ pre code a:hover {
   padding: 0 0.5rem;
 }
 
+.doc .red-badge {
+  background: #f54200;
+  border-radius: 0.5rem;
+  color: #fff;
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 0 0.5rem;
+}
+
 .doc .status {
   border-radius: 6px;
   color: black;
