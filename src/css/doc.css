@@ -1287,6 +1287,17 @@ pre code a:hover {
   padding: 0 0.5rem;
 }
 
+.doc .lime-badge {
+  background: var(--rebrand-color-primary-lime);
+  border-radius: 0.5rem;
+  color: #fff;
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 0 0.5rem;
+}
+
 .doc .light-green-badge {
   background: var(--rebrand-color-primary-light-green);
   border-radius: 0.5rem;
@@ -1334,6 +1345,17 @@ pre code a:hover {
 
 .doc .red-badge {
   background: #f54200;
+  border-radius: 0.5rem;
+  color: #fff;
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 0 0.5rem;
+}
+
+.doc .orange-badge {
+  background: orangered;
   border-radius: 0.5rem;
   color: #fff;
   display: inline-block;
