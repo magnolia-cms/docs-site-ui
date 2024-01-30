@@ -1277,7 +1277,41 @@ pre code a:hover {
 }
 
 .doc .green-badge {
-  background: var(--color-primary-green);
+  background: var(--rebrand-color-primary-green);
+  border-radius: 0.5rem;
+  color: #fff;
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 0 0.5rem;
+}
+
+.doc .light-green-badge {
+  background: var(--rebrand-color-primary-light-green);
+  border-radius: 0.5rem;
+  color: #fff;
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 0 0.5rem;
+}
+
+.doc .light-green-badge-outline {
+  background: var(--rebrand-color-primary-light-green);
+  border-radius: 0.5rem;
+  color: #fff;
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 0 0.5rem;
+  outline: 1px solid var(--rebrand-color-primary-dark-grey);
+}
+
+.doc .teal-badge {
+  background: var(--rebrand-color-primary-teal);
   border-radius: 0.5rem;
   color: #fff;
   display: inline-block;
@@ -1288,7 +1322,7 @@ pre code a:hover {
 }
 
 .doc .grey-badge {
-  background: #656565;
+  background: var(--rebrand-color-primary-dark-grey);
   border-radius: 0.5rem;
   color: #fff;
   display: inline-block;
