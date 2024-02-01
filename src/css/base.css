@@ -313,4 +313,5 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
   color: var(--color-primary-dark-green);
   padding: 10px;
   border-radius: 5px;
+  font-size: smaller;
 }
