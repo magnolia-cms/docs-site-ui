@@ -307,3 +307,10 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
   width: 20px;
 }
 /* } */
+
+.category-label {
+  background: var(--color-smoke-50);
+  color: var(--color-primary-dark-green);
+  padding: 10px;
+  border-radius: 5px;
+}

@@ -39,6 +39,8 @@ Author Name
 //   <span>Enter</span>
 // </div>
 
+[.category-label]#Administration# [.category-label]#Bundled: Community Edition#
+
 [.iconSet]
 link:dude[icon:laptop[5x]] icon:laptop[5x] icon:laptop[5x]
 
