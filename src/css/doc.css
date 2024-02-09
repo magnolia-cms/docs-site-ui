@@ -1634,8 +1634,10 @@ span.changelogDate {
   margin-top: 30px !important;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.2s ease;
   display: inline-flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
+  text-align: center;
+  padding-top: 1.5rem;
 }
 
 .category-card p {

@@ -42,7 +42,7 @@ Author Name
 [.category-label]#Administration# [.category-label]#Bundled: Community Edition#
 
 [.category-card]
-xref:test.adoc[Administration icon:cog[]]
+xref:test.adoc[Administration and something icon:cog[]]
 
 [.category-card]
 xref:test.adoc[Administration icon:cog[]]
