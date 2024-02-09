@@ -41,6 +41,18 @@ Author Name
 
 [.category-label]#Administration# [.category-label]#Bundled: Community Edition#
 
+[.category-card]
+xref:test.adoc[Administration icon:cog[]]
+
+[.category-card]
+xref:test.adoc[Administration icon:cog[]]
+
+[.category-card]
+xref:test.adoc[Administration icon:cog[]]
+
+[.category-card]
+xref:test.adoc[Administration icon:cog[]]
+
 [.iconSet]
 link:dude[icon:laptop[5x]] icon:laptop[5x] icon:laptop[5x]
 

@@ -1621,3 +1621,33 @@ span.changelogDate {
   color: var(--color-primary-yellow);
   text-decoration: none !important;
 }
+
+.category-card {
+  height: 8rem;
+  border-radius: 12%;
+  background: white;
+  color: var(--color-primary-dark-green);
+  width: 10rem;
+  outline: 2px solid var(--color-primary-green);
+  box-sizing: border-box;
+  margin: 10px !important;
+  margin-top: 30px !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-card p {
+  font-size: 1.2rem;
+}
+
+.category-card a:hover {
+  text-decoration: none;
+}
+
+.category-card:hover {
+  transform: translateY(-10px) translateX(10px);
+  box-shadow: -15px 10px 1px var(--color-primary-green);
+  background: linear-gradient(to bottom, white, var(--color-smoke-50));
+}
