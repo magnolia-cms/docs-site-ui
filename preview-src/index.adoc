@@ -42,7 +42,8 @@ Author Name
 [.category-label]#Administration# [.category-label]#Bundled: Community Edition#
 
 [.category-card]
-xref:test.adoc[Administration and something icon:cog[]]
+xref:test.adoc[Administration and something] +
+icon:cog[2x]
 
 [.category-card]
 xref:test.adoc[Administration icon:cog[]]
@@ -52,6 +53,15 @@ xref:test.adoc[Administration icon:cog[]]
 
 [.category-card]
 xref:test.adoc[Administration icon:cog[]]
+
+++++
+<script>
+  function redirectToLink() {
+    var link = document.getElementById('category-card');
+    link.click();
+  }
+</script>
+++++
 
 [.iconSet]
 link:dude[icon:laptop[5x]] icon:laptop[5x] icon:laptop[5x]

@@ -1626,9 +1626,9 @@ span.changelogDate {
   height: 8rem;
   border-radius: 12%;
   background: white;
-  color: var(--color-primary-dark-green);
+  color: darkslategrey;
   width: 10rem;
-  outline: 2px solid var(--color-primary-green);
+  outline: 2px solid darkslategrey;
   box-sizing: border-box;
   margin: 10px !important;
   margin-top: 30px !important;
@@ -1638,18 +1638,32 @@ span.changelogDate {
   justify-content: center;
   text-align: center;
   padding-top: 1.5rem;
+  word-break: auto-phrase !important;
 }
 
 .category-card p {
   font-size: 1.2rem;
 }
 
+.category-card a {
+  color: darkslategrey;
+}
+
 .category-card a:hover {
   text-decoration: none;
+  color: var(--color-primary-dark-green);
 }
 
 .category-card:hover {
   transform: translateY(-10px) translateX(10px);
-  box-shadow: -15px 10px 1px var(--color-primary-green);
+  box-shadow: -15px 10px 1px darkslategrey;
   background: linear-gradient(to bottom, white, var(--color-smoke-50));
+}
+
+.category-card:hover i {
+  color: var(--color-primary-green);
+}
+
+.category-card:hover a {
+  color: var(--color-primary-green);
 }
