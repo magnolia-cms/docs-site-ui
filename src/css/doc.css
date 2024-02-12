@@ -1639,6 +1639,7 @@ span.changelogDate {
   text-align: center;
   padding-top: 1.5rem;
   word-break: auto-phrase !important;
+  box-shadow: -4px 4px 2px darkslategrey;
 }
 
 .category-card p {
