@@ -292,7 +292,7 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
 
 .DocSearch-Button-Key-new {
   align-items: center;
-  background: linear-gradient(90deg, hsla(0, 0%, 92%, 1) 0%, hsla(0, 0%, 100%, 1) 50%, hsla(0, 0%, 95%, 1) 100%);
+  background: linear-gradient(to bottom, white, var(--color-smoke-50));
   border-radius: 2px;
   box-shadow: 1px 1px 1px 1px lightslategrey;
   color: lightslategrey;
@@ -304,7 +304,7 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
   padding: 0 0 2px 0;
   border: 0;
   top: -2px;
-  width: 20px;
+  width: 18px;
 }
 /* } */
 
