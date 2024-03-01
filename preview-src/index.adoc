@@ -72,6 +72,9 @@ link:dude[icon:laptop[5x]] icon:laptop[5x] icon:laptop[5x]
 
 [.status.draft]#Draft#
 
+[.module-type.core]#test#
+
+
 // ++++
 :nextReleaseDate: 2023-08-25
 ifeval::["(localdate)" < "{nextReleaseDate}"]

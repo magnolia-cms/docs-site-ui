@@ -1392,6 +1392,43 @@ pre code a:hover {
   background: var(--color-red);
 }
 
+.doc .module-type {
+  border-radius: 6px;
+  color: black;
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 410;
+  line-height: 1.5;
+  padding: 3px 5px 3px 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  min-width: fit-content;
+  width: 6vw;
+  text-align: center;
+}
+
+.doc .module-type.core {
+  background: var(--rebrand-color-primary-green);
+  color: whitesmoke !important;
+}
+
+.doc .module-type.extension {
+  background: var(--rebrand-color-primary-light-green);
+}
+
+.doc .module-type.extension-api {
+  background: var(--rebrand-color-primary-lime);
+}
+
+.doc .module-type.framework {
+  background: var(--rebrand-color-primary-teal);
+  color: whitesmoke !important;
+}
+
+.doc .module-type.incubator {
+  background: orangered;
+}
+
 .doc-card {
   display: inline-block;
   width: 350px;
