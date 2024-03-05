@@ -1394,7 +1394,7 @@ pre code a:hover {
 
 .doc .module-type {
   border-radius: 6px;
-  color: black;
+  color: whitesmoke !important;
   display: inline-block;
   font-size: 0.65rem;
   font-weight: 410;
@@ -1409,7 +1409,6 @@ pre code a:hover {
 
 .doc .module-type.core {
   background: var(--rebrand-color-primary-green);
-  color: whitesmoke !important;
 }
 
 .doc .module-type.extension {
@@ -1422,7 +1421,6 @@ pre code a:hover {
 
 .doc .module-type.framework {
   background: var(--rebrand-color-primary-teal);
-  color: whitesmoke !important;
 }
 
 .doc .module-type.incubator {
