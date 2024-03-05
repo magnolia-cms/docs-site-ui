@@ -220,6 +220,15 @@
 .doc table.tableblock thead th {
   border-bottom: 2.5px solid lightgrey;
   padding: 0.5rem;
+  cursor: pointer;
+}
+
+.doc table.tableblock thead th::after {
+  content: "\f07d";
+  font-family: FontAwesome, sans-serif;
+  padding-left: 4px;
+  color: grey;
+  font-size: small;
 }
 
 .doc table.tableblock td,

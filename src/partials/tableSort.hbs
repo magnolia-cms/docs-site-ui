@@ -1,0 +1,41 @@
+<script>
+  function sortTable(header, columnIndex) {
+    var table = header.closest('table');
+    var rows = Array.from(table.rows).slice(1); // Skip header row
+
+    rows.sort(function (a, b) {
+      var x = a.cells[columnIndex].textContent || a.cells[columnIndex].innerText;
+      var y = b.cells[columnIndex].textContent || b.cells[columnIndex].innerText;
+
+      return compareValues(x, y);
+    });
+
+    // Re-append sorted rows to the table
+    rows.forEach(function (row) {
+      table.tBodies[0].appendChild(row);
+    });
+  }
+
+  function compareValues(x, y) {
+    if (isNaN(x) || isNaN(y)) {
+      // If at least one of the values is not numeric, do alphabetical comparison
+      return x.localeCompare(y);
+    } else {
+      // If both values are numeric, do numerical comparison
+      return parseFloat(x) - parseFloat(y);
+    }
+  }
+
+  // Dynamically add onclick to th elements for all tables on the page
+  document.addEventListener("DOMContentLoaded", function() {
+    var allTables = document.querySelectorAll('table');
+    allTables.forEach(function(table) {
+      var thElements = table.querySelectorAll('th');
+      thElements.forEach(function(th, index) {
+        th.onclick = function() {
+          sortTable(this, index);
+        };
+      });
+    });
+  });
+</script>
