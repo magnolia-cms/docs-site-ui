@@ -16,6 +16,7 @@
   --color-digital-blue: #0569f9;
   --color-primary-ocean-blue: #00adef;
   --rebrand-color-primary-green: #068449;
+  --rebrand-color-primary-emerald: #008246;
   --rebrand-color-primary-dark-green: #3a6305;
   --rebrand-color-primary-light-green: #01b96c;
   --rebrand-color-primary-dew: #e2f0e4;
@@ -71,7 +72,7 @@
   --scrollbar-thumb-color: var(--color-gray-10);
   /* navbar */
   --navbar-background: white;
-  --navbar-font-color: var(--color-primary-dark-green);
+  --navbar-font-color: var(--rebrand-color-primary-teal);
   --navbar_hover-background: var(--color-smoke-90);
   --navbar-button-background: var(--color-digital-blue);
   --navbar-button-border-color: var(--panel-border-color);
@@ -111,9 +112,9 @@
   --tip-on-color: var(--color-white);
   --warning-color: var(--rebrand-color-primary-red);
   --warning-on-color: var(--color-white);
-  --best-color: #02bfc2;
+  --best-color: var(--color-digital-blue);
   --best-on-color: var(--color-white);
-  --alt-color: var(--color-primary-gold);
+  --alt-color: darkslategrey;
   --alt-on-color: var(--color-white);
   /* doc */
   --doc-font-color: var(--color-jet-50);
@@ -138,7 +139,7 @@
   --caption-font-color: var(--color-gray-70);
   --caption-font-weight: var(--body-font-weight-bold);
   --code-background: var(--panel-background);
-  --code-font-color: var(--color-primary-green);
+  --code-font-color: var(--rebrand-color-primary-green);
   --example-background: var(--color-whitesmoke);
   --example-border-color: var(--color-gray-70);
   --kbd-background: var(--panel-background);
@@ -156,7 +157,7 @@
   --footer-line-height: var(--doc-line-height);
   --footer-background: var(--color-jet-50);
   --footer-font-color: var(--color-gray-70);
-  --footer-link-font-color: var(--color-primary-green);
+  --footer-link-font-color: var(--rebrand-color-primary-green);
   /* dimensions and positioning */
   --navbar-height: 5rem;
   --toolbar-height: calc(45 / var(--rem-base) * 1rem);
@@ -166,7 +167,9 @@
   --nav-height: calc(var(--body-min-height) - var(--toolbar-height));
   --nav-height--desktop: var(--body-min-height);
   --nav-panel-height: calc(var(--nav-height) - var(--drawer-height));
-  --nav-panel-height--desktop: calc(var(--nav-height--desktop) - var(--drawer-height));
+  --nav-panel-height--desktop: calc(
+    var(--nav-height--desktop) - var(--drawer-height)
+  );
   --nav-width: calc(325 / var(--rem-base) * 1rem);
   --toc-top: calc(var(--body-top) + var(--toolbar-height));
   --toc-height: calc(100vh - var(--toc-top) - 2.5rem);

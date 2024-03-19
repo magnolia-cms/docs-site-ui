@@ -45,7 +45,7 @@ body {
 }
 
 .navbar.headless-nav .navbar-item:hover {
-  color: var(--color-primary-dark-green);
+  color: var(--rebrand-color-primary-teal);
 }
 
 .navbar.headless-nav .button {
@@ -57,12 +57,12 @@ body {
   color: whitesmoke;
   padding: 1.4rem;
   white-space: nowrap;
-  /* box-shadow: var(--color-primary-green) 0 2px 4px; */
+  /* box-shadow: var(--rebrand-color-primary-green) 0 2px 4px; */
   transition: all 0.4s ease-in-out;
 }
 
 .navbar.headless-nav .button:hover {
-  background-color: var(--color-primary-dark-green);
+  background-color: var(--rebrand-color-primary-teal);
 }
 
 .navbar.saas-nav .button {
@@ -74,7 +74,7 @@ body {
   color: whitesmoke;
   padding: 1.4rem;
   white-space: nowrap;
-  /* box-shadow: var(--color-primary-green) 0 2px 4px; */
+  /* box-shadow: var(--rebrand-color-primary-green) 0 2px 4px; */
   transition: all 0.4s ease-in-out;
 }
 
@@ -105,7 +105,7 @@ body {
   color: whitesmoke;
   padding: 1.4rem;
   white-space: nowrap;
-  /* box-shadow: var(--color-primary-green) 0 2px 4px; */
+  /* box-shadow: var(--rebrand-color-primary-green) 0 2px 4px; */
   transition: all 0.4s ease-in-out;
 }
 
@@ -129,6 +129,16 @@ body {
   padding: 0 0.375rem;
 }
 
+.navbar img.rebrand-logo {
+  width: 250px;
+}
+
+@media screen and (max-width: 800px) {
+  .navbar img.rebrand-logo {
+    width: 175px;
+  }
+}
+
 @media screen and (min-width: 1200px) {
   .navbar {
     padding: 0 0.75rem;
@@ -143,7 +153,7 @@ body {
 
   .navbar-end > a.navbar-item:hover,
   .navbar-end .navbar-link:hover {
-    color: var(--color-primary-dark-green);
+    color: var(--rebrand-color-primary-teal);
     border: none;
     font-weight: inherit;
   }
@@ -418,7 +428,7 @@ span.icon-wrapper {
   color: whitesmoke;
   padding: 1.4rem;
   white-space: nowrap;
-  /* box-shadow: var(--color-primary-green) 0 2px 4px; */
+  /* box-shadow: var(--rebrand-color-primary-green) 0 2px 4px; */
   transition: all 0.4s ease-in-out;
 }
 
@@ -428,7 +438,7 @@ span.icon-wrapper {
 
 .lower-head {
   width: 100%;
-  background: var(--color-primary-green);
+  background: var(--rebrand-color-primary-green);
   height: 0.55em;
 }
 

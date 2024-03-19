@@ -18,11 +18,13 @@
   opacity: 0.25;
 }
 
-::-webkit-input-placeholder { /* Edge */
+::-webkit-input-placeholder {
+  /* Edge */
   color: var(--color-gray-light);
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
   color: var(--color-gray-light);
 }
 
@@ -61,7 +63,7 @@ nav.saas-nav #searchBar.ds-input:focus {
 #searchBar.ds-input:focus {
   width: 29rem;
   margin-right: 2px;
-  border: 2px solid var(--color-primary-green);
+  border: 2px solid var(--rebrand-color-primary-green);
   background-color: var(--color-smoke-50);
 }
 
@@ -78,7 +80,7 @@ button.DocSearch.DocSearch-Button {
 button.DocSearch.DocSearch-Button:hover,
 button.DocSearch.DocSearch-Button:active,
 button.DocSearch.DocSearch-Button:focus {
-  box-shadow: 1px 1px 2px -1px var(--color-primary-dark-green) !important;
+  box-shadow: 1px 1px 2px -1px var(--rebrand-color-primary-teal) !important;
   background: var(--rebrand-color-primary-sand) !important;
   outline: none !important;
 }
@@ -92,7 +94,7 @@ button.DocSearch.DocSearch-Button:focus {
   #searchBar.ds-input:focus {
     width: 22.35rem;
     margin-right: 2px;
-    border: 2px solid var(--color-primary-green);
+    border: 2px solid var(--rebrand-color-primary-green);
     background-color: var(--color-smoke-50);
   }
 }
@@ -100,7 +102,7 @@ button.DocSearch.DocSearch-Button:focus {
 @media screen and (max-width: 615px) {
   #searchBar.ds-input:focus {
     width: 14rem;
-    border: 2px solid var(--color-primary-green);
+    border: 2px solid var(--rebrand-color-primary-green);
     background-color: var(--color-smoke-50);
   }
 
@@ -177,7 +179,7 @@ span.algolia-autocomplete {
     width: 132px;
   }
 
-  .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
+  .algolia-autocomplete .ds-dropdown-menu [class^="ds-dataset-"] {
     overflow: scroll !important;
   }
 }
@@ -192,7 +194,7 @@ span.algolia-autocomplete {
     display: none;
   }
 
-  .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
+  .algolia-autocomplete .ds-dropdown-menu [class^="ds-dataset-"] {
     overflow: scroll !important;
     width: 90vw;
     margin-left: -10vw;

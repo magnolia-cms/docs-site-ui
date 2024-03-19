@@ -48,7 +48,7 @@
 }
 
 #location:hover i {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
 }
 
 #location:hover {
@@ -439,7 +439,7 @@
 }
 
 .currentLocation {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   font-weight: bold;
 }
 
@@ -511,7 +511,7 @@ a.linkLabel:hover {
 }
 
 a.linkLabel.dxCore {
-  background-color: var(--color-primary-green);
+  background-color: var(--rebrand-color-primary-green);
   color: whitesmoke;
 }
 

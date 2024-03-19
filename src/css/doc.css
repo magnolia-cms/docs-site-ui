@@ -132,7 +132,7 @@
   color: var(--link_unresolved-font-color);
 }
 
-.doc a[rel*=noopener]::after {
+.doc a[rel*="noopener"]::after {
   content: "\f08e";
   font-family: FontAwesome, sans-serif;
   font-weight: 400;
@@ -258,7 +258,7 @@
 }
 
 .doc .admonitionblock code {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
 }
 
 .doc .admonitionblock p,
@@ -353,6 +353,7 @@
 
 .doc .admonitionblock.best {
   border-left: 2px solid var(--best-color);
+  color: inherit;
 }
 
 .doc .admonitionblock.best .icon {
@@ -369,6 +370,7 @@
 
 .admonitionblock.best td.icon .icon-note::after {
   content: "Best Practice";
+  color: var(--best-on-color) !important;
 }
 
 .doc .admonitionblock.tip {
@@ -672,7 +674,7 @@
   line-height: 1.3;
   margin-bottom: 0.5em;
   text-align: left;
-  background-color: var(--color-primary-dark-green);
+  background-color: var(--rebrand-color-primary-teal);
   color: whitesmoke;
   margin-left: -2rem;
   padding: 10px;
@@ -773,7 +775,7 @@ pre code a:hover {
   width: 1.5em;
   letter-spacing: -0.25ex;
   text-indent: -0.25ex;
-  background-color: var(--color-primary-green);
+  background-color: var(--rebrand-color-primary-green);
   margin-top: 1px;
   color: whitesmoke;
 }
@@ -806,7 +808,8 @@ pre code a:hover {
   background: var(--kbd-background);
   border: 1px solid var(--kbd-border-color);
   border-radius: 0.25em;
-  box-shadow: 0 1px 0 var(--kbd-border-color), 0 0 0 0.1em var(--body-background) inset;
+  box-shadow: 0 1px 0 var(--kbd-border-color),
+    0 0 0 0.1em var(--body-background) inset;
   padding: 0.25em 0.5em;
   vertical-align: text-bottom;
   white-space: nowrap;
@@ -1027,11 +1030,8 @@ pre code a:hover {
 .doc .blue-bg a:hover {
   text-decoration: none;
   color: var(--color-white);
-  text-shadow:
-    0 0 10px var(--glow-color),
-    0 0 20px var(--glow-color),
-    0 0 40px var(--glow-color),
-    0 0 60px var(--glow-color),
+  text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color),
+    0 0 40px var(--glow-color), 0 0 60px var(--glow-color),
     0 0 80px var(--glow-color);
   -webkit-transition: 0.4s;
   transition: 0.4s;
@@ -1050,11 +1050,11 @@ pre code a:hover {
 }
 
 .doc .green {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
 }
 
 .doc .green-bg {
-  background-color: var(--color-primary-green);
+  background-color: var(--rebrand-color-primary-green);
   padding: 5px;
   color: whitesmoke;
   border: none;
@@ -1069,7 +1069,7 @@ pre code a:hover {
 }
 
 .doc .dark-green {
-  color: var(--color-primary-dark-green);
+  color: var(--rebrand-color-primary-teal);
 }
 
 .doc .yellow {
@@ -1086,11 +1086,11 @@ pre code a:hover {
 
 .doc .collapse {
   font-size: larger;
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   background-color: var(--color-smoke-90);
   padding: 0.8rem !important;
   cursor: pointer;
-  border-left: 2px solid var(--color-primary-green);
+  border-left: 2px solid var(--rebrand-color-primary-green);
   font-weight: bold;
   transition: 0.75s ease;
   margin-top: 0.75rem;
@@ -1098,12 +1098,12 @@ pre code a:hover {
 }
 
 .doc .collapse p::after {
-  content: '+';
+  content: "+";
   margin-left: 10px;
 }
 
 .doc .collapse.active p::after {
-  content: '-';
+  content: "-";
   margin-left: 10px;
 }
 
@@ -1130,14 +1130,14 @@ pre code a:hover {
   background-color: var(--color-smoke-90);
   padding: 0.8rem;
   cursor: auto;
-  border-left: 5px solid var(--color-primary-green);
+  border-left: 5px solid var(--rebrand-color-primary-green);
   font-weight: bold;
   transition: 0.55s ease;
 }
 
 .doc .focus:hover {
   background-color: var(--color-primary-light-green);
-  border-left: 15px solid var(--color-primary-green);
+  border-left: 15px solid var(--rebrand-color-primary-green);
 }
 
 .doc .focus a {
@@ -1161,7 +1161,7 @@ pre code a:hover {
 }
 
 .doc .celebrate {
-  background-color: var(--color-primary-green);
+  background-color: var(--rebrand-color-primary-light-green);
   color: white;
   padding: 1.75rem;
   border-radius: 10px;
@@ -1181,7 +1181,7 @@ pre code a:hover {
 }
 
 .doc .celebrate a {
-  color: var(--color-primary-gold);
+  color: var(--rebrand-color-primary-dew);
   text-decoration: none;
 }
 
@@ -1234,19 +1234,19 @@ pre code a:hover {
 .doc .announce .title::after {
   content: "\1F56C";
   margin-left: 2px;
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   font-size: 2rem;
   font-weight: 500;
 }
 
 .doc .announce a {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   text-decoration: none;
   transition: 0.2s ease;
 }
 
 .doc .announce a:hover {
-  color: var(--color-primary-gold);
+  color: var(--rebrand-color-primary-dew);
   text-decoration: none;
 }
 
@@ -1460,7 +1460,7 @@ pre code a:hover {
 }
 
 .doc-card a {
-  background-color: var(--color-primary-green);
+  background-color: var(--rebrand-color-primary-green);
   padding: 5px;
   color: whitesmoke;
   border: none;
@@ -1512,7 +1512,9 @@ pre code a:hover {
 
 .banner {
   width: 100%;
-  background-color: var(--color-primary-dark-green); /* Choose your desired background color */
+  background-color: var(
+    --color-primary-dark-green
+  ); /* Choose your desired background color */
   color: whitesmoke; /* Choose your desired text color */
   text-align: center;
   padding-top: 20px;
@@ -1554,7 +1556,7 @@ pre code a:hover {
 }
 
 #countdown {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   font-family: Roboto-mono, monospace;
   font-size: 1rem;
   background-color: inherit;
@@ -1566,12 +1568,12 @@ pre code a:hover {
 }
 
 #countdown::before {
-  content: 'Countdown: ';
+  content: "Countdown: ";
   color: var(--color-jet-50);
 }
 
 #targetDate {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   font-family: Roboto-mono, monospace;
   font-size: 1rem;
   background-color: inherit;
@@ -1582,12 +1584,12 @@ pre code a:hover {
 }
 
 #targetDate::before {
-  content: 'Target Date: ';
+  content: "Target Date: ";
   color: var(--color-jet-50);
 }
 
 button.clipboard i {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   font-weight: bold;
   font-size: larger;
   transition: 0.3s ease-in-out;
@@ -1601,7 +1603,7 @@ button.clipboard i {
 button.changelog {
   font-family: inherit;
   font-size: inherit;
-  background-color: var(--color-primary-green);
+  background-color: var(--rebrand-color-primary-green);
   color: whitesmoke;
   transition: 0.3s ease;
   padding: 5px;
@@ -1610,7 +1612,7 @@ button.changelog {
 }
 
 button.changelog:hover {
-  background-color: var(--color-primary-dark-green);
+  background-color: var(--rebrand-color-primary-teal);
 }
 
 input#monthPicker {
@@ -1623,7 +1625,7 @@ input#monthPicker {
 }
 
 input#monthPicker:hover {
-  box-shadow: 1px 1px 6px -1px var(--color-primary-green) !important;
+  box-shadow: 1px 1px 6px -1px var(--rebrand-color-primary-green) !important;
 }
 
 input#monthPicker i:hover {
@@ -1631,12 +1633,12 @@ input#monthPicker i:hover {
 }
 
 .ui-datepicker-month {
-  background-color: var(--color-primary-green) !important;
+  background-color: var(--rebrand-color-primary-green) !important;
   transition: 0.2s ease;
 }
 
 .ui-datepicker-month:hover {
-  background-color: var(--color-primary-dark-green) !important;
+  background-color: var(--rebrand-color-primary-teal) !important;
 }
 
 span.changelogDate {
@@ -1687,7 +1689,7 @@ span.changelogDate {
 
 .category-card a:hover {
   text-decoration: none;
-  color: var(--color-primary-dark-green);
+  color: var(--rebrand-color-primary-green) !important;
 }
 
 .category-card:hover {
@@ -1697,9 +1699,9 @@ span.changelogDate {
 }
 
 .category-card:hover i {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green) !important;
 }
 
 .category-card:hover a {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green) !important;
 }
