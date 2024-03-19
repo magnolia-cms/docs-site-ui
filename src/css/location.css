@@ -111,7 +111,7 @@
 }
 
 #location-paas:hover i {
-  color: var(--color-primary-ocean-blue);
+  color: var(--color-digital-blue);
 }
 
 #location-paas:hover {
@@ -131,7 +131,7 @@
   width: 7.45rem;
   position: fixed;
   top: 63%;
-  right: -3.3rem;
+  right: -3.4rem;
   z-index: 400;
   margin: -2rem;
   /* margin-left: 0.5rem; */
@@ -157,6 +157,7 @@
   text-decoration: none;
   font-weight: 500;
   color: whitesmoke;
+  font-size: 0.9rem;
   /* padding-top: 0.8rem; */
 }
 
@@ -476,7 +477,7 @@
   padding-right: 5vw;
   padding-bottom: 5vh;
   width: 50%;
-  font-family: "Roboto", sans-serif;
+  font-family: "Lora", sans-serif;
   text-align: center;
 }
 
@@ -516,7 +517,7 @@ a.linkLabel.dxCore {
 }
 
 a.linkLabel.paas {
-  background-color: var(--color-primary-ocean-blue);
+  background-color: var(--color-digital-blue);
   color: whitesmoke;
 }
 
