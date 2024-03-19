@@ -336,11 +336,11 @@
 }
 
 .doc .admonitionblock.note {
-  border-left: 2px solid var(--color-primary-ocean-blue);
+  border-left: 2px solid var(--note-color);
 }
 
 .doc .admonitionblock.note .icon {
-  background-color: var(--color-primary-ocean-blue);
+  background-color: var(--note-color);
   color: var(--note-on-color);
 }
 
@@ -388,11 +388,11 @@
 }
 
 .doc .admonitionblock.warning {
-  border-left: 2px solid var(--color-red);
+  border-left: 2px solid var(--warning-color);
 }
 
 .doc .admonitionblock.warning .icon {
-  background-color: var(--color-red);
+  background-color: var(--warning-color);
   color: var(--warning-on-color);
 }
 

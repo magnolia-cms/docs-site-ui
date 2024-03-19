@@ -24,6 +24,9 @@
   --rebrand-color-primary-sand: #f0eee7;
   --rebrand-color-primary-light-blue: #549afc;
   --rebrand-color-primary-dark-grey: #1e1f1c;
+  --rebrand-color-primary-bloom: #f0d3e9;
+  --rebrand-color-bloom-dark: #bd5ba6;
+  --rebrand-color-primary-red: #c02d2d;
   --rebrand-color-sand: ;
   --color-orange: #f48a16;
   --color-red: #f76733;
@@ -98,15 +101,15 @@
   --toc-border-color: var(--panel-border-color);
   --toc-line-height: 1.2;
   /* admonitions */
-  --caution-color: #e18114;
+  --caution-color: var(--rebrand-color-bloom-dark);
   --caution-on-color: var(--color-white);
-  --important-color: #a0439c;
+  --important-color: var(--rebrand-color-primary-teal);
   --important-on-color: var(--color-white);
-  --note-color: blue;
+  --note-color: var(--color-digital-blue);
   --note-on-color: var(--color-white);
-  --tip-color: var(--color-primary-green);
+  --tip-color: var(--rebrand-color-primary-green);
   --tip-on-color: var(--color-white);
-  --warning-color: #d32f2f;
+  --warning-color: var(--rebrand-color-primary-red);
   --warning-on-color: var(--color-white);
   --best-color: #02bfc2;
   --best-on-color: var(--color-white);
@@ -124,7 +127,7 @@
   --heading-font-weight: normal;
   --alt-heading-font-weight: var(--body-font-weight-bold);
   --section-divider-color: var(--panel-border-color);
-  --link-font-color: var(--color-primary-green);
+  --link-font-color: var(--rebrand-color-primary-green);
   --link_hover-font-color: #104d92;
   --link_unresolved-font-color: var(--important-color);
   --abstract-background: var(--color-smoke-70);

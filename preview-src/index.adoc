@@ -39,6 +39,10 @@ Author Name
 //   <span>Enter</span>
 // </div>
 
+link:www.rte.ie[^]
+
+xref:docs:ROOT:index.adoc[test xref]
+
 [.category-label]#Administration# [.category-label]#Bundled: Community Edition#
 
 [.category-card]
@@ -146,6 +150,8 @@ TIP: This is a note.
 IMPORTANT: This is a note.
 
 CAUTION: This is a note.
+
+WARNING: This is a warning.
 
 [.doc-card]
 .Jamstack icon:laptop[]
