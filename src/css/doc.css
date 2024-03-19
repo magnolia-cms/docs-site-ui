@@ -808,8 +808,7 @@ pre code a:hover {
   background: var(--kbd-background);
   border: 1px solid var(--kbd-border-color);
   border-radius: 0.25em;
-  box-shadow: 0 1px 0 var(--kbd-border-color),
-    0 0 0 0.1em var(--body-background) inset;
+  box-shadow: 0 1px 0 var(--kbd-border-color), 0 0 0 0.1em var(--body-background) inset;
   padding: 0.25em 0.5em;
   vertical-align: text-bottom;
   white-space: nowrap;
@@ -1030,9 +1029,7 @@ pre code a:hover {
 .doc .blue-bg a:hover {
   text-decoration: none;
   color: var(--color-white);
-  text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color),
-    0 0 40px var(--glow-color), 0 0 60px var(--glow-color),
-    0 0 80px var(--glow-color);
+  text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 40px var(--glow-color), 0 0 60px var(--glow-color), 0 0 80px var(--glow-color);
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -1512,9 +1509,7 @@ pre code a:hover {
 
 .banner {
   width: 100%;
-  background-color: var(
-    --color-primary-dark-green
-  ); /* Choose your desired background color */
+  background-color: var(--color-primary-dark-green); /* Choose your desired background color */
   color: whitesmoke; /* Choose your desired text color */
   text-align: center;
   padding-top: 20px;
