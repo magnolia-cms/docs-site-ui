@@ -423,7 +423,7 @@ span.icon-wrapper {
 }
 
 .navbar .button:hover {
-  background-color: var(--color-primary-dark-green);
+  opacity: 0.85;
 }
 
 .lower-head {

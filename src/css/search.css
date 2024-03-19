@@ -70,7 +70,7 @@ nav.saas-nav #searchBar.ds-input:focus {
 }
 
 button.DocSearch.DocSearch-Button {
-  background: whitesmoke !important;
+  background: var(--rebrand-color-primary-sand) !important;
   outline: none !important;
   transition: 0.3s ease;
 }
@@ -79,7 +79,7 @@ button.DocSearch.DocSearch-Button:hover,
 button.DocSearch.DocSearch-Button:active,
 button.DocSearch.DocSearch-Button:focus {
   box-shadow: 1px 1px 2px -1px var(--color-primary-dark-green) !important;
-  background: whitesmoke !important;
+  background: var(--rebrand-color-primary-sand) !important;
   outline: none !important;
 }
 
