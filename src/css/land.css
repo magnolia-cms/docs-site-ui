@@ -863,19 +863,35 @@ h2.welcome-header {
 }
 
 .sect2.card:nth-of-type(1) {
-  background: var(--color-green-reflex);
+  background: var(--rebrand-color-primary-green);
+}
+
+.sect2.card:nth-of-type(1):hover {
+  background: linear-gradient(to top, var(--rebrand-color-primary-sand), var(--rebrand-color-primary-green)) !important;
 }
 
 .sect2.card:nth-of-type(2) {
-  background: var(--color-green-darker);
+  background: var(--rebrand-color-primary-green);
+}
+
+.sect2.card:nth-of-type(2):hover {
+  background: linear-gradient(to top, var(--rebrand-color-primary-sand), var(--rebrand-color-primary-green)) !important;
 }
 
 .sect2.card:nth-of-type(3) {
-  background: var(--color-primary-yellow);
+  background: var(--rebrand-color-primary-green);
+}
+
+.sect2.card:nth-of-type(3):hover {
+  background: linear-gradient(to top, var(--rebrand-color-primary-sand), var(--rebrand-color-primary-green)) !important;
 }
 
 .sect2.card:nth-of-type(4) {
-  background: var(--color-primary-ocean-blue);
+  background: var(--rebrand-color-primary-green);
+}
+
+.sect2.card:nth-of-type(4):hover {
+  background: linear-gradient(to top, var(--rebrand-color-primary-sand), var(--rebrand-color-primary-green)) !important;
 }
 
 .land .card .paragraph {
@@ -897,7 +913,7 @@ h2.welcome-header {
 }
 
 .land .card a:hover {
-  color: var(--color-primary-blue);
+  color: var(--rebrand-color-primary-green);
   /* font-weight: bolder; */
 }
 
