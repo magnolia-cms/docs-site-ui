@@ -963,7 +963,7 @@ h2.welcome-header {
 .sect2.card > h3,
 .sect2.card .paragraph,
 .sect2.card .ulist {
-  background: var(--color-gray-medium);
+  background: var(--rebrand-color-primary-sand);
   margin-top: 0;
   margin-bottom: 0;
   padding-right: 1.4rem;
