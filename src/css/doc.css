@@ -1391,7 +1391,7 @@ pre code a:hover {
 
 .doc .module-type {
   border-radius: 6px;
-  color: whitesmoke !important;
+  color: var(--rebrand-color-primary-teal);
   display: inline-block;
   font-size: 0.65rem;
   font-weight: 410;
@@ -1402,26 +1402,25 @@ pre code a:hover {
   min-width: fit-content;
   width: 6vw;
   text-align: center;
+  border: 2px solid var(--rebrand-color-primary-teal);
 }
 
 .doc .module-type.core {
-  background: var(--rebrand-color-primary-green);
+  background: var(--rebrand-color-primary-fresh);
 }
 
 .doc .module-type.extension {
-  background: var(--rebrand-color-primary-light-green);
-}
-
-.doc .module-type.extension-api {
-  background: var(--rebrand-color-primary-lime);
+  background: var(--rebrand-color-primary-bloom);
 }
 
 .doc .module-type.framework {
-  background: var(--rebrand-color-primary-teal);
+  background: var(--rebrand-color-primary-sand);
 }
 
 .doc .module-type.incubator {
-  background: orangered;
+  background: var(--rebrand-color-primary-teal);
+  color: var(--rebrand-color-primary-dew) !important;
+  border: 2px solid var(--rebrand-color-primary-dew) !important;
 }
 
 .doc-card {
@@ -1658,9 +1657,9 @@ span.changelogDate {
   height: 8rem;
   border-radius: 12%;
   background: white;
-  color: darkslategrey;
+  color: var(--rebrand-color-primary-teal) !important;
   width: 10rem;
-  outline: 2px solid darkslategrey;
+  outline: 2px solid var(--rebrand-color-primary-teal) !important;
   box-sizing: border-box;
   margin: 10px !important;
   margin-top: 30px !important;
@@ -1679,18 +1678,18 @@ span.changelogDate {
 }
 
 .category-card a {
-  color: darkslategrey;
+  color: var(--rebrand-color-primary-teal) !important;
 }
 
-.category-card a:hover {
+/* .category-card a:hover {
   text-decoration: none;
-  color: var(--rebrand-color-primary-green) !important;
-}
+  color: var(--rebrand-color-primary-teal) !important;
+} */
 
 .category-card:hover {
   transform: translateY(-10px) translateX(10px);
-  box-shadow: -15px 10px 1px darkslategrey;
-  background: linear-gradient(to bottom, white, var(--color-smoke-50));
+  box-shadow: -15px 10px 1px var(--rebrand-color-primary-teal);
+  background: linear-gradient(to bottom, white, var(--rebrand-color-primary-sand));
 }
 
 .category-card:hover i {
@@ -1698,5 +1697,6 @@ span.changelogDate {
 }
 
 .category-card:hover a {
-  color: var(--rebrand-color-primary-green) !important;
+  color: var(--rebrand-color-primary-teal) !important;
+  text-decoration: none !important;
 }

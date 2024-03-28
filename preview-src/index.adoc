@@ -70,14 +70,19 @@ xref:test.adoc[Administration icon:cog[]]
 [.iconSet]
 link:dude[icon:laptop[5x]] icon:laptop[5x] icon:laptop[5x]
 
-[.status.published]#Published#
+// [.status.published]#Published#
 
-[.status.modified]#Modified#
+// [.status.modified]#Modified#
 
-[.status.draft]#Draft#
+// [.status.draft]#Draft#
 
-[.module-type.core]#test#
+[.module-type.core]#core#
 
+[.module-type.extension]#extension#
+
+[.module-type.framework]#framework#
+
+[.module-type.incubator]#incubator#
 
 // ++++
 :nextReleaseDate: 2023-08-25
