@@ -111,6 +111,16 @@ footer .container {
   transition: fill 0.3s ease;
 }
 
+.footer img.rebrand-logo-footer {
+  width: 250px;
+}
+
+@media screen and (max-width: 1349px) {
+  .footer img.rebrand-logo-footer {
+    width: 200px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .footer__col.footer__logo {
     margin-bottom: 1.3rem;
