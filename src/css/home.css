@@ -554,6 +554,7 @@ mark {
 
 .general-announcement .announcement-container {
   padding: 5vh;
+  position: relative;
 }
 
 .general-announcement button {
@@ -572,7 +573,7 @@ mark {
 }
 
 .general-announcement button:hover i {
-  color: darkslategrey;
+  color: var(--rebrand-color-primary-teal);
 }
 
 .general-announcement .general-center {
@@ -605,4 +606,56 @@ mark {
   text-align: center;
   margin-top: -4px;
   font-style: italic;
+}
+
+.general-announcement .banner-image {
+  /* Add styling for your banner image */
+  width: 100%; /* Adjust width as needed */
+  height: 30vh; /* Adjust height as needed */
+  background-image: url('../img/magnolia-social-banner.png'); /* Specify the URL of your banner image */
+  background-size: cover;
+  background-position: center;
+}
+
+.general-announcement .text-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 5vw; /* Adjust padding as needed */
+  color: white; /* Adjust text color */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow to text for better visibility */
+}
+
+.general-announcement .text-overlay h1 {
+  font-size: 24px; /* Adjust font size as needed */
+  margin-bottom: 10px; /* Adjust margin as needed */
+}
+
+.general-announcement .text-overlay span {
+  color: var(--rebrand-color-primary-fresh); /* Adjust span color as needed */
+}
+
+.general-announcement .general-center {
+  text-align: left; /* Align text to the left */
+}
+
+.general-announcement .general-center button {
+  /* Add styling for your button */
+  background-color: var(--rebrand-color-primary-blue); /* Adjust button color as needed */
+  color: white; /* Adjust button text color */
+  padding: 10px 20px; /* Adjust button padding as needed */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.general-announcement .general-center button:hover {
+  background-color: var(--rebrand-color-primary-fresh); /* Adjust button hover color as needed */
+  color: var(--rebrand-color-primary-teal);
 }
