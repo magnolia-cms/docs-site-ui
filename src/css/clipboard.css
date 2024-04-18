@@ -28,5 +28,5 @@
 .clipboard:active {
   outline: 0;
   background-color: whitesmoke;
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
 }

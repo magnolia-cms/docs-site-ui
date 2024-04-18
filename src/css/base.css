@@ -55,11 +55,13 @@ th {
   font-weight: var(--body-font-weight-bold);
 }
 
-em em { /* stylelint-disable-line */
+em em {
+  /* stylelint-disable-line */
   font-style: normal;
 }
 
-strong strong { /* stylelint-disable-line */
+strong strong {
+  /* stylelint-disable-line */
   font-weight: normal;
 }
 
@@ -92,7 +94,7 @@ button::-moz-focus-inner {
 } */
 /*
 @media screen and (min-width: 1310px) { */
-.algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
+.algolia-autocomplete .ds-dropdown-menu [class^="ds-dataset-"] {
   max-height: 500px !important;
   width: 100%;
   max-width: 345px;
@@ -107,7 +109,7 @@ button::-moz-focus-inner {
 }
 
 .algolia-autocomplete .algolia-docsearch-suggestion--category-header {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   border: none;
 }
 
@@ -132,7 +134,7 @@ button::-moz-focus-inner {
   transform: translateY(-50%) !important;
 }
 
-.algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-],
+.algolia-autocomplete .ds-dropdown-menu [class^="ds-dataset-"],
 .algolia-autocomplete.algolia-autocomplete-left .ds-dropdown-menu.ds-with-1 {
   border-radius: 8px !important;
 }
@@ -164,10 +166,17 @@ button::-moz-focus-inner {
   top: 70px !important;
 }
 
-.algolia-autocomplete .ds-dropdown-menu .ds-suggestion.ds-cursor .algolia-docsearch-suggestion.suggestion-layout-simple,
-.algolia-autocomplete .ds-dropdown-menu .ds-suggestion.ds-cursor .algolia-docsearch-suggestion:not(.suggestion-layout-simple) .algolia-docsearch-suggestion--content {
+/* .algolia-autocomplete
+.ds-dropdown-menu
+  .ds-suggestion.ds-cursor
+  .algolia-docsearch-suggestion.suggestion-layout-simple,
+.algolia-autocomplete
+  .ds-dropdown-menu
+  .ds-suggestion.ds-cursor
+  .algolia-docsearch-suggestion:not(.suggestion-layout-simple)
+  .algolia-docsearch-suggestion--content {
   background-color: rgba(171, 230, 90, 0.31) !important;
-}
+} */
 
 @media screen and (max-width: 768px) {
   .algolia-autocomplete .algolia-docsearch-suggestion--wrapper {
@@ -180,14 +189,16 @@ button::-moz-focus-inner {
     margin-top: 0 !important;
   }
 
-  .algolia-autocomplete .algolia-docsearch-suggestion .algolia-docsearch-suggestion--content {
+  /* .algolia-autocomplete
+    .algolia-docsearch-suggestion
+    .algolia-docsearch-suggestion--content {
     margin-bottom: 0.8rem !important;
     margin-top: 8px !important;
-  }
+  } */
 }
 
 @media screen and (min-width: 769px) {
-  .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
+  .algolia-autocomplete .ds-dropdown-menu [class^="ds-dataset-"] {
     width: 60vw !important;
     max-width: unset;
   }
@@ -209,43 +220,43 @@ button::-moz-focus-inner {
 }
 
 @media screen and (min-width: 1300px) {
-  .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
+  .algolia-autocomplete .ds-dropdown-menu [class^="ds-dataset-"] {
     width: 70vw !important;
   }
 }
 
 form.DocSearch-Form {
-  box-shadow: 1px 1px 6px -1px var(--color-primary-green) !important;
+  box-shadow: 1px 1px 6px -1px var(--rebrand-color-primary-green) !important;
   margin-bottom: 5px !important;
 }
 
 form.DocSearch-Form svg {
-  color: var(--color-primary-green) !important;
+  color: var(--rebrand-color-primary-green) !important;
 }
 
 .DocSearch-Modal button.DocSearch-Cancel {
-  color: var(--color-primary-green) !important;
+  color: var(--rebrand-color-primary-green) !important;
 }
 
 footer.DocSearch-Footer svg {
-  color: var(--color-primary-green) !important;
+  color: var(--rebrand-color-primary-green) !important;
 }
 
 footer.DocSearch-Footer div.DocSearch-Logo a {
-  color: var(--color-primary-green) !important;
+  color: var(--rebrand-color-primary-green) !important;
 }
 
 .DocSearch-Hit[aria-selected="true"] a {
-  background-color: var(--color-primary-green) !important;
+  background-color: var(--rebrand-color-primary-green) !important;
 }
 
 .DocSearch-Dropdown li.DocSearch-Hit a:hover {
-  background-color: var(--color-primary-green) !important;
+  background-color: var(--rebrand-color-primary-green) !important;
   text-decoration: none !important;
 }
 
 .DocSearch-Dropdown li.DocSearch-Hit a:focus {
-  background-color: var(--color-primary-green) !important;
+  background-color: var(--rebrand-color-primary-green) !important;
   opacity: 0.8;
 }
 
@@ -254,7 +265,7 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
 }
 
 .DocSearch-Hits .DocSearch-Hit-source {
-  color: var(--color-primary-green) !important;
+  color: var(--rebrand-color-primary-green) !important;
 }
 
 .DocSearch-Hits mark {
@@ -277,12 +288,12 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
 }
 
 .DocSearch-NoResults-Prefill-List ul li button {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   transition: 0.3s ease;
 }
 
 .DocSearch-NoResults-Prefill-List ul li button:hover {
-  color: var(--color-primary-dark-green);
+  color: var(--rebrand-color-primary-teal);
   text-decoration: none !important;
 }
 
@@ -309,8 +320,8 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
 /* } */
 
 .category-label {
-  background: var(--color-smoke-50);
-  color: var(--color-primary-dark-green);
+  background: var(--rebrand-color-primary-sand);
+  color: var(--rebrand-color-primary-teal);
   padding: 10px;
   border-radius: 5px;
   font-size: smaller;

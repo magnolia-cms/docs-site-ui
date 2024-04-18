@@ -39,7 +39,135 @@ Author Name
 //   <span>Enter</span>
 // </div>
 
+link:www.rte.ie[^]
+
+xref:docs:ROOT:index.adoc[test xref]
+
 [.category-label]#Administration# [.category-label]#Bundled: Community Edition#
+
+{sp} +
+
+// ++++
+//   <style>
+//     th {
+//       cursor: pointer;
+//     }
+//   </style>
+
+// <!-- Example Table 1 -->
+// <table id="table1">
+//   <thead>
+//     <tr>
+//       <th onclick="sortTable(this, 0)">Column 1</th>
+//       <th onclick="sortTable(this, 1)">Column 2</th>
+//     </tr>
+//   </thead>
+//   <tbody>
+//     <!-- Your table rows go here -->
+//     <tr>
+//       <td>A</td>
+//       <td>1</td>
+//     </tr>
+//     <tr>
+//       <td>C</td>
+//       <td>3</td>
+//     </tr>
+//     <tr>
+//       <td>B</td>
+//       <td>2</td>
+//     </tr>
+//     <tr>
+//       <td>D</td>
+//       <td>15</td>
+//     </tr>
+//     <tr>
+//       <td>E</td>
+//       <td>8</td>
+//     </tr>
+//   </tbody>
+// </table>
+
+
+// <script>
+//   function sortTable(header, columnIndex) {
+//     var table = header.closest('table');
+//     var rows = Array.from(table.rows).slice(1); // Skip header row
+
+//     rows.sort(function (a, b) {
+//       var x = a.cells[columnIndex].textContent || a.cells[columnIndex].innerText;
+//       var y = b.cells[columnIndex].textContent || b.cells[columnIndex].innerText;
+
+//       return compareValues(x, y);
+//     });
+
+//     // Re-append sorted rows to the table
+//     rows.forEach(function (row) {
+//       table.tBodies[0].appendChild(row);
+//     });
+//   }
+
+//   function compareValues(x, y) {
+//     if (isNaN(x) || isNaN(y)) {
+//       // If at least one of the values is not numeric, do alphabetical comparison
+//       return x.localeCompare(y);
+//     } else {
+//       // If both values are numeric, do numerical comparison
+//       return parseFloat(x) - parseFloat(y);
+//     }
+//   }
+
+//   // Dynamically add onclick to th elements for all tables on the page
+//   document.addEventListener("DOMContentLoaded", function() {
+//     var allTables = document.querySelectorAll('table');
+//     allTables.forEach(function(table) {
+//       var thElements = table.querySelectorAll('th');
+//       thElements.forEach(function(th, index) {
+//         th.onclick = function() {
+//           sortTable(this, index);
+//         };
+//       });
+//     });
+//   });
+// </script>
+
+// ++++
+
+[cols="36%s,18%,16%,16%,14%m,class=sortable"]
+|===
+|Module |Type |Bundled CE | Bundled Core |Version
+
+|apple
+|core
+|
+|icon:check[]
+|1.4
+
+|banana
+|core
+|icon:check[]
+|
+|1.6
+
+|carrot
+|core
+|icon:check[]
+|
+|1.8
+
+|squash
+|extension
+|
+|
+|1.5
+
+|coconut
+|core
+|
+|
+|2.4
+
+|===
+
 
 [.category-card]
 xref:test.adoc[Administration and something] +
@@ -66,14 +194,19 @@ xref:test.adoc[Administration icon:cog[]]
 [.iconSet]
 link:dude[icon:laptop[5x]] icon:laptop[5x] icon:laptop[5x]
 
-[.status.published]#Published#
+// [.status.published]#Published#
 
-[.status.modified]#Modified#
+// [.status.modified]#Modified#
 
-[.status.draft]#Draft#
+// [.status.draft]#Draft#
 
-[.module-type.core]#test#
+[.module-type.core]#core#
 
+[.module-type.extension]#extension#
+
+[.module-type.framework]#framework#
+
+[.module-type.incubator]#incubator#
 
 // ++++
 :nextReleaseDate: 2023-08-25
@@ -146,6 +279,8 @@ TIP: This is a note.
 IMPORTANT: This is a note.
 
 CAUTION: This is a note.
+
+WARNING: This is a warning.
 
 [.doc-card]
 .Jamstack icon:laptop[]

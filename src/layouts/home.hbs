@@ -6,13 +6,13 @@
   <body class="article{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
 {{> header}}
 {{> body-home}}
-<div class="headless-announcement">
-    <h1>Calling all <span>frontend</span> developers</h1>
-    <h2>Use the headless approach for Magnolia</h2>
-    <p class="no-java">no Java required</p>
-    <div class="headless-center">
-        <a href="https://docs.magnolia-cms.com/headless/index.html"><button>Headless docs <i class="fa fa-code" aria-hidden="true"></i> </button></a>
+<div class="general-announcement">
+  <div class="announcement-container">
+    <h1>Check out what's new in <span>Magnolia 6.3</span></h1>
+    <div class="general-center">
+        <a href="https://docs.magnolia-cms.com/product-docs/6.3/features/what-is-new"><button>Magnolia 6.3 <i class="fa fa-rocket" aria-hidden="true"></i> </button></a>
     </div>
+  </div>
 </div>
 {{!-- <div class="announcement">
     <h1>Love Magnolia?</h1>
@@ -41,21 +41,6 @@
     </div>
   </div>
 </div> --}}
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  var navbarToggles = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0)
-  if (navbarToggles.length === 0) return
-  navbarToggles.forEach(function (el) {
-    el.addEventListener('click', function (e) {
-      e.stopPropagation()
-      el.classList.toggle('is-active')
-      document.getElementById(el.dataset.target).classList.toggle('is-active')
-      document.documentElement.classList.toggle('is-clipped--navbar')
-    })
-  })
-})
-</script>
 
 <script>
 // Get the modal

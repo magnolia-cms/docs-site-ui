@@ -14,7 +14,7 @@ nav.pagination span {
 
 nav.pagination .prev {
   padding: 1.5rem;
-  background-color: whitesmoke;
+  background-color: var(--rebrand-color-primary-sand);
   border-radius: 10px;
   margin-right: 6px;
   transition: 0.2s ease;
@@ -28,7 +28,7 @@ nav.pagination .next {
   margin-left: 6px;
   padding: 1.5rem;
   text-align: right;
-  background-color: whitesmoke;
+  background-color: var(--rebrand-color-primary-sand);
   border-radius: 10px;
   transition: 0.2s ease;
 }

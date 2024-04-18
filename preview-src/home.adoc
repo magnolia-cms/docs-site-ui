@@ -1,0 +1,9 @@
+:idprefix:
+:idseparator: -
+:!example-caption:
+:page-layout: home
+
+= Magnolia docs home
+
+test
+

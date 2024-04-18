@@ -29,7 +29,7 @@
 }
 
 .nav {
-  background: var(--color-smoke-50);
+  background: var(--rebrand-color-primary-dew);
   position: relative;
   top: 0;
   height: var(--nav-height);
@@ -182,11 +182,11 @@ html.is-clipped--nav {
 .is-current-page > .nav-link,
 .is-current-page > .nav-text {
   font-weight: bolder;
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
 }
 
 .nav-link:hover {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   text-decoration: none;
 }
 
@@ -283,7 +283,7 @@ html.is-clipped--nav {
 }
 
 .nav-panel-explore .component .version a:hover {
-  background-color: var(--color-primary-green);
+  background-color: var(--rebrand-color-primary-green);
   color: whitesmoke;
   text-decoration: none;
 }
@@ -292,7 +292,7 @@ html.is-clipped--nav {
   border-color: currentColor;
   opacity: 0.9;
   font-weight: var(--body-font-weight-bold);
-  background-color: var(--color-primary-green);
+  background-color: var(--rebrand-color-primary-green);
   color: whitesmoke;
 }
 
@@ -316,7 +316,7 @@ html.is-clipped--nav {
 }
 
 .nav .green {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
 }
 
 .nav .light-green {
@@ -324,7 +324,7 @@ html.is-clipped--nav {
 }
 
 .nav .dark-green {
-  color: var(--color-primary-dark-green);
+  color: var(--rebrand-color-primary-teal);
 }
 
 .nav .grey {
@@ -336,7 +336,7 @@ html.is-clipped--nav {
 }
 
 .green-badge {
-  background: var(--color-primary-green);
+  background: var(--rebrand-color-primary-green);
   border-radius: 0.5rem;
   color: #fff;
   display: inline-block;

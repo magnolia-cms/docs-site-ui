@@ -25,6 +25,7 @@
 .doc h5,
 .doc h6 {
   color: var(--heading-font-color);
+  font-family: "Lora", sans-serif;
   font-weight: var(--alt-heading-font-weight);
   hyphens: none;
   line-height: 1.3;
@@ -37,7 +38,6 @@
 
 .doc > h1.page:first-child {
   font-size: 3rem;
-  color: var(--color-gray-dark);
   font-weight: 700;
   margin: 0.5rem 0;
 }
@@ -132,7 +132,7 @@
   color: var(--link_unresolved-font-color);
 }
 
-.doc a[rel*=noopener]::after {
+.doc a[rel*="noopener"]::after {
   content: "\f08e";
   font-family: FontAwesome, sans-serif;
   font-weight: 400;
@@ -220,6 +220,15 @@
 .doc table.tableblock thead th {
   border-bottom: 2.5px solid lightgrey;
   padding: 0.5rem;
+  cursor: pointer;
+}
+
+.doc table.tableblock thead th::after {
+  content: "\f07d";
+  font-family: FontAwesome, sans-serif;
+  padding-left: 4px;
+  color: grey;
+  font-size: small;
 }
 
 .doc table.tableblock td,
@@ -258,7 +267,7 @@
 }
 
 .doc .admonitionblock code {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
 }
 
 .doc .admonitionblock p,
@@ -336,11 +345,11 @@
 }
 
 .doc .admonitionblock.note {
-  border-left: 2px solid var(--color-primary-ocean-blue);
+  border-left: 2px solid var(--note-color);
 }
 
 .doc .admonitionblock.note .icon {
-  background-color: var(--color-primary-ocean-blue);
+  background-color: var(--note-color);
   color: var(--note-on-color);
 }
 
@@ -353,6 +362,7 @@
 
 .doc .admonitionblock.best {
   border-left: 2px solid var(--best-color);
+  color: inherit;
 }
 
 .doc .admonitionblock.best .icon {
@@ -369,6 +379,7 @@
 
 .admonitionblock.best td.icon .icon-note::after {
   content: "Best Practice";
+  color: var(--best-on-color) !important;
 }
 
 .doc .admonitionblock.tip {
@@ -388,11 +399,11 @@
 }
 
 .doc .admonitionblock.warning {
-  border-left: 2px solid var(--color-red);
+  border-left: 2px solid var(--warning-color);
 }
 
 .doc .admonitionblock.warning .icon {
-  background-color: var(--color-red);
+  background-color: var(--warning-color);
   color: var(--warning-on-color);
 }
 
@@ -672,7 +683,7 @@
   line-height: 1.3;
   margin-bottom: 0.5em;
   text-align: left;
-  background-color: var(--color-primary-dark-green);
+  background-color: var(--rebrand-color-primary-teal);
   color: whitesmoke;
   margin-left: -2rem;
   padding: 10px;
@@ -773,7 +784,7 @@ pre code a:hover {
   width: 1.5em;
   letter-spacing: -0.25ex;
   text-indent: -0.25ex;
-  background-color: var(--color-primary-green);
+  background-color: var(--rebrand-color-primary-green);
   margin-top: 1px;
   color: whitesmoke;
 }
@@ -1027,12 +1038,7 @@ pre code a:hover {
 .doc .blue-bg a:hover {
   text-decoration: none;
   color: var(--color-white);
-  text-shadow:
-    0 0 10px var(--glow-color),
-    0 0 20px var(--glow-color),
-    0 0 40px var(--glow-color),
-    0 0 60px var(--glow-color),
-    0 0 80px var(--glow-color);
+  text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 40px var(--glow-color), 0 0 60px var(--glow-color), 0 0 80px var(--glow-color);
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -1050,11 +1056,11 @@ pre code a:hover {
 }
 
 .doc .green {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
 }
 
 .doc .green-bg {
-  background-color: var(--color-primary-green);
+  background-color: var(--rebrand-color-primary-green);
   padding: 5px;
   color: whitesmoke;
   border: none;
@@ -1069,7 +1075,7 @@ pre code a:hover {
 }
 
 .doc .dark-green {
-  color: var(--color-primary-dark-green);
+  color: var(--rebrand-color-primary-teal);
 }
 
 .doc .yellow {
@@ -1086,11 +1092,11 @@ pre code a:hover {
 
 .doc .collapse {
   font-size: larger;
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   background-color: var(--color-smoke-90);
   padding: 0.8rem !important;
   cursor: pointer;
-  border-left: 2px solid var(--color-primary-green);
+  border-left: 2px solid var(--rebrand-color-primary-green);
   font-weight: bold;
   transition: 0.75s ease;
   margin-top: 0.75rem;
@@ -1098,12 +1104,12 @@ pre code a:hover {
 }
 
 .doc .collapse p::after {
-  content: '+';
+  content: "+";
   margin-left: 10px;
 }
 
 .doc .collapse.active p::after {
-  content: '-';
+  content: "-";
   margin-left: 10px;
 }
 
@@ -1130,14 +1136,14 @@ pre code a:hover {
   background-color: var(--color-smoke-90);
   padding: 0.8rem;
   cursor: auto;
-  border-left: 5px solid var(--color-primary-green);
+  border-left: 5px solid var(--rebrand-color-primary-green);
   font-weight: bold;
   transition: 0.55s ease;
 }
 
 .doc .focus:hover {
   background-color: var(--color-primary-light-green);
-  border-left: 15px solid var(--color-primary-green);
+  border-left: 15px solid var(--rebrand-color-primary-green);
 }
 
 .doc .focus a {
@@ -1161,7 +1167,7 @@ pre code a:hover {
 }
 
 .doc .celebrate {
-  background-color: var(--color-primary-green);
+  background-color: var(--rebrand-color-primary-light-green);
   color: white;
   padding: 1.75rem;
   border-radius: 10px;
@@ -1181,7 +1187,7 @@ pre code a:hover {
 }
 
 .doc .celebrate a {
-  color: var(--color-primary-gold);
+  color: var(--rebrand-color-primary-dew);
   text-decoration: none;
 }
 
@@ -1234,19 +1240,19 @@ pre code a:hover {
 .doc .announce .title::after {
   content: "\1F56C";
   margin-left: 2px;
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   font-size: 2rem;
   font-weight: 500;
 }
 
 .doc .announce a {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   text-decoration: none;
   transition: 0.2s ease;
 }
 
 .doc .announce a:hover {
-  color: var(--color-primary-gold);
+  color: var(--rebrand-color-primary-dew);
   text-decoration: none;
 }
 
@@ -1394,7 +1400,7 @@ pre code a:hover {
 
 .doc .module-type {
   border-radius: 6px;
-  color: whitesmoke !important;
+  color: var(--rebrand-color-primary-teal);
   display: inline-block;
   font-size: 0.65rem;
   font-weight: 410;
@@ -1405,26 +1411,25 @@ pre code a:hover {
   min-width: fit-content;
   width: 6vw;
   text-align: center;
+  border: 2px solid var(--rebrand-color-primary-teal);
 }
 
 .doc .module-type.core {
-  background: var(--rebrand-color-primary-green);
+  background: var(--rebrand-color-primary-fresh);
 }
 
 .doc .module-type.extension {
-  background: var(--rebrand-color-primary-light-green);
-}
-
-.doc .module-type.extension-api {
-  background: var(--rebrand-color-primary-lime);
+  background: var(--rebrand-color-primary-bloom);
 }
 
 .doc .module-type.framework {
-  background: var(--rebrand-color-primary-teal);
+  background: var(--rebrand-color-primary-sand);
 }
 
 .doc .module-type.incubator {
-  background: orangered;
+  background: var(--rebrand-color-primary-teal);
+  color: var(--rebrand-color-primary-dew) !important;
+  border: 2px solid var(--rebrand-color-primary-dew) !important;
 }
 
 .doc-card {
@@ -1460,7 +1465,7 @@ pre code a:hover {
 }
 
 .doc-card a {
-  background-color: var(--color-primary-green);
+  background-color: var(--rebrand-color-primary-green);
   padding: 5px;
   color: whitesmoke;
   border: none;
@@ -1554,7 +1559,7 @@ pre code a:hover {
 }
 
 #countdown {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   font-family: Roboto-mono, monospace;
   font-size: 1rem;
   background-color: inherit;
@@ -1566,12 +1571,12 @@ pre code a:hover {
 }
 
 #countdown::before {
-  content: 'Countdown: ';
+  content: "Countdown: ";
   color: var(--color-jet-50);
 }
 
 #targetDate {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   font-family: Roboto-mono, monospace;
   font-size: 1rem;
   background-color: inherit;
@@ -1582,12 +1587,12 @@ pre code a:hover {
 }
 
 #targetDate::before {
-  content: 'Target Date: ';
+  content: "Target Date: ";
   color: var(--color-jet-50);
 }
 
 button.clipboard i {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green);
   font-weight: bold;
   font-size: larger;
   transition: 0.3s ease-in-out;
@@ -1601,7 +1606,7 @@ button.clipboard i {
 button.changelog {
   font-family: inherit;
   font-size: inherit;
-  background-color: var(--color-primary-green);
+  background-color: var(--rebrand-color-primary-green);
   color: whitesmoke;
   transition: 0.3s ease;
   padding: 5px;
@@ -1610,7 +1615,7 @@ button.changelog {
 }
 
 button.changelog:hover {
-  background-color: var(--color-primary-dark-green);
+  background-color: var(--rebrand-color-primary-teal);
 }
 
 input#monthPicker {
@@ -1623,7 +1628,7 @@ input#monthPicker {
 }
 
 input#monthPicker:hover {
-  box-shadow: 1px 1px 6px -1px var(--color-primary-green) !important;
+  box-shadow: 1px 1px 6px -1px var(--rebrand-color-primary-green) !important;
 }
 
 input#monthPicker i:hover {
@@ -1631,12 +1636,12 @@ input#monthPicker i:hover {
 }
 
 .ui-datepicker-month {
-  background-color: var(--color-primary-green) !important;
+  background-color: var(--rebrand-color-primary-green) !important;
   transition: 0.2s ease;
 }
 
 .ui-datepicker-month:hover {
-  background-color: var(--color-primary-dark-green) !important;
+  background-color: var(--rebrand-color-primary-teal) !important;
 }
 
 span.changelogDate {
@@ -1661,9 +1666,9 @@ span.changelogDate {
   height: 8rem;
   border-radius: 12%;
   background: white;
-  color: darkslategrey;
+  color: var(--rebrand-color-primary-teal) !important;
   width: 10rem;
-  outline: 2px solid darkslategrey;
+  outline: 2px solid var(--rebrand-color-primary-teal) !important;
   box-sizing: border-box;
   margin: 10px !important;
   margin-top: 30px !important;
@@ -1682,24 +1687,25 @@ span.changelogDate {
 }
 
 .category-card a {
-  color: darkslategrey;
+  color: var(--rebrand-color-primary-teal) !important;
 }
 
-.category-card a:hover {
+/* .category-card a:hover {
   text-decoration: none;
-  color: var(--color-primary-dark-green);
-}
+  color: var(--rebrand-color-primary-teal) !important;
+} */
 
 .category-card:hover {
   transform: translateY(-10px) translateX(10px);
-  box-shadow: -15px 10px 1px darkslategrey;
-  background: linear-gradient(to bottom, white, var(--color-smoke-50));
+  box-shadow: -15px 10px 1px var(--rebrand-color-primary-teal);
+  background: linear-gradient(to bottom, white, var(--rebrand-color-primary-sand));
 }
 
 .category-card:hover i {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-green) !important;
 }
 
 .category-card:hover a {
-  color: var(--color-primary-green);
+  color: var(--rebrand-color-primary-teal) !important;
+  text-decoration: none !important;
 }
