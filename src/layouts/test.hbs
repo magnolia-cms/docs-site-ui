@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
+  <style>
+    @media(max-width: 500px) {
+      .reverse-columns {
+        flex-direction: column-reverse;
+        display: flex;
+      }
+    }
+
+    .titled {
+      font-family: 'Merriweather', serif !important;
+      font-size: 58px !important;
+      font-weight: 400 !important;
+      line-height: 64px !important;
+    }
+
+    .subtitled {
+      font-family: 'Merriweather', serif !important;
+      font-size: 22px !important;
+      font-weight: 400 !important;
+      line-height: 36px !important;
+    }
+
+    #docsearch.container {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- NavBar va a todo lo ancho -->
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://bulma.io">
+        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+      </a>
+    </div>
+
+    <div class="navbar-menu">
+
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://preview-magnolia-63.netlify.app/product-docs/6.3/releases">
+          DX Core Releases
+        </a>
+
+        <a class="navbar-item">
+          Magnolia PaaS
+        </a>
+
+        <a class="navbar-item">
+          Get Magnolia
+        </a>
+
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero is-medium has-text-centered">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-centered">
+          <div data-aos="zoom-in-up" class="column is-8">
+            <h1 class="title titled is-1 mb-6">
+              Magnolia 6.3 <span id="typewriter"></span>
+            </h1>
+            <div id="docsearch" class="container"></div>
+            <h2 class="subtitle subtitled">
+            </h2>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Hero del producto -->
+  <section class="hero is-white is-fullheight">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns  is-vcentered reverse-columns">
+          <div class="column
+          is-10-mobile 
+          is-10-tablet 
+          is-5-desktop 
+          is-5-widescreen 
+          is-5-fullhd " data-aos="fade-down">
+            <h1 class="title titled is-1 mb-6">
+              Get to know Magnolia
+            </h1>
+            <div class="buttons">
+              <button class="button is-yellow">DX Core on-prem</button>
+              <button class="button">Magnolia PaaS</button>
+            </div>
+          </div>
+          <div data-aos="fade-right" class="column
+          is-10-mobile 
+          is-10-tablet 
+          is-4-desktop 
+          is-7-widescreen 
+          is-4-fullhd is-offset-1-fullhd">
+            <figure class="image is-square">
+              <img src="../images/undraw_Camera_re_cnp4.svg">
+            </figure>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero is-white is-fullheight">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns  is-vcentered">
+          <div data-aos="fade-left" class="column
+          is-10-mobile is-offset-1-mobile
+          is-10-tablet is-offset-1-tablet
+          is-4-desktop is-offset-1-desktop
+          is-4-widescreen is-offset-1-widescreen
+          is-4-fullhd is-offset-1-fullhd">
+            <figure class="image is-square">
+              <img src="../images/undraw_Camera_re_cnp4.svg">
+            </figure>
+          </div>
+          <div data-aos="fade-down" class="column
+          is-10-mobile is-offset-1-mobile
+          is-10-tablet is-offset-1-tablet
+          is-5-desktop is-offset-1-desktop
+          is-5-widescreen is-offset-1-widescreen
+          is-5-fullhd is-offset-1-fullhd">
+            <h1 class="titled title is-1 mb-6">
+              Dedicated developer documentation
+            </h1>
+            <h2 class="subtitled subtitle">
+              Install, configure, and deploy Magnolia. Use our CLI or deep-dive into light development (no Java needed)
+            </h2>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero is-white is-fullheight">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns  is-vcentered reverse-columns">
+          <div data-aos="fade-right" class="column
+          is-10-mobile is-offset-1-mobile
+          is-10-tablet is-offset-1-tablet
+          is-5-desktop is-offset-1-desktop
+          is-5-widescreen is-offset-1-widescreen
+          is-5-fullhd is-offset-1-fullhd">
+            <h1 class="title titled is-1 mb-6">
+              Authoring docs built for Magnolia end users
+            </h1>
+            <h2 class="subtitle subtitled">
+              Learn how to manage pages in Magnolia, effectively search for content, or better understand the publishing workflow
+            </h2>
+          </div>
+          <div data-aos="fade-down" class="column
+          is-10-mobile is-offset-1-mobile
+          is-10-tablet is-offset-1-tablet
+          is-4-desktop is-offset-1-desktop
+          is-4-widescreen is-offset-1-widescreen
+          is-4-fullhd is-offset-1-fullhd" data-aos="fade-up">
+            <figure class="image is-square">
+              <img src="../images/undraw_Camera_re_cnp4.svg">
+            </figure>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <section class="hero is-medium has-text-centered">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-centered">
+          <div data-aos="zoom-in-up" class="column is-8">
+            <h1 class="title titled is-1 mb-6">
+              Magnolia 6.3 <span id="typewriter"></span>
+            </h1>
+            <h2 class="subtitle subtitled">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laborum cupiditate dolorum vitae dolores
+              nesciunt totam magni quas.
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+            </h2>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section> -->
+{{> footer}}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/TypewriterJS/2.13.1/core.min.js"></script>
+  <script>
+    new Typewriter('#typewriter', {
+      strings: ['is coming', 'May 2024'],
+      autoStart: true,
+      loop: true,
+    });
+  </script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      once: true
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+  <script type="text/javascript">
+
+docsearch({
+  container: '#docsearch',
+  appId: 'IIQKXJ786V',
+  apiKey: '450fd6db7d4e2f26607012f0d8683a29',
+  indexName: 'landing_page',
+  searchParameters: { hitsPerPage: 12 },
+});
+
+</script>
+
+</body>
+
+</html>
