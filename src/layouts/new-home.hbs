@@ -10,7 +10,9 @@
     integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link rel="stylesheet" href="{{{uiRootPath}}}/css/site.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
+  <link rel="icon" href="{{{uiRootPath}}}/img/mgnl-favicon-darkTeal-32.png" type="image/png">
   <style>
     @media(max-width: 500px) {
       .reverse-columns {
@@ -20,14 +22,14 @@
     }
 
     .titled {
-      font-family: 'Merriweather', serif !important;
-      font-size: 58px !important;
+      font-family: 'Lora', serif !important;
+      font-size: 80px !important;
       font-weight: 400 !important;
       line-height: 64px !important;
     }
 
     .subtitled {
-      font-family: 'Merriweather', serif !important;
+      font-family: 'Lora', serif !important;
       font-size: 22px !important;
       font-weight: 400 !important;
       line-height: 36px !important;
@@ -39,6 +41,91 @@
         align-items: center; /* Center vertically */
     }
 
+    button.DocSearch.DocSearch-Button {
+      width: 40vw !important;
+      height: 10vh !important
+    }
+
+    span.DocSearch-Button-Placeholder {
+      content: 'Test' !important;
+    }
+
+    h1.title.titled {
+      color: var(--rebrand-color-primary-fresh) !important;
+      line-height: 1.1 !important;
+    }
+
+    h2.subtitle.subtitled {
+      color: whitesmoke;
+    }
+    
+    button.button {
+      background-color: var(--color-digital-blue) !important;
+      transition: 0.3s ease;
+    }
+
+    button.button:hover {
+      background-color: var(--color-digital-blue) !important;
+    }
+
+    .navbar-item {
+      font-size: large;
+    }
+
+    .navbar-item img {
+      width: 20vw !important;
+      max-height: none !important;
+    }
+
+    a.navbar-item {
+      color: var(--rebrand-color-primary-teal)!important;
+    }
+
+    a.navbar-item:hover {
+      color: var(--color-digital-blue) !important;
+      background-color: transparent !important;
+    }
+
+    a.navbar-item:focus {
+      background-color: transparent !important;
+    }
+
+    #hero-header {
+      color: var(--rebrand-color-primary-fresh) !important;
+    }
+
+    div.hero-body {
+      background-color: var(--rebrand-color-primary-teal) !important;
+    }
+
+    #get-to-know-magnolia {
+      margin-top: -6rem;
+      opacity: 0.1 !important;
+    }
+
+    footer button {
+      background-color: transparent !important;
+      transition: 0.3s ease;
+      border: 1px solid var(--color-digital-blue) !important;;
+      padding: 5px;
+      color: var(--rebrand-color-primary-teal);
+      margin-top: 5px;
+    }
+
+    footer button i {
+      color: var(--color-digital-blue) !important;
+    }
+
+    a.button {
+      background-color: var(--color-digital-blue) !important;
+      color: whitesmoke;
+      text-decoration: none !important;
+    }
+
+    span#typewriter {
+      color: var(--rebrand-color-primary-sand);
+    }
+    
   </style>
 </head>
 
@@ -46,8 +133,8 @@
   <!-- NavBar va a todo lo ancho -->
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
-        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+      <a class="navbar-item" href="{{{siteRootPath}}}/index.html">
+        <img src="{{{uiRootPath}}}/img/rebrand-logo-dark-new.png" width="112" height="28">
       </a>
     </div>
 
@@ -58,14 +145,19 @@
           DX Core Releases
         </a>
 
-        <a class="navbar-item">
+        <a class="navbar-item" href="https://docs.magnolia-cms.com/paas/">
           Magnolia PaaS
         </a>
 
-        <a class="navbar-item">
+        {{!-- <a class="navbar-item" href="https://www.magnolia-cms.com/get-started/demo.html" target="_blank">
           Get Magnolia
-        </a>
+        </a> --}}
 
+        <div class="navbar-item navbar-item--button">
+          <span class="control">
+            <a class="button is-primary" href="https://www.magnolia-cms.com/get-started.html" target="_blank">Get Magnolia</a>
+          </span>
+        </div>
       </div>
     </div>
   </nav>
@@ -75,8 +167,8 @@
       <div class="container">
         <div class="columns is-centered">
           <div data-aos="zoom-in-up" class="column is-8">
-            <h1 class="title titled is-1 mb-6">
-              Magnolia 6.3 <span id="typewriter"></span>
+            <h1 class="title titled is-1 mb-6" id="hero-header">
+              Magnolia DX platform is <span id="typewriter"></span>
             </h1>
             <div id="docsearch" class="container"></div>
             <h2 class="subtitle subtitled">
@@ -102,21 +194,27 @@
             <h1 class="title titled is-1 mb-6">
               Get to know Magnolia
             </h1>
+            <img src="{{{uiRootPath}}}/img/rebrand-icon-white.svg" id="get-to-know-magnolia" alt="">
+          </div>
+          <div data-aos="fade-down" class="column
+          is-10-mobile is-offset-1-mobile
+          is-10-tablet is-offset-1-tablet
+          is-5-desktop is-offset-1-desktop
+          is-5-widescreen is-offset-1-widescreen
+          is-5-fullhd is-offset-1-fullhd">
+            {{!-- <h1 class="titled title is-1 mb-6">
+              Dedicated developer docs
+            </h1> --}}
+            <h2 class="subtitled subtitle">
+              Whether you're an existing customer or partner looking to learn more, or entirely new to the Magnolia experience.
+              Take a look at our docs to learn more about our Magnolia product offerings.
+            </h2>
             <div class="buttons">
-              <button class="button is-yellow">DX Core on-prem</button>
-              <button class="button">Magnolia PaaS</button>
+              <a class="button" href="https://docs.magnolia-cms.com/product-docs/6.2/">DX Core on-prem</a>
+              <a class="button" href="https://docs.magnolia-cms.com/paas/">Magnolia PaaS</a>
             </div>
           </div>
-          <div data-aos="fade-right" class="column
-          is-10-mobile 
-          is-10-tablet 
-          is-4-desktop 
-          is-7-widescreen 
-          is-4-fullhd is-offset-1-fullhd">
-            <figure class="image is-square">
-              <img src="../images/undraw_Camera_re_cnp4.svg">
-            </figure>
-          </div>
+
 
         </div>
       </div>
@@ -134,7 +232,7 @@
           is-4-widescreen is-offset-1-widescreen
           is-4-fullhd is-offset-1-fullhd">
             <figure class="image is-square">
-              <img src="../images/undraw_Camera_re_cnp4.svg">
+              <img src="https://www.magnolia-cms.com/.imaging/mte/corpweb2021/900-webp/dam/2024/frontpage/Homepage_Easy-Integrations.webp/jcr:content/Homepage_Easy%20Integrations.webp">
             </figure>
           </div>
           <div data-aos="fade-down" class="column
@@ -144,11 +242,16 @@
           is-5-widescreen is-offset-1-widescreen
           is-5-fullhd is-offset-1-fullhd">
             <h1 class="titled title is-1 mb-6">
-              Dedicated developer documentation
+              Dedicated developer docs
             </h1>
             <h2 class="subtitled subtitle">
-              Install, configure, and deploy Magnolia. Use our CLI or deep-dive into light development (no Java needed)
+              Install, configure, and deploy Magnolia. Use our CLI or deep-dive into light development, where no Java is required.
             </h2>
+            <div class="buttons">
+              <a class="button" href="https://docs.magnolia-cms.com/product-docs/6.2/getting-started-with-magnolia/installing-magnolia/">Install Magnolia</a>
+              <a class="button" href="https://docs.magnolia-cms.com/product-docs/6.2/getting-started-with-magnolia/">Try it out</a>
+              <a class="button" href="https://docs.magnolia-cms.com/headless/">Headless development</a>
+            </div>
           </div>
 
         </div>
@@ -170,8 +273,12 @@
               Authoring docs built for Magnolia end users
             </h1>
             <h2 class="subtitle subtitled">
-              Learn how to manage pages in Magnolia, effectively search for content, or better understand the publishing workflow
+              Learn how to manage pages in Magnolia, effectively search for content, or better understand the publishing workflow.
             </h2>
+            <div class="buttons">
+              <a class="button" href="https://docs.magnolia-cms.com/product-docs/6.2/authoring/">Authoring introduction</a>
+              <a class="button" href="https://docs.magnolia-cms.com/product-docs/6.2/authoring/publishing/">Publishing overview</a>
+            </div>
           </div>
           <div data-aos="fade-down" class="column
           is-10-mobile is-offset-1-mobile
@@ -180,7 +287,7 @@
           is-4-widescreen is-offset-1-widescreen
           is-4-fullhd is-offset-1-fullhd" data-aos="fade-up">
             <figure class="image is-square">
-              <img src="../images/undraw_Camera_re_cnp4.svg">
+              <img src="https://www.magnolia-cms.com/.imaging/mte/corpweb2021/900-webp/dam/2024/frontpage/Homepage_Unified-Authoring.webp/jcr:content/Homepage_Unified%20Authoring.webp">
             </figure>
           </div>
 
@@ -213,7 +320,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/TypewriterJS/2.13.1/core.min.js"></script>
   <script>
     new Typewriter('#typewriter', {
-      strings: ['is coming', 'May 2024'],
+      strings: ['composable', 'collaborative', 'modular', 'performant', 'made by the best'],
       autoStart: true,
       loop: true,
     });
@@ -224,6 +331,21 @@
       once: true
     });
   </script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var navbarToggles = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0)
+    if (navbarToggles.length === 0) return
+    navbarToggles.forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.stopPropagation()
+        el.classList.toggle('is-active')
+        document.getElementById(el.dataset.target).classList.toggle('is-active')
+        document.documentElement.classList.toggle('is-clipped--navbar')
+      })
+    })
+  })
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
   <script type="text/javascript">
 

@@ -1,1 +1,1 @@
-:page-layout: test
+:page-layout: new-home
