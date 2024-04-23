@@ -67,11 +67,10 @@ footer .container {
 .footer-terms button {
   background-color: transparent !important;
   transition: 0.3s ease;
-  border: 1px solid #0569f9 !important;;
+  border: 1px solid #0569f9 !important;
   padding: 5px;
   color: white;
   margin-top: 5px;
-  transition: 0.3s ease;
 }
 
 .footer-terms button i {
