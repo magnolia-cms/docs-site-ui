@@ -1,5 +1,5 @@
 footer.footer {
-  background-color: var(--rebrand-color-primary-sand);
+  background-color: var(--rebrand-color-primary-teal);
   padding: 1.75rem 0 1.5rem;
   position: relative;
   z-index: var(--z-index-footer);
@@ -20,7 +20,7 @@ footer .container {
 }
 
 .footer a {
-  color: inherit;
+  color: white;
   position: relative;
   text-decoration: none;
 }
@@ -29,6 +29,11 @@ footer .container {
   display: flex;
   flex-wrap: wrap;
   padding-left: 0;
+}
+
+.footer .col li.list-topic {
+  color: var(--rebrand-color-primary-fresh);
+  font-weight: bold;
 }
 
 .footer__links li + li {
@@ -45,17 +50,36 @@ footer .container {
   font-size: 0.875rem;
 }
 
-.footer__links .footer-terms span {
-  color: var(--color-gray-light);
+.footer__links .footer-terms span,
+.footer__links .footer-terms p {
+  color: var(--rebrand-color-primary-fresh);
 }
 
 .footer__links .footer-terms a {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .footer__links .footer-terms a:hover,
 .footer__links .footer-terms a:focus {
-  text-decoration: none;
+  text-decoration: underline;
+}
+
+.footer-terms button {
+  background-color: transparent !important;
+  transition: 0.3s ease;
+  border: 1px solid #0569f9 !important;;
+  padding: 5px;
+  color: white;
+  margin-top: 5px;
+  transition: 0.3s ease;
+}
+
+.footer-terms button i {
+  color: var(--rebrand-color-primary-fresh);
+}
+
+.footer-terms button:hover {
+  opacity: 0.8;
 }
 
 .footer ul {
@@ -87,19 +111,19 @@ footer .container {
   align-items: center;
   width: 26px;
   height: 26px;
-  background-color: black;
+  background-color: var(--rebrand-color-primary-teal);
   border-radius: 50%;
-  border: 1px solid transparent;
+  border: 1px solid var(--rebrand-color-primary-fresh);
   transition: ease-in-out 0.3s all;
 }
 
 .footer__socials .social-icons .icon:hover {
-  border: 1px solid black;
-  background-color: transparent;
+  /* border: 1px solid black; */
+  background-color: var(--rebrand-color-primary-fresh);
 }
 
 .footer__socials .social-icons .icon:hover path {
-  fill: black;
+  fill: var(--rebrand-color-primary-teal);
 }
 
 .footer__socials .social-icons .icon svg {
