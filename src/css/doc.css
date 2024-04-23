@@ -1192,8 +1192,8 @@ pre code a:hover {
 }
 
 .doc .thanks {
-  background-color: #e9ebe8;
-  color: black;
+  background-color: var(--rebrand-color-primary-sand);
+  color: var(--rebrand-color-primary-dark-grey);
   padding: 1.75rem;
   border-radius: 10px;
   border-left: none !important;
@@ -1224,8 +1224,8 @@ pre code a:hover {
 }
 
 .doc .announce {
-  background-color: #e9ebe8;
-  color: black;
+  background-color: var(--rebrand-color-primary-sand);
+  color: var(--rebrand-color-primary-dark-grey);
   padding: 0.35rem 1.5rem 0.85rem;
   border-left: none !important;
   box-shadow: none !important;
@@ -1247,13 +1247,8 @@ pre code a:hover {
 
 .doc .announce a {
   color: var(--rebrand-color-primary-green);
-  text-decoration: none;
+  text-decoration: underline;
   transition: 0.2s ease;
-}
-
-.doc .announce a:hover {
-  color: var(--rebrand-color-primary-dew);
-  text-decoration: none;
 }
 
 .doc .rn-label {
