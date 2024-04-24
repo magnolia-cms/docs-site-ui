@@ -671,7 +671,7 @@
 }
 
 .doc .sidebarblock {
-  background: var(--color-smoke-70);
+  background: var(--rebrand-color-primary-sand);
   /* border-radius: 0.75rem; */
   padding: 0.45rem 1.5rem;
   /* box-shadow: 0 10px 13px -7px #000000c5, 1px 0 3px 4px rgba(0, 0, 0, 0); */
