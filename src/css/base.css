@@ -355,8 +355,8 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 9998; 
-  transition: bottom 0.5s ease; 
+  z-index: 9998;
+  transition: bottom 0.5s ease;
   background: var(--rebrand-color-primary-sand);
   border: 3px solid var(--rebrand-color-primary-teal);
   width: 50vw;
@@ -365,7 +365,7 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
 .left-content {
   float: left;
   width: 40%;
-  height: 200px; 
+  height: 200px;
 }
 
 .right-content {
@@ -418,6 +418,7 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
   0% {
     box-shadow: 0 0 5px var(--rebrand-color-primary-green);
   }
+
   100% {
     box-shadow: 0 0 15px var(--rebrand-color-primary-green);
   }
