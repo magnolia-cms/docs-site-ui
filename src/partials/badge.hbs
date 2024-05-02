@@ -1,0 +1,49 @@
+<div class="floating-badge" id="floating-badge">
+  <img src="{{{uiRootPath}}}/img/rebrand-icon-dark.svg" alt=""> <span>Beta</span>
+</div>
+
+<div class="dialog" id="dialog">
+  <div class="close-icon" id="close-dialog">X</div>
+  <div class="left-content">
+    <!-- Left content -->
+    <div class="img-container">
+        <img src="{{{uiRootPath}}}/img/rebrand-icon-dark.svg" alt="">
+    </div>
+  </div>
+  <div class="right-content">
+    <!-- Right content -->
+    <h3 class="dialogTitle">Magnolia 6.3 Beta</h3>
+    <p class="dialogText">Magnolia 6.3 is in beta release. We are continually updating docs based on customer and partner feedback.</p>
+    <p class="dialogText">Due to the nature of beta releases, consider the 6.3 docs currently in a state of progress and not final.</p>
+  </div>
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+  const floatingBadge = document.getElementById("floating-badge");
+  const dialog = document.getElementById("dialog");
+  const closeDialog = document.getElementById("close-dialog");
+
+  floatingBadge.addEventListener("click", function() {
+    dialog.classList.add("show");
+  });
+
+  closeDialog.addEventListener("click", function() {
+    dialog.classList.remove("show");
+  });
+
+  document.addEventListener("click", function(event) {
+    if (!dialog.contains(event.target) && !floatingBadge.contains(event.target)) {
+      dialog.classList.remove("show");
+    }
+  });
+
+  // Prevent the click event from propagating to the document when clicking inside the dialog
+  dialog.addEventListener("click", function(event) {
+    event.stopPropagation();
+  });
+});
+
+</script>

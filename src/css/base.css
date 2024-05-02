@@ -326,3 +326,108 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
   border-radius: 5px;
   font-size: smaller;
 }
+
+.floating-badge {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: var(--rebrand-color-primary-sand);
+  border: 3px solid var(--rebrand-color-primary-teal);
+  color: var(--rebrand-color-primary-teal);
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  z-index: 9999; /* Ensure the badge appears above other content */
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+  animation: glow 0.5s 10 alternate;
+}
+
+.floating-badge:hover {
+  animation: glow 0.5s infinite alternate;
+}
+
+.dialog {
+  position: fixed;
+  bottom: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 9998; 
+  transition: bottom 0.5s ease; 
+  background: var(--rebrand-color-primary-sand);
+  border: 3px solid var(--rebrand-color-primary-teal);
+  width: 50vw;
+}
+
+.left-content {
+  float: left;
+  width: 40%;
+  height: 200px; 
+}
+
+.right-content {
+  float: right;
+  width: 60%;
+  height: 200px;
+  padding-left: 2vw;
+}
+
+.right-content h3.dialogTitle {
+  font-size: 1.2rem;
+  font-family: var(--body-font-family);
+  font-weight: bold;
+}
+
+.right-content p {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 928px) {
+  .left-content {
+    display: none;
+  }
+
+  .right-content {
+    overflow-y: auto;
+    width: 90%;
+  }
+
+  .right-content h3 {
+    font-size: 0.9rem;
+  }
+
+  .right-content p {
+    font-size: 0.75rem;
+  }
+}
+
+.dialog.show {
+  bottom: 50%; /* Center the dialog vertically */
+}
+
+#close-dialog {
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px var(--rebrand-color-primary-green);
+  }
+  100% {
+    box-shadow: 0 0 15px var(--rebrand-color-primary-green);
+  }
+}
+
+.close-icon {
+  position: absolute;
+  top: -10px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+}
