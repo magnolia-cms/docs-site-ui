@@ -1374,7 +1374,6 @@ pre code a:hover {
   font-weight: 410;
   line-height: 1.5;
   padding: 3px 5px 3px 5px;
-  text-transform: uppercase;
   letter-spacing: 0.1em;
   min-width: fit-content;
   width: 6vw;
@@ -1382,15 +1381,19 @@ pre code a:hover {
 }
 
 .doc .status.published {
-  background: var(--color-green-reflex-latest);
+  background: var(--color-status-green);
 }
 
 .doc .status.modified {
-  background: var(--color-primary-yellow);
+  background: var(--color-status-yellow);
 }
 
 .doc .status.draft {
-  background: var(--color-red);
+  background: var(--color-status-red);
+}
+
+.doc .status.marked-for-deletion {
+  background: var(--color-status-gray);
 }
 
 .doc .module-type {
