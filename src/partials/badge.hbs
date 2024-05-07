@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const closeDialog = document.getElementById("close-dialog");
 
   floatingBadge.addEventListener("click", function() {
-    dialog.classList.add("show");
+    dialog.classList.toggle("show");
   });
 
   closeDialog.addEventListener("click", function() {
