@@ -16,6 +16,7 @@
   padding-left: 0.9rem;
   display: block;
   background: var(--rebrand-color-primary-green);
+  border: 1px solid white;
   /* border-radius: 50%; */
   /* border-radius: 8px; */
   font-family: inherit;
@@ -33,7 +34,7 @@
 
 #feedback:hover {
   box-shadow: 3px 5px 7px -3px darkslategrey;
-  border: transparent;
+  border: 1px solid white;
   transform: rotate(-90deg) translateY(-0.2rem);
   font-weight: bolder;
 }
@@ -76,7 +77,7 @@
 #feedback-saas:hover {
   background-color: var(--color-jet-80);
   box-shadow: 3px 5px 7px -3px darkslategrey;
-  border: transparent;
+  border: 1px solid white;
   transform: rotate(-90deg) translateY(-0.2rem);
   font-weight: bolder;
   color: whitesmoke;
@@ -105,7 +106,8 @@
   padding-top: 5px;
   padding-left: 0.9rem;
   display: block;
-  background: var(--color-digital-blue);
+  background: var(--rebrand-color-primary-green);
+  border: 1px solid white;
   /* border-radius: 50%; */
   /* border-radius: 8px; */
   font-family: inherit;
@@ -123,7 +125,7 @@
 
 #feedback-paas:hover {
   box-shadow: 3px 5px 7px -3px darkslategrey;
-  border: transparent;
+  border: 1px solid white;
   transform: rotate(-90deg) translateY(-0.2rem);
   font-weight: bolder;
 }
@@ -147,7 +149,8 @@
   padding-top: 5px;
   padding-left: 0.9rem;
   display: block;
-  background: var(--color-primary-plum);
+  background: var(--rebrand-color-primary-green);
+  border: 1px solid white;
   /* border-radius: 50%; */
   /* border-radius: 8px; */
   font-family: inherit;
@@ -164,9 +167,8 @@
 }
 
 #feedback-cloud:hover {
-  background-color: var(--rebrand-color-primary-green);
   box-shadow: 3px 5px 7px -3px darkslategrey;
-  border: transparent;
+  border: 1px solid white;
   transform: rotate(-90deg) translateY(-0.2rem);
   font-weight: bolder;
 }
@@ -190,7 +192,8 @@
   padding-top: 5px;
   padding-left: 0.9rem;
   display: block;
-  background: var(--rebrand-color-primary-teal);
+  background: var(--rebrand-color-primary-green);
+  border: 1px solid white;
   /* border-radius: 50%; */
   /* border-radius: 8px; */
   font-family: inherit;
@@ -207,9 +210,8 @@
 }
 
 #feedback-incubate:hover {
-  background-color: var(--rebrand-color-primary-green);
   box-shadow: 3px 5px 7px -3px darkslategrey;
-  border: transparent;
+  border: 1px solid white;
   transform: rotate(-90deg) translateY(-0.2rem);
   font-weight: bolder;
   color: whitesmoke;
@@ -238,7 +240,8 @@
   padding-top: 5px;
   padding-left: 0.9rem;
   display: block;
-  background: var(--color-orange);
+  background: var(--rebrand-color-primary-green);
+  border: 1px solid white;
   /* border-radius: 50%; */
   /* border-radius: 8px; */
   font-family: inherit;
@@ -255,9 +258,8 @@
 }
 
 #feedback-headless:hover {
-  background-color: var(--rebrand-color-primary-green);
   box-shadow: 3px 5px 7px -3px darkslategrey;
-  border: transparent;
+  border: 1px solid white;
   transform: rotate(-90deg) translateY(-0.2rem);
   font-weight: bolder;
 }
