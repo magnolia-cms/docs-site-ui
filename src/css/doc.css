@@ -223,7 +223,7 @@
   cursor: pointer;
 }
 
-.doc table.tableblock thead th::after {
+.doc table.tableblock.sortMe thead th::after {
   content: "\f07d";
   font-family: FontAwesome, sans-serif;
   padding-left: 4px;

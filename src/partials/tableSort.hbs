@@ -28,7 +28,7 @@
 
   // Dynamically add onclick to th elements for all tables on the page
   document.addEventListener("DOMContentLoaded", function() {
-    var allTables = document.querySelectorAll('table');
+    var allTables = document.querySelectorAll('table.sortMe');
     allTables.forEach(function(table) {
       var thElements = table.querySelectorAll('th');
       thElements.forEach(function(th, index) {

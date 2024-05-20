@@ -256,7 +256,31 @@ Author Name
 
 // ++++
 
-[cols="36%s,18%,16%,16%,14%m,class=sortable"]
+[.sortMe,cols="3m,7a"]
+|===
+|Property |Description
+
+|testA
+|banana
+
+|restB
+|apple
+
+|===
+
+[cols="3m,7a"]
+|===
+|Property |Description
+
+|testA-2
+|apple
+
+|testB-2
+|banana
+
+|===
+
+[.sortMe,cols="36%s,18%,16%,16%,14%m,class=sortable"]
 |===
 |Module |Type |Bundled CE | Bundled Core |Version
 
