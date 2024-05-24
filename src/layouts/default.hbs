@@ -21,8 +21,11 @@
 {{#if (eq page.component.name 'performance-tuning')}}
 {{> badge}}
 {{/if}}
-{{#if (eq page.component.name 'magnolia-sso')}}
+{{#if (and (eq page.component.name 'magnolia-sso') (eq page.componentVersion '4.0.x'))}}
 {{> badge}}
 {{/if}}
+{{!-- {{#if (eq page.component.name 'magnolia-sso')}}
+{{> badge}}
+{{/if}} --}}
   </body>
 </html>
