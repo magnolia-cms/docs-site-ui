@@ -133,7 +133,39 @@
 </script>
 {{/if}}
 
-{{#if (eq page.layout 'default')}}
+{{#if (and (eq page.layout 'default') (eq page.componentVersion.displayVersion '6.3 beta'))}}
+
+<script type="text/javascript">
+    docsearch({
+        appId: 'IIQKXJ786V',
+        apiKey: '450fd6db7d4e2f26607012f0d8683a29',
+        indexName: 'dev_DOCS_6.3',
+        container: '#searchBar',
+        searchParameters: { hitsPerPage: 12 },
+        debug: true // prevent it from closing on inspection.
+    });
+
+    function toggleDropDown () {
+      var linkEl = document.querySelectorAll('.has-dropdown');
+      var allDrops =  document.querySelectorAll('.has-dropdown .navbar-dropdown');
+      for (var el of linkEl) {
+        el.addEventListener('click', function (e) {
+          for (var drop of allDrops) {
+            drop.style.display = "none";
+          }
+          e.stopPropagation()
+          e.target.nextElementSibling.style.display = "block";
+        })
+      }
+    }
+    if(window.innerWidth < 1200) {
+      toggleDropDown();
+    }
+
+</script>
+
+{{else if (eq page.layout 'default')}}
+
 <script type="text/javascript">
     docsearch({
         appId: 'IIQKXJ786V',
@@ -162,6 +194,7 @@
     }
 
 </script>
+
 {{/if}}
 
 {{#if (eq page.layout 'cloud')}}
