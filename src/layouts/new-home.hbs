@@ -14,25 +14,47 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
   <link rel="icon" href="{{{uiRootPath}}}/img/mgnl-favicon-darkTeal-32.png" type="image/png">
   <style>
-    @media(max-width: 500px) {
-      .reverse-columns {
-        flex-direction: column-reverse;
-        display: flex;
-      }
+    :root {
+        --lora: 'Lora', serif !important;
+        --fresh: #E2F0E4;
+        --darkTeal: #02373F;
+        --green: #068449;
+        --blue: #0569F9;
+    }
+
+
+    .hero-body {
+      flex-grow: 0!important;
+    }
+
+    .hero.has-image .hero-body {
+      background-image: url("{{{uiRootPath}}}/img/hero-image.png");
+      background-repeat: no-repeat;
+      background-size: 1034px 546px;
+      background-position: 100px top;
+      background-position: right -250px top 0;
+      padding-bottom: 100px!important;
     }
 
     .titled {
-      font-family: 'Lora', serif !important;
-      font-size: 80px !important;
+      font-family: var(--lora)!important;
+      font-size: 68px !important;
       font-weight: 400 !important;
-      line-height: 64px !important;
+      line-height: 102px !important;
+    }
+
+    .paragraph {
+      font-size: 22px;
+      line-height: 32px;
+      margin-bottom: 40px;
     }
 
     .subtitled {
-      font-family: 'Lora', serif !important;
-      font-size: 22px !important;
-      font-weight: 400 !important;
-      line-height: 36px !important;
+      font-family: var(--lora)!important;
+      font-size: 48px !important;
+      font-weight: 700 !important;
+      line-height: 52px !important;
+      margin-bottom: 2rem!important;
     }
 
     #docsearch.container {
@@ -41,22 +63,55 @@
         align-items: center; /* Center vertically */
     }
 
+    .DocSearch-Button-Container {
+        margin-left: auto;
+        width: 113px;
+        height: 100%;
+        background-color: var(--green);
+        justify-content: center;
+    }
+
+    .DocSearch-Button-Container svg path {
+      stroke: white;
+    }
+
+    .DocSearch-Button-Placeholder, .DocSearch-Button-Keys {
+      display: none;
+    }
+
+
     button.DocSearch.DocSearch-Button {
-      width: 40vw !important;
-      height: 10vh !important
+      width: 100% !important;
+      height: 113px !important;
+      background-color: white!important;
+      border-radius: 0;
+      margin: 0;
+      padding: 0!important;
     }
 
     span.DocSearch-Button-Placeholder {
       content: 'Test' !important;
     }
 
+     .button {
+      border-radius: 0!important;
+    }
+
     h1.title.titled {
-      color: #d3f0a5 !important;
+      color: var(--darkTeal)!important;
       line-height: 1.1 !important;
     }
 
-    h2.subtitle.subtitled {
-      color: whitesmoke;
+    .h3 {
+      font-size: 32px;
+      font-family: var(--lora);
+      font-weight: 700;
+      color: var(--darkTeal);
+      margin-bottom: 24px;
+    }
+
+    .h3.h3--green {
+      color: var(--green);
     }
     
     button.button {
@@ -73,8 +128,9 @@
     }
 
     .navbar-item img {
-      width: 20vw !important;
+      max-width: 217px;
       max-height: none !important;
+      width: 100%;
     }
 
     a.navbar-item {
@@ -91,11 +147,72 @@
     }
 
     #hero-header {
-      color: #d3f0a5 !important;
+      color: var(--darkTeal) !important;
+      text-align: left!important;
     }
 
-    div.hero-body {
-      background-color: #02373f !important;
+    section.hero .hero-body {
+      background-color: var(--fresh)!important;
+    }
+
+    section.hero.is-white .hero-body {
+      background-color: white!important;
+    }
+
+    .card-x {
+       box-shadow: 4px 4px 0px 0px #F0EEE7;
+       padding: 24px;
+       border: 1px solid #F0EEE7;
+       display: flex;
+       flex-direction: column;
+       height: 100%;
+       transition: border-color .3s ease-in-out;
+
+    }
+
+    .card-x:hover {
+      border-color: var(--darkTeal);
+      box-shadow: none;
+    }
+
+    .card-x .card-x__p {
+      font-size: 22px;
+      line-height: 32px;
+    }
+
+    .card-x__link-w {
+      padding-top: 24px;
+      margin-top: auto;
+    }
+
+    .link:not(.link-button) {
+      font-size: 20px!important;
+      color: var(--blue)!important;
+      font-weight: 500;
+      padding: 0!important;
+      padding-right: 30px!important;
+      transition: all ease-in-out .3s;
+    }
+
+    .link:hover {
+      padding-left: 10px!important;
+    }
+
+    .link:not(.link-button--no-arrow)::after {
+      width: 20px;
+      height: 20px;
+      color: white!important;
+      background-color: var(--blue)!important;
+      border-radius: 50%;
+      content: "";
+      position: absolute;
+      right: 0;
+    }
+
+    .link:not(.link-button--no-arrow)::before {
+      right: 8px!important;
+      top: 45%!important;
+      color: white;
     }
 
     #get-to-know-magnolia {
@@ -110,12 +227,124 @@
     }
 
     span#typewriter {
-      color: #f0eee7 !important;
+      color: var(--darkTeal)!important;
     }
+
+    .first-col {
+      margin-bottom: 200px!important;
+    }
+
+    .columns-breaker {
+      flex-wrap: wrap;
+    }
+
+    .columns {
+      margin-top: 0!important;
+    }
+
 
     .footer {
       border-top: 3px solid #068449 !important;
     }
+
+    .footer-banner {
+      background-color: var(--fresh);
+      color: var(--darkTeal);
+      padding: 90px 0;
+    }
+
+    .footer-banner .h1 {
+      font-size: 56px;
+      color: var(--lora);
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+
+
+    .columns:last-child {
+      margin-bottom: 0!important;
+    }
+
+
+
+     @media(max-width: 500px) {
+      .reverse-columns {
+        flex-direction: column-reverse;
+        display: flex;
+      }
+    }
+
+     @media print, screen and (max-width: 768px) {
+      .hero.is-medium .hero-body {
+          padding: 40px 20px!important;
+      }
+
+      button.DocSearch.DocSearch-Button {
+        height: 60px!important;
+      }
+
+       h1.title.titled {
+        font-size: 40px!important;
+      }
+    }
+
+    @media print, screen and (min-width: 769px) {
+      .hero.is-medium  .hero-body {
+          padding: 100px 0!important;
+      }
+    }
+
+
+     @media (max-width: 1215px) and (max-width: 768px) {
+      .hero.has-image .hero-body {
+       background-image: none;
+      }
+
+    }
+
+
+    @media (max-width: 1215px) and (min-width: 769px) {
+      .hero.has-image .hero-body {
+        background-size: 682px 360px;
+      }
+    }
+
+    @media screen and (max-width:1023px) {
+      h2, h2.subtitled {
+        font-size: 30px!important;
+        line-height: initial!important;
+      }
+
+      .first-col {
+        margin-bottom: 70px!important;
+      }
+
+      .paragraph, .card-x .card-x__p {
+        font-size: 18px;
+        line-height: initial;
+      }
+
+      .h3 {
+        font-size: 24px;
+        margin-bottom: 16px;
+      }
+
+      .footer-banner {
+        padding: 45px 20px;
+      }
+
+      .link:not(.link-button) {
+        font-size: 16px!important;
+      }
+
+    }
+
+     @media(max-width: 1215px) {
+      .columns-breaker .column {
+        margin-bottom: 1.2rem;
+      }
+    }
+
     
   </style>
 </head>
@@ -156,12 +385,13 @@
   <section class="hero is-medium has-text-centered">
     <div class="hero-body">
       <div class="container">
-        <div class="columns is-centered">
-          <div data-aos="zoom-in-up" class="column is-8">
-            <h1 class="title titled is-1 mb-6" id="hero-header">
-              Magnolia DX platform is <span id="typewriter"></span>
+        <div class="columns">
+          <div data-aos="zoom-in-up" class="column">
+            <h1 class="title titled is-1 mb-5" id="hero-header">
+              Documentation
+              <!-- <span id="typewriter"></span> -->
             </h1>
-            <div id="docsearch" class="container"></div>
+            <div id="docsearch"></div>
             <h2 class="subtitle subtitled">
             </h2>
           </div>
@@ -172,46 +402,83 @@
   </section>
 
   <!-- Hero del producto -->
-  <section class="hero is-white is-fullheight">
+  <section class="hero is-white is-fullheight has-image">
     <div class="hero-body">
       <div class="container">
-        <div class="columns  is-vcentered reverse-columns">
-          <div class="column
+        <div class="columns reverse-columns first-col">
+         <!--  <div class="column
           is-10-mobile 
           is-10-tablet 
           is-5-desktop 
           is-5-widescreen 
           is-5-fullhd " data-aos="fade-down">
-            <h1 class="title titled is-1 mb-6">
-              Get to know Magnolia
-            </h1>
             <img src="{{{uiRootPath}}}/img/rebrand-icon-white.svg" id="get-to-know-magnolia" alt="">
-          </div>
+          </div> -->
           <div data-aos="fade-down" class="column
-          is-10-mobile is-offset-1-mobile
-          is-10-tablet is-offset-1-tablet
-          is-5-desktop is-offset-1-desktop
-          is-5-widescreen is-offset-1-widescreen
-          is-5-fullhd is-offset-1-fullhd">
-            {{!-- <h1 class="titled title is-1 mb-6">
-              Dedicated developer docs
-            </h1> --}}
+          is-12-mobile
+          is-7-tablet
+          is-6-desktop
+          is-6-widescreen
+          is-6-fullhd">
             <h2 class="subtitled subtitle">
-              Whether you're an existing customer or partner looking to learn more, or entirely new to the Magnolia experience, take a look at our docs to learn more about our Magnolia product offerings.
+              Introduce one key message like the release of 6.3
             </h2>
+            <p class="paragraph">
+              Magnolia’s modular architecture is well-suited for building industry-specific solutions that require scalability, reliability and excellent support.
+            </p>
             <div class="buttons">
-              <a class="button" href="https://docs.magnolia-cms.com/product-docs/6.2/">DX Core</a>
-              <a class="button" href="https://docs.magnolia-cms.com/paas/">PaaS</a>
+              <a class="link" href="https://docs.magnolia-cms.com/paas/">
+                Learn more about the release
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+           <div class="column is-6-desktop is-10-tablet">
+            <h3 class="h3 h3--green">These are releases, paths, or three things you want to talk about</h3>
+          </div>
+        </div>
+
+        <div class="columns columns-breaker">
+
+          <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+            <div class="card-x">
+              <h3 class="card-x__title h3">6.2</h3>
+              <p class="card-x__p">Magnolia CMS 6.2.45 introduces a few improvements primarily around Java 21 support, performance, and the Delivery API. We also fixed a few issues and further enhanced our security. </p>
+              <div class="card-x__link-w">
+                <a class="card-x__link link" href="#">Read more on 6.2</a>
+              </div>
             </div>
           </div>
 
+          <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+            <div class="card-x">
+              <h3 class="card-x__title h3">Connector Packs and Special Features</h3>
+              <p class="card-x__p">Connector Packs and Special Features complement the DX Core releases. See the Connector Pack and Special Feature changelog.</p>
+              <div class="card-x__link-w">
+                <a class="card-x__link link" href="#">See connector packs</a>
+              </div>
+            </div>
+          </div>
 
+          <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+            <div class="card-x">
+              <h3 class="card-x__title h3">Magnolia Cloud and DX Cloud PaaS</h3>
+              <p class="card-x__p">Magnolia Cloud and DX Cloud PaaS both typically support the most recent versions of Magnolia branches as well as bringing in additional cloud-specific features. For more, check out their respective changelogs.</p>
+              <div class="card-x__link-w">
+                <a class="card-x__link link" href="#">Explore DX Cloud</a>
+              </div>
+            </div>
+          </div>
+          
+         
+          
         </div>
       </div>
     </div>
   </section>
 
-  <section class="hero is-white is-fullheight">
+  <!-- <section class="hero is-white is-fullheight">
     <div class="hero-body">
       <div class="container">
         <div class="columns  is-vcentered">
@@ -284,7 +551,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- <section class="hero is-medium has-text-centered">
     <div class="hero-body">
@@ -305,6 +572,13 @@
       </div>
     </div>
   </section> -->
+
+ <section class="footer-banner">
+   <div class="container">
+     <h2 class="h1">Get started with a free demo</h2>
+     <a class="link-button button is-primary">Book a Demo<a/>
+   </div>
+ </section> 
 {{> footer}}
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/TypewriterJS/2.13.1/core.min.js"></script>
