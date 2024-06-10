@@ -24,6 +24,9 @@
 {{#if (and (eq page.component.name 'magnolia-sso') (eq page.componentVersion.displayVersion '4.0.x'))}}
 {{> badge}}
 {{/if}}
+{{#if (and (eq page.component.name 'live-copy') (eq page.componentVersion.displayVersion '4.x'))}}
+{{> badge}}
+{{/if}}
 {{!-- {{#if (eq page.component.name 'magnolia-sso')}}
 {{> badge}}
 {{/if}} --}}
