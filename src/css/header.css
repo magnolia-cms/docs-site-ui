@@ -131,8 +131,8 @@ body {
 }
 
 .navbar img.rebrand-logo {
-    max-width: 217px;
-    width: 100%;
+  max-width: 217px;
+  width: 100%;
 }
 
 @media screen and (min-width: 1200px) {
