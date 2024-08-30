@@ -1,0 +1,1443 @@
+openapi: 3.0.0
+info:
+  title: SF B2B REST Endpoint
+  version: 1.0.0
+servers:
+  - url: http://{{orgurl}}
+  - url: http://{{_endpoint}}
+components:
+  securitySchemes:
+    noauthAuth:
+      type: http
+      scheme: noauth
+    basicAuth:
+      type: http
+      scheme: basic
+security:
+  - basicAuth: []
+tags:
+  - name: Authentication
+  - name: Cart APIs
+  - name: Checkout APIs
+  - name: Category APIs V2
+  - name: Product APIs V2
+  - name: User API V2
+paths:
+  /services/Soap/u/{apiVersion}:
+    post:
+      tags:
+        - Authentication
+      summary: 1. Login buyer/shopper (SOAP) from SF B2B API
+      description: >-
+        Authenticate the shopper through the variables _buyerUsername_ and
+        _buyerPassword_. Generated session ID is saved in _accessToken for use
+        in the other calls in the collection.
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+              example: >-
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope
+                xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"
+                \nxmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
+                xmlns:xsd=\"http://\nwww.w3.org/2001/XMLSchema\">\n   
+                <soap:Header>\n        <LoginScopeHeader
+                xmlns=\"urn:partner.soap.sforce.com\">\n           
+                <organizationId>{{orgId}}</organizationId>\n       
+                </LoginScopeHeader>\n    </soap:Header>\n   
+                <soap:Body>\n        <login
+                xmlns=\"urn:partner.soap.sforce.com\">\n           
+                <username><![CDATA[{{buyerUsername}}]]></username>\n           
+                <password><![CDATA[{{buyerPassword}}]]></password>\n       
+                </login>\n    </soap:Body>\n</soap:Envelope>"
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: text/xml; charset=UTF-8
+        - name: SOAPAction
+          in: header
+          schema:
+            type: string
+          example: login
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: text/xml
+        - name: Cookie
+          in: header
+          schema:
+            type: string
+          example: BrowserId=POhd6XTZEe2v6_8M7WG26g
+        - name: apiVersion
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 26 Aug 2024 07:48:22 GMT
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache,must-revalidate,max-age=0,no-store,private
+            Content-Type:
+              schema:
+                type: string
+                example: text/xml; charset=utf-8
+            Vary:
+              schema:
+                type: string
+                example: Accept-Encoding
+            Content-Encoding:
+              schema:
+                type: string
+                example: gzip
+            Transfer-Encoding:
+              schema:
+                type: string
+                example: chunked
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: >-
+                <?xml version="1.0" encoding="UTF-8"?>
+
+                <soapenv:Envelope
+                xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns="urn:partner.soap.sforce.com"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <soapenv:Body>
+                        <loginResponse>
+                            <result>
+                                <metadataServerUrl>https://velocity-dream-7488.my.salesforce.com/services/Soap/m/60.0/00DIS000000J9Qb</metadataServerUrl>
+                                <passwordExpired>false</passwordExpired>
+                                <sandbox>false</sandbox>
+                                <serverUrl>https://velocity-dream-7488.my.salesforce.com/services/Soap/u/60.0/00DIS000000J9Qb</serverUrl>
+                                <sessionId>00DIS000000J9Qb!AQoAQIZW3Op3_MMbvDAQCr.EfbwYZJRglSQWi8HWAIVPVqH1bqSLahIOK.yhtrsXEN.kqLXU5FHPSwazSZRwKIeRtxKHJzn4</sessionId>
+                                <userId>005IS000000dz4YYAQ</userId>
+                                <userInfo>
+                                    <accessibilityMode>false</accessibilityMode>
+                                    <chatterExternal>false</chatterExternal>
+                                    <currencySymbol xsi:nil="true"/>
+                                    <orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit>
+                                    <orgDefaultCurrencyIsoCode xsi:nil="true"/>
+                                    <orgDefaultCurrencyLocale xsi:nil="true"/>
+                                    <orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments>
+                                    <orgHasPersonAccounts>true</orgHasPersonAccounts>
+                                    <organizationId>00DIS000000J9Qb2AK</organizationId>
+                                    <organizationMultiCurrency>true</organizationMultiCurrency>
+                                    <organizationName>Magnolia Asia Pacific</organizationName>
+                                    <profileId>00eIS000000cfUGYAY</profileId>
+                                    <roleId>00EIS0000011Xui2AE</roleId>
+                                    <sessionSecondsValid>7200</sessionSecondsValid>
+                                    <userDefaultCurrencyIsoCode>SGD</userDefaultCurrencyIsoCode>
+                                    <userEmail>thanhle.mx@gmail.com</userEmail>
+                                    <userFullName>Local Shop User 1</userFullName>
+                                    <userId>005IS000000dz4YYAQ</userId>
+                                    <userLanguage>en_SG</userLanguage>
+                                    <userLocale>en_SG</userLocale>
+                                    <userName>localshopuser1@gmail.com</userName>
+                                    <userTimeZone>Asia/Singapore</userTimeZone>
+                                    <userType>PowerCustomerSuccess</userType>
+                                    <userUiSkin>Theme3</userUiSkin>
+                                </userInfo>
+                            </result>
+                        </loginResponse>
+                    </soapenv:Body>
+                </soapenv:Envelope>
+  /.rest/ecommerce/v2/accounts/token:
+    post:
+      tags:
+        - Authentication
+      summary: Get accessToken
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  example: '{{buyerPassword}}'
+                username:
+                  type: string
+                  example: '{{buyerUsername}}'
+      parameters:
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: skipDecoding
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/carts/:
+    post:
+      tags:
+        - Cart APIs
+      summary: 2. Creates a cart as an authenticated user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/carts/{_cartId}/items:
+    post:
+      tags:
+        - Cart APIs
+      summary: 5. Get cart items
+      requestBody:
+        content: {}
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: _cartId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/carts/{_cartId}/items/{_cartItemId}:
+    post:
+      tags:
+        - Cart APIs
+      summary: 4. Updates the quantity of items in a cart
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+                  example: '10'
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: _cartId
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: _cartItemId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Cart APIs
+      summary: 6. Delete an item in a cart
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: _cartId
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: _cartItemId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/carts/{_cartId}/coupons:
+    post:
+      tags:
+        - Cart APIs
+      summary: 8. Add a coupon to Cart
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                couponCode:
+                  type: string
+                  example: COUPONCODE1
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: _cartId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/carts/{_cartId}/coupons/{_cartCouponId}:
+    delete:
+      tags:
+        - Cart APIs
+      summary: 9. Delete a coupon in a cart
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: _cartId
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: _cartCouponId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '204':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/carts/{_cartId}/promotions:
+    get:
+      tags:
+        - Cart APIs
+      summary: 10. Get cart promotions
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: _cartId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/carts/{_cartId}:
+    delete:
+      tags:
+        - Cart APIs
+      summary: 11. Delete a Cart
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: _cartId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/checkouts/:
+    post:
+      tags:
+        - Checkout APIs
+      summary: 1. Create/Start checkout
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                cartId:
+                  type: string
+                  example: '{{_cartId}}'
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Magnolia-Registration:
+              schema:
+                type: string
+                example: Registered
+            Set-Cookie:
+              schema:
+                type: string
+                example: >-
+                  JSESSIONID=5AB5024400E9100DB2A97AF742E9E1C8;
+                  Path=/magnoliaAuthor; HttpOnly; SameSite=Strict
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, no-store, must-revalidate, max-age=0
+            Pragma:
+              schema:
+                type: string
+                example: no-cache
+            Expires:
+              schema:
+                type: string
+                example: Thu, 01 Jan 1970 00:00:00 GMT
+            Content-Encoding:
+              schema:
+                type: string
+                example: gzip
+            Vary:
+              schema:
+                type: string
+                example: Accept-Encoding
+            Content-Type:
+              schema:
+                type: string
+                example: application/json;charset=UTF-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '63'
+            Date:
+              schema:
+                type: string
+                example: Thu, 01 Aug 2024 09:49:34 GMT
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=20
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                checkoutId: 2z9IS000000sZ6bYAE
+                errors: []
+  /.rest/ecommerce/v2/checkouts/{_checkoutId}:
+    get:
+      tags:
+        - Checkout APIs
+      summary: 2. Get checkout
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: _checkoutId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Magnolia-Registration:
+              schema:
+                type: string
+                example: Registered
+            Set-Cookie:
+              schema:
+                type: string
+                example: >-
+                  JSESSIONID=DE4E7A43EE171E99C37DF2DABDB65F91;
+                  Path=/magnoliaAuthor; HttpOnly; SameSite=Strict
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, no-store, must-revalidate, max-age=0
+            Pragma:
+              schema:
+                type: string
+                example: no-cache
+            Expires:
+              schema:
+                type: string
+                example: Thu, 01 Jan 1970 00:00:00 GMT
+            Content-Encoding:
+              schema:
+                type: string
+                example: gzip
+            Vary:
+              schema:
+                type: string
+                example: Accept-Encoding
+            Content-Type:
+              schema:
+                type: string
+                example: application/json;charset=UTF-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '167'
+            Date:
+              schema:
+                type: string
+                example: Thu, 01 Aug 2024 09:49:48 GMT
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=20
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                checkoutId: 2z9IS000000sZ6bYAE
+                deliveryGroups:
+                  count: 1
+                  items:
+                    - availableDeliveryMethods: []
+                      id: 0a7IS000000wlOsYAI
+                      isDefault: true
+                      name: Cart Delivery Group
+                errors: []
+    delete:
+      tags:
+        - Checkout APIs
+      summary: 2a. Delete/Cancel checkout
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: _checkoutId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - Checkout APIs
+      summary: 3a. Update checkout with deliveryMethodId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                shippingInstructions: type code 1234 on gate keypad
+                deliveryMethodId: 2DmIS000000wkNX0AY
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: _checkoutId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Magnolia-Registration:
+              schema:
+                type: string
+                example: Registered
+            Set-Cookie:
+              schema:
+                type: string
+                example: >-
+                  JSESSIONID=834D6632C6AC2799C75FB0C893DF9695;
+                  Path=/magnoliaAuthor; HttpOnly; SameSite=Strict
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, no-store, must-revalidate, max-age=0
+            Pragma:
+              schema:
+                type: string
+                example: no-cache
+            Expires:
+              schema:
+                type: string
+                example: Thu, 01 Jan 1970 00:00:00 GMT
+            Content-Encoding:
+              schema:
+                type: string
+                example: gzip
+            Vary:
+              schema:
+                type: string
+                example: Accept-Encoding
+            Content-Type:
+              schema:
+                type: string
+                example: application/json;charset=UTF-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '204'
+            Date:
+              schema:
+                type: string
+                example: Thu, 01 Aug 2024 09:50:36 GMT
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=20
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                checkoutId: 2z9IS000000sZ6bYAE
+                deliveryGroups:
+                  count: 1
+                  items:
+                    - availableDeliveryMethods: []
+                      id: 0a7IS000000wlOsYAI
+                      isDefault: true
+                      name: Cart Delivery Group
+                      shippingInstructions: type code 1234 on gate keypad
+                errors: []
+  /.rest/ecommerce/v2/checkouts/payments/token:
+    post:
+      tags:
+        - Checkout APIs
+      summary: 4a. Payment Tokenize - Same Shipping Address
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                cardPaymentMethod:
+                  cardHolderName: Tester
+                  cardNumber: '4111111111111111'
+                  cvv: '123'
+                  expiryYear: '27'
+                  expiryMonth: '07'
+                  cardType: Visa
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+      responses:
+        '202':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/checkouts/{_checkoutId}/payments:
+    post:
+      tags:
+        - Checkout APIs
+      summary: 5b. Payment for simple purchase order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                paymentToken: '{{_paymentToken}}'
+                requestType: Auth
+                billingAddress:
+                  city: Singapore
+                  country: SG
+                  name: Test1 User
+                  firstName: Test1
+                  lastName: User
+                  postalCode: '189720'
+                  region: SG
+                  street: '150 Beach Road #36-01 Gateway West'
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: _checkoutId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/checkouts/{_checkoutId}/orders:
+    post:
+      tags:
+        - Checkout APIs
+      summary: 6. Place Order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: _checkoutId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Magnolia-Registration:
+              schema:
+                type: string
+                example: Registered
+            Set-Cookie:
+              schema:
+                type: string
+                example: >-
+                  JSESSIONID=3D33044BBC5A5E86966CB04442D9B888;
+                  Path=/magnoliaAuthor; HttpOnly; SameSite=Strict
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, no-store, must-revalidate, max-age=0
+            Pragma:
+              schema:
+                type: string
+                example: no-cache
+            Expires:
+              schema:
+                type: string
+                example: Thu, 01 Jan 1970 00:00:00 GMT
+            Content-Encoding:
+              schema:
+                type: string
+                example: gzip
+            Vary:
+              schema:
+                type: string
+                example: Accept-Encoding
+            Content-Type:
+              schema:
+                type: string
+                example: application/json;charset=UTF-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '82'
+            Date:
+              schema:
+                type: string
+                example: Thu, 01 Aug 2024 09:51:38 GMT
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=20
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                errors: []
+                orderReferenceNumber: SYZS3-N4SB6-VONCL-AFV5Q
+  /.rest/ecommerce/v2/categories/:
+    get:
+      tags:
+        - Category APIs V2
+      summary: Get category by parent ID - DE
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: language
+          in: query
+          schema:
+            type: string
+          example: de
+        - name: parentProductCategoryId
+          in: query
+          schema:
+            type: string
+          example: 0ZGIS000000oNeH4AU
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/categories/0ZGIS000000oNeH4AU:
+    get:
+      tags:
+        - Category APIs V2
+      summary: Get category by ID - DE
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: language
+          in: query
+          schema:
+            type: string
+          example: de_DE
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/products/01tIS000000yTEiYAM:
+    get:
+      tags:
+        - Product APIs V2
+      summary: Get product by ID - DE
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: language
+          in: query
+          schema:
+            type: string
+          example: de
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/products/category/0ZGIS000000oNeH4AU/:
+    get:
+      tags:
+        - Product APIs V2
+      summary: Get products by Category ID - CN
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: language
+          in: query
+          schema:
+            type: string
+          example: zh_CN
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/products/prices:
+    get:
+      tags:
+        - Product APIs V2
+      summary: Get products prices Copy
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: effectiveAccountId
+          in: query
+          schema:
+            type: string
+          example: 001IS000002VJKCYA4
+        - name: productIds
+          in: query
+          schema:
+            type: string
+          example: 01tIS000000yTEiYAM,01tIS000000yTEmYAM
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/accounts/{_buyerId}/addresses:
+    get:
+      tags:
+        - User API V2
+      summary: Get myprofile
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: skipDecoding
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+        - name: _buyerId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - User API V2
+      summary: Create Address
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                city: Boston
+                country: US
+                isDefault: true
+                name: Home Address 1
+                postalCode: '01234'
+                region: MA
+                street: 1 Milk Street
+                addressType: Billing
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: skipDecoding
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+        - name: _buyerId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/accounts/{_buyerId}/orders:
+    get:
+      tags:
+        - User API V2
+      summary: Get Orders
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: skipDecoding
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+        - name: _buyerId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/accounts/{_buyerId}/orders/{_orderId}:
+    get:
+      tags:
+        - User API V2
+      summary: Get Order Detail
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: magnolia-multi-languages
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: en
+        - name: skipDecoding
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+        - name: _buyerId
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: _orderId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/accounts/{_buyerId}/myprofile:
+    put:
+      tags:
+        - User API V2
+      summary: Update myprofile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                firstName: Local Shop
+                lastName: User 123
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: skipDecoding
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+        - name: _buyerId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /.rest/ecommerce/v2/accounts/{_buyerId}/addresses/{_addressId}:
+    delete:
+      tags:
+        - User API V2
+      summary: Delete Address
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: skipDecoding
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+        - name: _buyerId
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: _addressId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - User API V2
+      summary: Update Address
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                addressType: Billing
+                city: Boston
+                country: US
+                isDefault: true
+                name: Home Address Update
+                postalCode: '01234'
+                region: MA
+                street: 1 Milk Street
+      parameters:
+        - name: accessToken
+          in: header
+          schema:
+            type: string
+          example: '{{_accessToken}}'
+        - name: definitionName
+          in: query
+          schema:
+            type: string
+          example: '{{definitionName}}'
+        - name: connectionName
+          in: query
+          schema:
+            type: string
+          example: '{{connectionName}}'
+        - name: skipDecoding
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+        - name: _buyerId
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: _addressId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}

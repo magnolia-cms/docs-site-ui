@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{{page.title}}}</title>
+    <!-- needed for adaptive design -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="{{{uiRootPath}}}/css/site.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+
+    <!--
+    ReDoc doesn't change outer page styles
+    -->
+    <style>
+      body, html {
+        margin: 0;
+        padding: 0;
+        background-color: white !important;
+        scroll-behavior: auto !important;
+      }
+    </style>
+  </head>
+  <body class="redoc">
+    <a name="top"></a>
+    {{> header}}
+    <div id="redoc-container"></div>
+    <redoc spec-url='{{{page.attributes.spec}}}'></redoc>
+    <script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
+    <script>
+      Redoc.init({
+        scrollYOffset: '#topbar',
+        noAutoAuth: true,
+        hideDownloadButton: true,
+        requiredPropsFirst: true,
+        pathInMiddlePanel: true,
+        theme: {
+          colors: {
+            tonalOffset: 0.3,
+            primary: {
+              main: 'green',
+              backgroundColor: '#FFF'
+            }
+          },
+          typography: {
+            fontSize: '16px',
+            lineHeight: '1.5em',
+            fontWeightRegular: '400',
+            fontWeightBold: '700',
+            fontWeightLight: '300',
+            fontColor: '#FFF',
+            fontFamily: 'Roboto, sans-serif',
+            smoothing: 'antialiased',
+            optimizeSpeed: true,
+            headings: {
+              fontFamily: 'Roboto, sans-serif',
+              fontWeight: '400',
+              lineHeight: '1.6em',
+              fontColor: '#fff'
+            }
+          },
+          codeSample: {
+            fontSize: '13px',
+            color: "#fff",
+            fontFamily: 'Roboto Mono, monospace'
+          },
+          menu: {
+            backgroundColor: 'white',
+          },
+          rightPanel: {
+            backgroundColor: '#222',
+          }
+        },
+      }, document.getElementById('redoc-container'))
+    </script>
+    {{> footer}}
+  </body>
+</html>
