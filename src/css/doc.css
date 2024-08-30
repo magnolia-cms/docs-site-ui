@@ -1132,26 +1132,34 @@ pre code a:hover {
 
 .doc .focus {
   font-size: larger;
-  color: var(--color-green-darker);
-  background-color: var(--color-smoke-90);
+  color: var(--rebrand-color-primary-teal);
+  background-color: var(--rebrand-color-primary-sand);
   padding: 0.8rem;
   cursor: auto;
-  border-left: 5px solid var(--rebrand-color-primary-green);
-  font-weight: bold;
-  transition: 0.55s ease;
+  border-left: 5px solid var(--rebrand-color-primary-teal);
+  transition: 0.45s ease;
+}
+
+.doc .focus p {
+  font-size: 1rem;
 }
 
 .doc .focus:hover {
-  background-color: var(--color-primary-light-green);
-  border-left: 15px solid var(--rebrand-color-primary-green);
+  background-color: var(--rebrand-color-primary-dew);
+  border-left: 15px solid var(--rebrand-color-primary-teal);
 }
 
 .doc .focus a {
-  color: var(--color-green-reflex);
+  color: var(--rebrand-color-primary-light-blue);
 }
 
 .doc .focus a:hover {
   text-decoration: underline;
+}
+
+.doc .focus .title {
+  font-size: 1.2rem;
+  font-weight: 700;
 }
 
 .doc .scenario {
