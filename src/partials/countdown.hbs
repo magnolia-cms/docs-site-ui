@@ -1,3 +1,46 @@
+{{#if (and (eq page.layout 'default') (eq page.componentVersion.displayVersion '6.3'))}}
+<script>
+    // *** CHANGE WHEN RELEASE DATE IS KNOWN *** Set the target date and time for the countdown 
+    const targetDate = new Date("2024-12-12T18:00:00").getTime();
+
+    // Update the countdown every second
+    const countdownInterval = setInterval(function() {
+        const now = new Date().getTime();
+        const timeLeft = targetDate - now;
+
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+            document.getElementById("countdown").innerHTML = "Countdown expired!";
+        } else {
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            const countdownElement = document.getElementById("countdown");
+            countdownElement.innerHTML = `
+                <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                <span class="countdown-number">${days}d</span>
+                <span class="countdown-number">${hours}h</span>
+                <span class="countdown-number">${minutes}m</span>
+                <span class="countdown-number">${seconds}s</span>
+            `;
+
+            const targetDateFormatted = new Date(targetDate).toLocaleDateString();
+            document.getElementById("targetDate").innerHTML = `
+                <span><i class="fa fa-bullseye" aria-hidden="true"></i></span>
+                ${targetDateFormatted}
+            `;
+
+            document.getElementById("countdown").style.display = "block";
+            document.getElementById("targetDate").style.display = "block";
+
+        }
+    }, 1000);
+</script>
+
+{{else if (eq page.layout 'default')}}
+
 <script>
     // *** CHANGE WHEN RELEASE DATE IS KNOWN *** Set the target date and time for the countdown 
     const targetDate = new Date("2024-09-12T18:00:00").getTime();
@@ -36,4 +79,6 @@
 
         }
     }, 1000);
-    </script>
+</script>
+
+{{/if}}
