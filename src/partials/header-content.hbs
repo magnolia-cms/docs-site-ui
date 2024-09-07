@@ -309,7 +309,8 @@
   </nav>
 {{/if}}
 
-{{#if (and (eq page.layout 'default') (eq page.componentVersion.displayVersion '6.3'))}}
+{{!-- {{#if (and (eq page.layout 'default') (eq page.componentVersion.displayVersion '6.3'))}} --}}
+{{#if (and (eq page.layout 'default') (eq page.component.name 'product-docs') (eq page.componentVersion.displayVersion '6.3'))}}
 
   <nav class="navbar" id="topbar">
     <div class="navbar-brand">
@@ -370,7 +371,8 @@
 {{/if}}
 
 
-{{#if (and (eq page.layout 'default') (eq page.componentVersion.displayVersion '6.2'))}}
+{{!-- {{#if (and (eq page.layout 'default') (eq page.componentVersion.displayVersion '6.2'))}} --}}
+{{#if (and (eq page.layout 'default') (eq page.component.name 'product-docs') (eq page.componentVersion.displayVersion '6.2'))}}
 
   <nav class="navbar" id="topbar">
     <div class="navbar-brand">
@@ -430,7 +432,8 @@
 
 {{/if}}
 
-{{#if (and (eq page.layout 'default') (eq page.component.name 'magnolia-cli')) }}
+{{!-- {{#if (eq page.layout 'default')}} --}}
+{{#if (and (eq page.layout 'default') (not (eq page.component.name 'product-docs')))}}
 
   <nav class="navbar" id="topbar">
     <div class="navbar-brand">
@@ -489,6 +492,8 @@
   </nav>
 
 {{/if}}
+
+{{!-- {{#if (eq page.component.name 'cloud')}} --}}
 
 {{#if (eq page.layout 'cloud')}}
   <nav class="navbar" id="topbar">
