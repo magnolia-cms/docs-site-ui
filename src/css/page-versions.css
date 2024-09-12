@@ -8,6 +8,8 @@
   border-radius: 5px;
   transition: 0.5s ease;
   font-weight: bolder;
+  font-size: 1rem;
+  min-width: 5vw;
 }
 
 .page-versions:hover,
@@ -27,6 +29,7 @@
   position: relative;
   z-index: var(--z-index-page-version-menu);
   font-weight: bolder;
+  min-width: 5vw;
 }
 
 .page-versions .version-menu {
@@ -56,6 +59,6 @@
 
 .page-versions .version.is-missing {
   color: var(--page-version-missing-font-color);
-  font-style: italic;
-  text-decoration: none;
+  font-style: oblique;
+  text-decoration: line-through;
 }

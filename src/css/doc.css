@@ -703,8 +703,8 @@
 
 .doc pre:not(.highlight),
 .doc pre.highlight code {
-  background: darkslategrey;
-  box-shadow: inset -1px -2px 12px 2px rgba(89, 153, 12, 0.6);
+  background: var(--rebrand-color-primary-teal);
+  box-shadow: inset -1px -1px 10px 1px var(--rebrand-color-primary-dew);
   display: block;
   overflow-x: auto;
   padding: 0.75rem;
