@@ -254,6 +254,19 @@
       background-color: #0569f9 !important;
       color: whitesmoke;
       text-decoration: none !important;
+      transition: 0.3s ease;
+      display: inline-block;
+    }
+
+    a.button:hover {
+      opacity: 0.8;
+    }
+
+     @media(max-width: 750px) {
+      a.button {
+        display: block;
+        margin: 5px;
+      }
     }
 
     span#typewriter {
@@ -451,13 +464,17 @@
           is-6-widescreen
           is-6-fullhd">
             <h2 class="subtitled subtitle">
-              Our latest release is Magnolia 6.3.0
+              Our latest releases are:
             </h2>
+            <p class="paragraph">
+              <a class="link-button button is-primary" href="{{{siteRootPath}}}/product-docs/6.3/releases/release-notes-for-magnolia-cms-6.3/"> Magnolia 6.3.0</a>
+              <a class="link-button button is-primary" href="{{{siteRootPath}}}/product-docs/6.2/releases/release-notes-for-magnolia-cms-6.2.50/"> Magnolia 6.2.50</a>
+            </p>
             <p class="paragraph">
               Magnolia's modular architecture is well-suited for building industry-specific solutions that require scalability, reliability and excellent support.
             </p>
             <div class="buttons">
-              <a class="link" href="{{{siteRootPath}}}/product-docs/6.3/releases/release-notes-for-magnolia-cms-6.3/">
+              <a class="link" href="{{{siteRootPath}}}/product-docs/6.3/">
                 Learn more
               </a>
             </div>
@@ -606,7 +623,7 @@
  <section class="footer-banner">
    <div class="container">
      <h2 class="h1">Get started with a free demo</h2>
-     <a class="link-button button is-primary" href="https://www.magnolia-cms.com/get-started/demo.html">Book a Demo<a/>
+     <a class="link-button button is-primary" href="https://www.magnolia-cms.com/get-started/demo.html">Book a Demo</a>
    </div>
  </section> 
 {{> footer}}
