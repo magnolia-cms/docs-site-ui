@@ -59,13 +59,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404: Page not found</title>
+  {{> header-scripts}}
+  {{> head-scripts}}
   <style>
     @import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,700');
 @import url('https://fonts.googleapis.com/css?family=Catamaran:400,800');
 .error-container {
   text-align: center;
   font-size: 180px;
-  font-family: 'Catamaran', sans-serif;
+  font-family: "Lora", sans-serif;
   font-weight: 800;
   margin: 20px 15px;
 }
@@ -192,11 +194,11 @@
     box-sizing: border-box;
 }
 body {
-  background-color: rgb(0, 32, 20);
+  background-color: #02373f;
   margin-bottom: 50px;
 }
 html, button, input, select, textarea {
-    font-family: 'Montserrat', Helvetica, sans-serif;
+    font-family: 'Courier', sans-serif;
     color: whitesmoke;
 }
 h1 {
@@ -237,7 +239,7 @@ a.more-link::hover {
   </style>
 </head>
 <body>
-  <h1 style="margin-top: 10vh;">Uh oh. We can't find your page.</h1>
+  <h1 style="margin-top: 10vh;">Uh oh. We can't find <span style="color: #0569f9;">that</span> page.</h1>
 <section class="error-container">
   <span>4</span>
   <span><span class="screen-reader-text">0</span></span>
