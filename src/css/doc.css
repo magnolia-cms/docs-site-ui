@@ -1715,3 +1715,32 @@ span.changelogDate {
   color: var(--rebrand-color-primary-teal) !important;
   text-decoration: none !important;
 }
+
+.doc .cockpit-section-pill {
+  border-radius: 6px;
+  color: var(--rebrand-color-primary-teal);
+  background-color: var(--rebrand-color-primary-sand) !important;
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 410;
+  line-height: 1.5;
+  padding: 3px 5px 3px 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  min-width: fit-content;
+  width: 6vw;
+  text-align: center;
+  border: 2px solid var(--rebrand-color-primary-teal);
+  transition: 0.4s ease;
+}
+
+.doc .cockpit-section-pill:hover {
+  background-color: var(--rebrand-color-primary-teal) !important;
+  color: var(--rebrand-color-primary-sand) !important;
+  border: 2px solid var(--rebrand-color-primary-sand) !important;
+  cursor: pointer;
+}
+
+.doc .cockpit-section-pill a {
+  text-decoration: none !important;
+}
