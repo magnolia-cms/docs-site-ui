@@ -1727,8 +1727,7 @@ span.changelogDate {
   padding: 3px 5px 3px 5px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  min-width: fit-content;
-  width: 6vw;
+  width: 8vw;
   text-align: center;
   border: 2px solid var(--rebrand-color-primary-teal);
   transition: 0.4s ease;
@@ -1743,4 +1742,10 @@ span.changelogDate {
 
 .doc .cockpit-section-pill a {
   text-decoration: none !important;
+}
+
+@media screen and (max-width: 769px) {
+  .doc .cockpit-section-pill {
+    width: fit-content;
+  }
 }
