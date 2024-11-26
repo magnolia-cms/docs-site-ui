@@ -142,7 +142,7 @@ body {
 
   .navbar-end > .navbar-item,
   .navbar-end .navbar-link {
-    color: var(--color-gray-dark);
+    color: var(--navbar-font-color);
     transition: 0.2s ease;
     outline: none;
     font-size: large;
@@ -150,7 +150,7 @@ body {
 
   .navbar-end > a.navbar-item:hover,
   .navbar-end .navbar-link:hover {
-    color: var(--rebrand-color-primary-teal);
+    color: var(--navbar-font-color-hover);
     border: none;
     font-weight: inherit;
   }
@@ -462,4 +462,18 @@ span.icon-wrapper {
   nav svg {
     display: none;
   }
+}
+
+button#themeToggle {
+  background-color: var(--button-background);
+  color: var(--button-text-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button#themeToggle:hover {
+  background-color: var(--button-hover-background);
+  color: var(--button-hover-text-color);
 }

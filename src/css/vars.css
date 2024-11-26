@@ -1,5 +1,5 @@
 :root {
-  /* colors */
+/***** DEFAULT THEME COLORS *****/
   --color-primary-green: #599900;
   --color-primary-dark-green: #3a6305;
   --color-primary-light-green: #f5f8ea;
@@ -16,6 +16,7 @@
   --color-status-yellow: #ffdc94;
   --color-primary-blue: #4aace9;
   --color-digital-blue: #0569f9;
+  --color-whitesmoke: whitesmoke;
   --color-primary-ocean-blue: #00adef;
   --rebrand-color-primary-green: #068449;
   --rebrand-color-primary-emerald: #008246;
@@ -72,11 +73,13 @@
   /* base */
   --body-background: var(--color-white);
   --panel-background: var(--color-white);
-  --panel-border-color: var(--color-white);
+  --panel-border-color: var(--color-whitesmoke);
   --scrollbar-thumb-color: var(--color-gray-10);
+  --docsearch-text-color: var(--color-gray-50) !important;
   /* navbar */
-  --navbar-background: white;
+  --navbar-background: var(--color-white);
   --navbar-font-color: var(--rebrand-color-primary-teal);
+  --navbar-font-color-hover: var(--rebrand-color-primary-teal);
   --navbar_hover-background: var(--color-smoke-90);
   --navbar-button-background: var(--color-digital-blue);
   --navbar-button-border-color: var(--panel-border-color);
@@ -87,7 +90,7 @@
   --navbar-menu_hover-background: var(--color-smoke-50);
   /* nav */
   --nav-background: var(--panel-background);
-  --nav-border-color: var(--color-gray-10);
+  --nav-border-color: var(--color-gray-light);
   --nav-line-height: 1.35;
   --nav-heading-font-color: var(--rebrand-color-primary-teal);
   --nav-muted-color: var(--color-gray-70);
@@ -159,9 +162,201 @@
   --table-border-color: var(--panel-border-color);
   /* footer */
   --footer-line-height: var(--doc-line-height);
-  --footer-background: var(--color-jet-50);
+  --footer-background: var(--rebrand-color-primary-teal);
   --footer-font-color: var(--color-gray-70);
   --footer-link-font-color: var(--rebrand-color-primary-green);
+  --footer-border-color: var(--color-whitesmoke);
+  /* dimensions and positioning */
+  --navbar-height: 5rem;
+  --toolbar-height: calc(45 / var(--rem-base) * 1rem);
+  --drawer-height: var(--toolbar-height);
+  --body-top: var(--navbar-height);
+  --body-min-height: calc(100vh - var(--body-top));
+  --nav-height: calc(var(--body-min-height) - var(--toolbar-height));
+  --nav-height--desktop: var(--body-min-height);
+  --nav-panel-height: calc(var(--nav-height) - var(--drawer-height));
+  --nav-panel-height--desktop: calc(var(--nav-height--desktop) - var(--drawer-height));
+  --nav-width: calc(325 / var(--rem-base) * 1rem);
+  --toc-top: calc(var(--body-top) + var(--toolbar-height));
+  --toc-height: calc(100vh - var(--toc-top) - 2.5rem);
+  --toc-width: calc(162 / var(--rem-base) * 1rem);
+  --toc-width--widescreen: calc(216 / var(--rem-base) * 1rem);
+  --doc-max-width: calc(720 / var(--rem-base) * 1rem);
+  --doc-max-width--desktop: calc(900 / var(--rem-base) * 1rem);
+  /* stacking */
+  --z-index-nav: 1;
+  --z-index-toolbar: 3;
+  --z-index-page-version-menu: 3;
+  --z-index-navbar: 4;
+}
+
+:root[data-theme='dark'] {
+/***** DEFAULT THEME COLORS *****/
+  --color-primary-green: #599900;
+  --color-primary-dark-green: #3a6305;
+  --color-primary-light-green: #f5f8ea;
+  --color-green-reflex: #7ecb13;
+  --color-green-reflex-latest: #7ecb13;
+  --color-status-green: #b3eec6;
+  --color-green-darker: #599900;
+  --color-primary-plum: #652445;
+  --color-primary-plum-light: #e27caf;
+  --color-primary-gold: #f6c34d;
+  --color-primary-light-gold: #ffd87e;
+  --color-primary-light-grey: #f6f6f6;
+  --color-primary-yellow: #ffc226;
+  --color-status-yellow: #ffdc94;
+  --color-primary-blue: #4aace9;
+  --color-digital-blue: #0569f9;
+  --color-whitesmoke: whitesmoke;
+  --color-primary-ocean-blue: #00adef;
+  --rebrand-color-primary-green: #068449;
+  --rebrand-color-primary-emerald: #008246;
+  --rebrand-color-primary-dark-green: #3a6305;
+  --rebrand-color-primary-light-green: #01b96c;
+  --rebrand-color-primary-dew: #e2f0e4;
+  --rebrand-color-primary-lime: #7ecb13;
+  --rebrand-color-primary-teal: #02373f;
+  --rebrand-color-primary-sand: #f0eee7;
+  --rebrand-color-primary-fresh: #d3f0a5;
+  --rebrand-color-primary-light-blue: #549afc;
+  --rebrand-color-primary-dark-grey: #1e1f1c;
+  --rebrand-color-primary-bloom: #f0d3e9;
+  --rebrand-color-bloom-dark: #bd5ba6;
+  --rebrand-color-primary-red: #c02d2d;
+  --color-orange: #f48a16;
+  --color-red: #f76733;
+  --color-status-red: #fed8d2;
+  --color-trials: #080a37;
+  --color-white: #fff;
+  --color-smoke-10: #fefefe;
+  --color-smoke-30: #fafafa;
+  --color-smoke-50: #f5f5f5;
+  --color-smoke-70: #f0f0f0;
+  --color-smoke-90: #e1e1e1;
+  --color-gray-10: #c1c1c1;
+  --color-gray-30: #8e8e8e;
+  --color-gray-50: #808080;
+  --color-gray-70: #5d5d5d;
+  --color-gray-light: #a8a8a8;
+  --color-gray-medium: #e9ebe8;
+  --color-gray-dark: #1e1f1c;
+  --color-status-gray: #dbdbdb;
+  --color-jet-20: #4a4a4a;
+  --color-jet-30: #424242;
+  --color-jet-50: #333;
+  --color-jet-70: #222;
+  --color-jet-80: #111;
+  --color-black: #000;
+  --color-charcoal: #36454f;
+  --glow-color: white;
+  /* fonts */
+  --rem-base: 18; /* used to compute rem value from desired pixel value (e.g., calc(18 / var(--rem-base) * 1rem) = 18px) */
+  --body-font-size: 1.1em;
+  --body-font-size--desktop: 1.1em;
+  --body-font-size--print: 0.9375em; /* 15px */
+  --body-line-height: 1.15;
+  --body-font-color: var(--color-whitesmoke);
+  --body-font-family: "Karla", sans-serif;
+  --saas-land-font-family: "NationalCompressed", "Roboto", sans-serif;
+  --body-font-weight-bold: 700;
+  --monospace-font-family: "Roboto Mono", monospace;
+  --monospace-font-weight-bold: 500;
+  /* base */
+  --body-background: var(--color-jet-70);
+  --panel-background: var(--color-jet-70);
+  --panel-border-color: var(--color-white);
+  --scrollbar-thumb-color: var(--color-white);
+  /* navbar */
+  --navbar-background: var(--color-jet-70);
+  --navbar-font-color: var(--color-whitesmoke);
+  --navbar-font-color-hover: var(--rebrand-color-primary-lime);
+  --navbar_hover-background: var(--color-smoke-90);
+  --navbar-button-background: var(--color-digital-blue);
+  --navbar-button-border-color: var(--panel-border-color);
+  --navbar-button-font-color: var(--body-font-color);
+  --navbar-menu-border-color: var(--panel-border-color);
+  --navbar-menu-background: var(--color-white);
+  --navbar-menu-font-color: var(--body-font-color);
+  --navbar-menu_hover-background: var(--color-smoke-50);
+  /* nav */
+  --nav-background: var(--panel-background);
+  --nav-border-color: var(--color-whitesmoke);
+  --nav-line-height: 1.35;
+  --nav-heading-font-color: var(--rebrand-color-primary-teal);
+  --nav-muted-color: var(--color-gray-70);
+  --nav-panel-divider-color: var(--color-smoke-90);
+  --nav-secondary-background: var(--color-smoke-70);
+  /* toolbar */
+  --toolbar-background: var(--panel-background);
+  --toolbar-border-color: var(--panel-border-color);
+  --toolbar-font-color: var(--color-gray-70);
+  --toolbar-muted-color: var(--color-gray-30);
+  --page-version-menu-background: var(--color-smoke-70);
+  --page-version-missing-font-color: var(--color-gray-30);
+  /* toc */
+  --toc-font-color: var(--color-whitesmoke);
+  --toc-heading-font-color: var(--rebrand-color-primary-dew);
+  --toc-border-color: var(--panel-border-color);
+  --toc-line-height: 1.2;
+  /* admonitions */
+  --caution-color: var(--rebrand-color-bloom-dark);
+  --caution-on-color: var(--color-white);
+  --important-color: var(--rebrand-color-primary-teal);
+  --important-on-color: var(--color-white);
+  --note-color: var(--color-digital-blue);
+  --note-on-color: var(--color-white);
+  --tip-color: var(--rebrand-color-primary-green);
+  --tip-on-color: var(--color-white);
+  --warning-color: var(--rebrand-color-primary-red);
+  --warning-on-color: var(--color-white);
+  --best-color: var(--color-digital-blue);
+  --best-on-color: var(--color-white);
+  --alt-color: darkslategrey;
+  --alt-on-color: var(--color-white);
+  /* doc */
+  --doc-font-color: var(--color-whitesmoke);
+  --doc-font-size: inherit;
+  --doc-font-size--desktop: calc(16 / var(--rem-base) * 1rem);
+  --doc-font-size--table: calc(15 / var(--rem-base) * 1rem);
+  --doc-line-height: 1.6;
+  --doc-margin: 0 auto;
+  --doc-margin--desktop: 0 2rem;
+  --heading-font-color: var(--rebrand-color-primary-green);
+  --heading-font-weight: normal;
+  --alt-heading-font-weight: var(--body-font-weight-bold);
+  --section-divider-color: var(--panel-border-color);
+  --link-font-color: var(--rebrand-color-primary-fresh);
+  --link_hover-font-color: var(--color-digital-blue);
+  --link_unresolved-font-color: var(--important-color);
+  --abstract-background: var(--color-smoke-70);
+  --abstract-font-color: var(--color-jet-20);
+  --abstract-border-color: var(--panel-border-color);
+  --admonition-background: var(--panel-background);
+  --admonition-label-font-weight: var(--body-font-weight-bold);
+  --caption-font-color: var(--color-gray-70);
+  --caption-font-weight: var(--body-font-weight-bold);
+  --code-background: var(--panel-background);
+  --code-font-color: var(--rebrand-color-primary-green);
+  --example-background: var(--color-whitesmoke);
+  --example-border-color: var(--color-gray-70);
+  --kbd-background: var(--panel-background);
+  --kbd-border-color: var(--color-gray-10);
+  --pre-background: var(--color-black);
+  --pre-border-color: var(--panel-border-color);
+  --pre-annotation-font-color: var(--color-white);
+  --quote-background: var(--panel-background);
+  --quote-border-color: var(--rebrand-color-primary-teal);
+  --quote-font-color: var(--color-gray-70);
+  --quote-attribution-font-color: var(--color-gray-30);
+  --sidebar-background: var(--color-smoke-90);
+  --table-border-color: var(--panel-border-color);
+  /* footer */
+  --footer-line-height: var(--doc-line-height);
+  --footer-background: var(--color-jet-70);
+  --footer-font-color: var(--color-white);
+  --footer-link-font-color: var(--rebrand-color-primary-green);
+  --footer-border-color: var(--color-whitesmoke);
   /* dimensions and positioning */
   --navbar-height: 5rem;
   --toolbar-height: calc(45 / var(--rem-base) * 1rem);

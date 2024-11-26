@@ -150,7 +150,7 @@
 .doc p code,
 .doc thead code {
   color: var(--code-font-color);
-  background: whitesmoke;
+  background: var(--color-whitesmoke);
   border-radius: 0.25em;
   font-size: 0.95em;
 }
@@ -227,7 +227,7 @@
   content: "\f07d";
   font-family: FontAwesome, sans-serif;
   padding-left: 4px;
-  color: grey;
+  color: var(--color-gray-10);
   font-size: small;
 }
 
@@ -661,7 +661,7 @@
 
 .doc .exampleblock > .content {
   background: var(--example-background);
-  border-left: 5px solid darkslategrey;
+  border-left: 5px solid var(--color-jet-50);
   padding: 1.25rem;
   box-shadow: -4px 2px 7px 0 lightgrey;
 }
@@ -684,7 +684,7 @@
   margin-bottom: 0.5em;
   text-align: left;
   background-color: var(--rebrand-color-primary-teal);
-  color: whitesmoke;
+  color: var(--color-whitesmoke);
   margin-left: -2rem;
   padding: 10px;
   max-width: fit-content;
@@ -709,7 +709,7 @@
   overflow-x: auto;
   padding: 0.75rem;
   border-radius: 0.15rem;
-  color: whitesmoke !important;
+  color: var(--color-whitesmoke) !important;
 }
 
 /* NOTE assume pre.highlight contains code[data-lang] */
@@ -738,7 +738,7 @@ pre code a {
 }
 
 pre code a:hover {
-  color: lightblue !important;
+  color: var(--rebrand-color-primary-light-blue) !important;
   text-decoration: none !important;
 }
 
@@ -772,7 +772,7 @@ pre code a:hover {
 }
 
 .doc .conum[data-value] {
-  border: 2px solid whitesmoke;
+  border: 2px solid var(--color-whitesmoke);
   border-radius: 100%;
   display: inline-block;
   font-family: var(--monospace-font-family);
@@ -786,7 +786,7 @@ pre code a:hover {
   text-indent: -0.25ex;
   background-color: var(--rebrand-color-primary-green);
   margin-top: 1px;
-  color: whitesmoke;
+  color: var(--color-whitesmoke);
 }
 
 .doc .conum[data-value]::after {
@@ -868,7 +868,7 @@ pre code a:hover {
 
 .d-post {
   font-size: smaller;
-  background: green;
+  background: var(--rebrand-color-primary-green);
   color: white;
   padding: 4px;
   border-radius: 4px;
@@ -879,7 +879,7 @@ pre code a:hover {
 
 .d-put {
   font-size: smaller;
-  background: purple;
+  background: var(--rebrand-color-bloom-dark);
   color: white;
   padding: 4px;
   border-radius: 4px;
@@ -890,7 +890,7 @@ pre code a:hover {
 
 .d-get {
   font-size: smaller;
-  background: blue;
+  background: var(--color-digital-blue);
   color: white;
   padding: 4px;
   border-radius: 4px;
@@ -901,7 +901,7 @@ pre code a:hover {
 
 .d-delete {
   font-size: smaller;
-  background: red;
+  background: var(--rebrand-color-primary-red);
   color: white;
   padding: 4px;
   border-radius: 4px;
@@ -912,7 +912,7 @@ pre code a:hover {
 
 .d-grey {
   font-size: smaller;
-  background: grey;
+  background: var(--color-gray-30);
   color: white;
   padding: 4px;
   border-radius: 4px;
@@ -955,8 +955,8 @@ pre code a:hover {
 
 .doc .tabset.is-loading .tabs li:not(:first-child),
 .doc .tabset:not(.is-loading) .tabs li:not(.is-active) {
-  background-color: darkslategrey;
-  color: lightgrey;
+  background-color: var(--color-jet-50);
+  color: var(--color-smoke-50);
 }
 
 .doc .tabset.is-loading .tabs li:first-child::after,
@@ -1013,7 +1013,7 @@ pre code a:hover {
 .doc .red-bg {
   background-color: var(--color-red);
   padding: 5px;
-  color: whitesmoke;
+  color: var(--color-whitesmoke);
   border-radius: 10%;
   border: none;
 }
@@ -1023,16 +1023,16 @@ pre code a:hover {
 }
 
 .doc .blue-bg {
-  background-color: blue;
+  background-color: var(--color-digital-blue);
   padding: 5px;
-  color: whitesmoke;
+  color: var(--color-whitesmoke);
   border-radius: 10%;
   border: none;
 }
 
 .doc .blue-bg a {
   text-decoration: none;
-  color: whitesmoke;
+  color: var(--color-whitesmoke);
 }
 
 .doc .blue-bg a:hover {
@@ -1050,7 +1050,7 @@ pre code a:hover {
 .doc .plum-bg {
   background-color: var(--color-primary-plum);
   padding: 5px;
-  color: whitesmoke;
+  color: var(--color-whitesmoke);
   border-radius: 10%;
   border: none;
 }
@@ -1062,12 +1062,12 @@ pre code a:hover {
 .doc .green-bg {
   background-color: var(--rebrand-color-primary-green);
   padding: 5px;
-  color: whitesmoke;
+  color: var(--color-whitesmoke);
   border: none;
 }
 
 .doc .green-bg a {
-  color: whitesmoke;
+  color: var(--color-whitesmoke);
 }
 
 .doc .green-bg a:hover {
@@ -1085,7 +1085,7 @@ pre code a:hover {
 .doc .yellow-bg {
   background-color: var(--color-primary-gold);
   padding: 5px;
-  color: whitesmoke;
+  color: var(--color-whitesmoke);
   border-radius: 10%;
   border: none;
 }
@@ -1260,7 +1260,7 @@ pre code a:hover {
 }
 
 .doc .rn-label {
-  color: whitesmoke;
+  color: var(--color-whitesmoke);
   padding: 6px;
   font-size: smaller;
 }
@@ -1353,7 +1353,7 @@ pre code a:hover {
 }
 
 .doc .red-badge {
-  background: #f54200;
+  background: var(--rebrand-color-primary-red);
   border-radius: 0.5rem;
   color: #fff;
   display: inline-block;
@@ -1376,7 +1376,7 @@ pre code a:hover {
 
 .doc .status {
   border-radius: 6px;
-  color: black;
+  color: var(--color-black);
   display: inline-block;
   font-size: 0.65rem;
   font-weight: 410;
@@ -1444,7 +1444,7 @@ pre code a:hover {
   height: 300px;
   background-color: var(--color-jet-50);
   text-align: center;
-  color: whitesmoke !important;
+  color: var(--color-whitesmoke) !important;
   transition: transform 0.4s;
   padding: 10px;
 }
@@ -1461,19 +1461,19 @@ pre code a:hover {
 }
 
 .doc-card .title i {
-  color: whitesmoke;
+  color: var(--color-whitesmoke);
   font-size: 1.8rem;
 }
 
 .doc-card p {
-  color: whitesmoke;
+  color: var(--color-whitesmoke);
   font-size: 1rem;
 }
 
 .doc-card a {
   background-color: var(--rebrand-color-primary-green);
   padding: 5px;
-  color: whitesmoke;
+  color: var(--color-whitesmoke);
   border: none;
   display: block;
   border-radius: 10px;
@@ -1518,13 +1518,13 @@ pre code a:hover {
 }
 
 .keyboard-key a:hover {
-  color: black;
+  color: var(--color-black);
 }
 
 .banner {
   width: 100%;
   background-color: var(--color-primary-dark-green); /* Choose your desired background color */
-  color: whitesmoke; /* Choose your desired text color */
+  color: var(--color-whitesmoke); /* Choose your desired text color */
   text-align: center;
   padding-top: 20px;
   padding-bottom: 10px;
@@ -1545,7 +1545,7 @@ pre code a:hover {
 }
 
 .banner a {
-  color: whitesmoke !important;
+  color: var(--color-whitesmoke) !important;
   text-decoration: underline;
 }
 
@@ -1605,7 +1605,7 @@ button.clipboard i {
 }
 
 .inlineBean {
-  color: black !important;
+  color: var(--color-black) !important;
   font-family: monospace !important;
 }
 
@@ -1613,7 +1613,7 @@ button.changelog {
   font-family: inherit;
   font-size: inherit;
   background-color: var(--rebrand-color-primary-green);
-  color: whitesmoke;
+  color: var(--color-whitesmoke);
   transition: 0.3s ease;
   padding: 5px;
   border: none;
@@ -1685,7 +1685,7 @@ span.changelogDate {
   text-align: center;
   padding-top: 1.5rem;
   word-break: auto-phrase !important;
-  box-shadow: -4px 4px 2px darkslategrey;
+  box-shadow: -4px 4px 2px var(--color-jet-50);
 }
 
 .category-card p {

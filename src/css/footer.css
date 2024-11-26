@@ -1,8 +1,9 @@
 footer.footer {
-  background-color: var(--rebrand-color-primary-teal);
+  background-color: var(--footer-background);
   padding: 1.75rem 0 1.5rem;
   position: relative;
   z-index: var(--z-index-footer);
+  border-top: 1px solid var(--footer-border-color);
   /* background-image: url(../img/patterns.svg);
   background-size: cover;
   background-attachment: fixed;
