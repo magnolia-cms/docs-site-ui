@@ -46,7 +46,7 @@ module.exports = (src, dest, preview) => () => {
         },
       },
     ]),
-    postcssVar({ preserve: preview }),
+    postcssVar({ preserve: true }),
     preview ? postcssCalc : () => {},
     autoprefixer,
     preview
