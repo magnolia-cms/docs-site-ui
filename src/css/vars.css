@@ -110,6 +110,7 @@
   --toc-heading-font-color: var(--doc-font-color);
   --toc-border-color: var(--panel-border-color);
   --toc-line-height: 1.2;
+  --toc-active-link-color: var(--rebrand-color-primary-emerald);
   /* admonitions */
   --caution-color: var(--rebrand-color-bloom-dark);
   --caution-on-color: var(--color-white);
@@ -302,8 +303,9 @@
   /* toc */
   --toc-font-color: var(--color-whitesmoke);
   --toc-heading-font-color: var(--rebrand-color-primary-dew);
-  --toc-border-color: var(--panel-border-color);
+  --toc-border-color: var(--rebrand-color-primary-dew);
   --toc-line-height: 1.2;
+  --toc-active-link-color: var(--rebrand-color-primary-emerald);
   /* admonitions */
   --caution-color: var(--rebrand-color-bloom-dark);
   --caution-on-color: var(--color-white);

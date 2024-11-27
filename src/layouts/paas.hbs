@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
 {{> head defaultPageTitle='Untitled'}}
+{{> dark}}
   </head>
   <body class="article{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
 {{> header}}
@@ -11,6 +12,5 @@
 {{> scroll-to-top}}
 {{> location}}
 {{> tableSort}}
-{{> dark}}
   </body>
 </html>

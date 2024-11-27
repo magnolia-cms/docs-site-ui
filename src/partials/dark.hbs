@@ -1,17 +1,53 @@
 <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const lightLogo = document.getElementById('light-mode-logo');
+    const darkLogo = document.getElementById('dark-mode-logo');
+    const themeToggleButton = document.getElementById('themeToggle'); // Ensure this exists in your HTML
+    const themeIcon = document.getElementById('themeIcon'); // Icon element inside the button
 
-// Theme toggle function
-const toggleTheme = () => {
-  const currentTheme = document.documentElement.getAttribute('data-theme');
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', newTheme);
-  localStorage.setItem('theme', newTheme); // Save preference
-};
+    const updateLogoVisibility = () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      console.log(`Current theme is: ${currentTheme}`); // Debugging
 
-// Apply saved theme on page load
-document.addEventListener('DOMContentLoaded', () => {
-  const savedTheme = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', savedTheme);
-});
+      if (currentTheme === 'dark') {
+        lightLogo.style.display = 'none';
+        darkLogo.style.display = 'block';
+      } else {
+        lightLogo.style.display = 'block';
+        darkLogo.style.display = 'none';
+      }
+    };
 
+    const updateThemeIcon = (theme) => {
+      if (theme === 'dark') {
+        themeIcon.classList.remove('fa-moon-o');
+        themeIcon.classList.add('fa-sun-o');
+      } else {
+        themeIcon.classList.remove('fa-sun-o');
+        themeIcon.classList.add('fa-moon-o');
+      }
+    };
+
+    const toggleTheme = () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      console.log(`Switching to: ${newTheme}`); // Debugging
+
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+
+      updateLogoVisibility();
+      updateThemeIcon(newTheme);
+    };
+
+    // Initialize theme, logo, and icon on page load
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateLogoVisibility();
+    updateThemeIcon(savedTheme);
+
+    // Attach toggle event
+    themeToggleButton.addEventListener('click', toggleTheme);
+  });
 </script>
