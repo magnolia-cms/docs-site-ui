@@ -1,5 +1,5 @@
-:root {
 /***** DEFAULT THEME COLORS *****/
+:root {
   --color-primary-green: #599900;
   --color-primary-dark-green: #3a6305;
   --color-primary-light-green: #f5f8ea;
@@ -194,8 +194,8 @@
   --z-index-navbar: 4;
 }
 
-:root[data-theme='dark'] {
 /***** DEFAULT THEME COLORS *****/
+:root[data-theme='dark'] {
   --color-primary-green: #599900;
   --color-primary-dark-green: #3a6305;
   --color-primary-light-green: #f5f8ea;
