@@ -187,7 +187,7 @@ html.is-clipped--nav {
 }
 
 .nav-link:hover {
-  color: var(--rebrand-color-primary-green);
+  color: var(--navbar-font-color-hover);
   text-decoration: none;
 }
 

@@ -79,7 +79,7 @@
   /* navbar */
   --navbar-background: var(--color-white);
   --navbar-font-color: var(--rebrand-color-primary-teal);
-  --navbar-font-color-hover: var(--rebrand-color-primary-teal);
+  --navbar-font-color-hover: var(--rebrand-color-primary-green);
   --navbar_hover-background: var(--color-smoke-90);
   --navbar-button-background: var(--color-digital-blue);
   --navbar-button-border-color: var(--panel-border-color);
@@ -103,6 +103,8 @@
   --toolbar-muted-color: var(--color-gray-30);
   --page-version-menu-background: var(--color-smoke-70);
   --page-version-missing-font-color: var(--color-gray-30);
+  --page-version-background: var(--panel-background);
+  --page-version-border: var(--color-gray-light);
   /* toc */
   --toc-font-color: var(--nav-muted-color);
   --toc-heading-font-color: var(--doc-font-color);
@@ -123,6 +125,7 @@
   --best-on-color: var(--color-white);
   --alt-color: darkslategrey;
   --alt-on-color: var(--color-white);
+  --block-font-color: var(--body-font-color);
   /* doc */
   --doc-font-color: var(--color-jet-50);
   --doc-font-size: inherit;
@@ -270,7 +273,7 @@
   /* navbar */
   --navbar-background: var(--color-jet-70);
   --navbar-font-color: var(--color-whitesmoke);
-  --navbar-font-color-hover: var(--rebrand-color-primary-lime);
+  --navbar-font-color-hover: var(--rebrand-color-primary-fresh);
   --navbar_hover-background: var(--color-smoke-90);
   --navbar-button-background: var(--color-digital-blue);
   --navbar-button-border-color: var(--panel-border-color);
@@ -290,10 +293,12 @@
   /* toolbar */
   --toolbar-background: var(--panel-background);
   --toolbar-border-color: var(--panel-border-color);
-  --toolbar-font-color: var(--color-gray-70);
-  --toolbar-muted-color: var(--color-gray-30);
-  --page-version-menu-background: var(--color-smoke-70);
+  --toolbar-font-color: var(--rebrand-color-primary-fresh);
+  --toolbar-muted-color: var(--rebrand-color-primary-emerald);
+  --page-version-menu-background: var(--panel-background);
   --page-version-missing-font-color: var(--color-gray-30);
+  --page-version-background: var(--panel-background);
+  --page-version-border: var(--panel-border-color);
   /* toc */
   --toc-font-color: var(--color-whitesmoke);
   --toc-heading-font-color: var(--rebrand-color-primary-dew);
@@ -314,6 +319,7 @@
   --best-on-color: var(--color-white);
   --alt-color: darkslategrey;
   --alt-on-color: var(--color-white);
+  --block-font-color: var(--color-jet-70);
   /* doc */
   --doc-font-color: var(--color-whitesmoke);
   --doc-font-size: inherit;

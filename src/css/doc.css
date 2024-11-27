@@ -362,7 +362,7 @@
 
 .doc .admonitionblock.best {
   border-left: 2px solid var(--best-color);
-  color: inherit;
+  color: var(--block-font-color);
 }
 
 .doc .admonitionblock.best .icon {
@@ -428,6 +428,10 @@
   color: var(--alt-on-color);
   padding-right: 5px;
   margin-left: -4px;
+}
+
+.admonitionblock.alt .paragraph {
+  color: var(--block-font-color);
 }
 
 .doc .admonitionblock .icon i {
@@ -684,7 +688,6 @@
   margin-bottom: 0.5em;
   text-align: left;
   background-color: var(--rebrand-color-primary-teal);
-  color: var(--color-whitesmoke);
   margin-left: -2rem;
   padding: 10px;
   max-width: fit-content;
@@ -693,6 +696,10 @@
 
 .doc .sidebarblock > .content > :not(.title):first-child {
   margin-top: 0;
+}
+
+.doc .sidebarblock > .content .paragraph {
+  color: var(--block-font-color);
 }
 
 /* NEEDS REVIEW prevent pre in table from causing article to exceed bounds */
