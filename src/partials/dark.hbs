@@ -2,12 +2,11 @@
   document.addEventListener('DOMContentLoaded', () => {
     const lightLogo = document.getElementById('light-mode-logo');
     const darkLogo = document.getElementById('dark-mode-logo');
-    const themeToggleButton = document.getElementById('themeToggle'); // Ensure this exists in your HTML
-    const themeIcon = document.getElementById('themeIcon'); // Icon element inside the button
+    const themeToggleButton = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
 
     const updateLogoVisibility = () => {
       const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-      console.log(`Current theme is: ${currentTheme}`); // Debugging
 
       if (currentTheme === 'dark') {
         lightLogo.style.display = 'none';
@@ -32,8 +31,6 @@
       const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-      console.log(`Switching to: ${newTheme}`); // Debugging
-
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
 
@@ -41,13 +38,13 @@
       updateThemeIcon(newTheme);
     };
 
-    // Initialize theme, logo, and icon on page load
+    // Initialize the theme, logo, and icon on page load
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
     updateLogoVisibility();
     updateThemeIcon(savedTheme);
 
-    // Attach toggle event
+    // Attach the toggleTheme function to the button
     themeToggleButton.addEventListener('click', toggleTheme);
   });
 </script>
