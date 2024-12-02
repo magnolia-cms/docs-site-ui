@@ -162,7 +162,7 @@ body {
   }
 
   .navbar-item.has-dropdown:hover .navbar-link {
-    color: var(--color-gray-dark);
+    color: var(--navbar-font-color-hover);
   }
 
   .navbar-item.navbar-item--button {
@@ -395,6 +395,7 @@ span.icon-wrapper {
   .navbar-dropdown .navbar-item {
     padding: 0.5rem 1rem;
     white-space: nowrap;
+    color: var(--navbar-menu-font-color);
   }
 
   .navbar-dropdown .navbar-item:last-child {
@@ -403,7 +404,7 @@ span.icon-wrapper {
 
   .navbar-dropdown a.navbar-item {
     min-width: 180px;
-    color: var(--color-gray-dark);
+    color: var(--navbar-menu-font-color);
   }
 
   .navbar-dropdown.is-right {

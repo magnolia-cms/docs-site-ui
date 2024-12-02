@@ -76,6 +76,8 @@
   --panel-border-color: var(--color-whitesmoke);
   --scrollbar-thumb-color: var(--color-gray-10);
   --docsearch-text-color: var(--color-gray-50) !important;
+  --keyboard-background-color: var(--panel-background);
+  --keyboard-font-color: var(--block-font-color);
   /* navbar */
   --navbar-background: var(--color-white);
   --navbar-font-color: var(--rebrand-color-primary-teal);
@@ -194,7 +196,7 @@
   --z-index-navbar: 4;
 }
 
-/***** DEFAULT THEME COLORS *****/
+/***** DARK THEME COLORS *****/
 :root[data-theme='dark'] {
   --color-primary-green: #599900;
   --color-primary-dark-green: #3a6305;
@@ -271,6 +273,8 @@
   --panel-background: var(--color-jet-70);
   --panel-border-color: var(--color-white);
   --scrollbar-thumb-color: var(--color-white);
+  --keyboard-background-color: var(--panel-background);
+  --keyboard-font-color: var(--block-font-color);
   /* navbar */
   --navbar-background: var(--color-jet-70);
   --navbar-font-color: var(--color-whitesmoke);
@@ -280,9 +284,9 @@
   --navbar-button-border-color: var(--panel-border-color);
   --navbar-button-font-color: var(--body-font-color);
   --navbar-menu-border-color: var(--panel-border-color);
-  --navbar-menu-background: var(--color-white);
-  --navbar-menu-font-color: var(--body-font-color);
-  --navbar-menu_hover-background: var(--color-smoke-50);
+  --navbar-menu-background: var(--panel-background);
+  --navbar-menu-font-color: var(--rebrand-color-primary-dew);
+  --navbar-menu_hover-background: var(--rebrand-color-primary-green);
   /* nav */
   --nav-background: var(--panel-background);
   --nav-border-color: var(--color-whitesmoke);

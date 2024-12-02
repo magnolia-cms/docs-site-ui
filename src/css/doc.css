@@ -296,6 +296,7 @@
   padding: 1.2rem 1rem 1.3rem;
   background: var(--rebrand-color-primary-sand);
   width: 100%;
+  color: var(--block-font-color);
 }
 
 .doc .admonitionblock .icon {
@@ -1501,7 +1502,7 @@ pre code a:hover {
 .keyboard-key {
   display: inline-block;
   padding: 10px;
-  background-color: #f5f5f5;
+  background-color: var(--keyboard-background-color);
   border: 1px solid #ccc;
   border-radius: 4px;
   font-family: monospace;
@@ -1517,7 +1518,7 @@ pre code a:hover {
 
 .keyboard-key span {
   font-size: 16px;
-  color: #555;
+  color: var(--keyboard-font-color);
 }
 
 .keyboard-key a {
@@ -1525,7 +1526,7 @@ pre code a:hover {
 }
 
 .keyboard-key a:hover {
-  color: var(--color-black);
+  color: var(--keyboard-font-color);
 }
 
 .banner {
@@ -1612,7 +1613,7 @@ button.clipboard i {
 }
 
 .inlineBean {
-  color: var(--color-black) !important;
+  color: var(--doc-font-color) !important;
   font-family: monospace !important;
 }
 
