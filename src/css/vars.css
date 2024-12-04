@@ -350,7 +350,7 @@
   --caption-font-weight: var(--body-font-weight-bold);
   --code-background: var(--panel-background);
   --code-font-color: var(--rebrand-color-primary-green);
-  --example-background: var(--color-whitesmoke);
+  --example-background: var(--panel-background);
   --example-border-color: var(--color-gray-70);
   --kbd-background: var(--panel-background);
   --kbd-border-color: var(--color-gray-10);
@@ -361,7 +361,7 @@
   --quote-border-color: var(--rebrand-color-primary-teal);
   --quote-font-color: var(--color-gray-70);
   --quote-attribution-font-color: var(--color-gray-30);
-  --sidebar-background: var(--color-smoke-90);
+  --sidebar-background: var(--panel-background);
   --table-border-color: var(--panel-border-color);
   /* footer */
   --footer-line-height: var(--doc-line-height);
