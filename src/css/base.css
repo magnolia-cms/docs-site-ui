@@ -327,6 +327,15 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
   font-size: smaller;
 }
 
+.deprecated {
+  background: var(--rebrand-color-primary-sand);
+  color: var(--rebrand-color-primary-teal);
+  border: 2px solid var(--rebrand-color-primary-red);
+  padding: 10px;
+  border-radius: 5px;
+  font-size: smaller;
+}
+
 .floating-badge {
   position: fixed;
   bottom: 20px;
