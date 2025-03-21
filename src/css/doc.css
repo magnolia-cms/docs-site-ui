@@ -1749,3 +1749,7 @@ span.changelogDate {
     width: fit-content;
   }
 }
+
+.dummy .delete {
+  font-family: 'Courier New', Courier, monospace;
+}
