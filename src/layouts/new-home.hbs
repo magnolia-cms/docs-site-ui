@@ -9,7 +9,7 @@
   <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
     integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  {{!-- <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" /> --}}
   <link rel="stylesheet" href="{{{uiRootPath}}}/css/site.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
   <link rel="icon" href="{{{uiRootPath}}}/img/mgnl-favicon-darkTeal-32.png" type="image/png">
@@ -271,10 +271,6 @@
       }
     }
 
-    span#typewriter {
-      color: var(--darkTeal)!important;
-    }
-
     .first-col {
       margin-bottom: 200px!important;
     }
@@ -431,10 +427,10 @@
     <div class="hero-body">
       <div class="container">
         <div class="columns">
-          <div data-aos="zoom-in-up" class="column">
+          {{!-- <div data-aos="zoom-in-up" class="column"> --}}
+          <div class="column">
             <h1 class="title titled is-1 mb-5" id="hero-header">
               Documentation
-              <!-- <span id="typewriter"></span> -->
             </h1>
             <div id="docsearch"></div>
             <h2 class="subtitle subtitled">
@@ -459,7 +455,8 @@
           is-5-fullhd " data-aos="fade-down">
             <img src="{{{uiRootPath}}}/img/rebrand-icon-white.svg" id="get-to-know-magnolia" alt="">
           </div> -->
-          <div data-aos="fade-down" class="column
+          {{!-- <div data-aos="fade-down" class="column --}}
+          <div class="column
           is-12-mobile
           is-7-tablet
           is-6-desktop
@@ -607,7 +604,6 @@
         <div class="columns is-centered">
           <div data-aos="zoom-in-up" class="column is-8">
             <h1 class="title titled is-1 mb-6">
-              Magnolia 6.3 <span id="typewriter"></span>
             </h1>
             <h2 class="subtitle subtitled">
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laborum cupiditate dolorum vitae dolores
@@ -629,20 +625,12 @@
  </section> 
 {{> footer}}
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/TypewriterJS/2.13.1/core.min.js"></script>
-  <script>
-    new Typewriter('#typewriter', {
-      strings: ['composable', 'collaborative', 'modular', 'performant', 'made by the best'],
-      autoStart: true,
-      loop: true,
-    });
-  </script>
-  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  {{!-- <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script>
     AOS.init({
       once: true
     });
-  </script>
+  </script> --}}
   <script>
   document.addEventListener('DOMContentLoaded', function () {
     var navbarToggles = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0)
