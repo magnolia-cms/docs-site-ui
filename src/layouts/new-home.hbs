@@ -17,6 +17,7 @@
   {{> head-scripts}}
   <style>
     :root {
+        --navbar-height: 5rem !important;
         --lora: 'Lora', serif !important;
         --fresh: #E2F0E4;
         --darkTeal: #02373F;
@@ -37,7 +38,7 @@
       padding-bottom: 100px!important;
     }
 
-    code {
+    code a {
       color: #E2F0E4;
     }
 
@@ -195,9 +196,8 @@
     section[id]::before {
       content: "";
       display: block;
-      height: var(--navbar-height); /* Adjust to match your navbar height */
-      margin-top: - var(--navbar-height); /* Negative margin to pull the anchor up */
-      visibility: hidden;
+      height: var(--navbar-height) !important; /* Adjust to match your navbar height */
+      visibility: hidden !important;
       pointer-events: none;
     }
 
@@ -487,7 +487,7 @@
 
         <div class="columns">
           <div class="column is-6-desktop is-10-tablet">
-            <h3 class="h3 h3--green">See the docs that suit your DX Core experience</h3>
+            <h3 class="h3 h3--green">Docs for your DX Core experience</h3>
           </div>
         </div>
 
@@ -556,7 +556,7 @@
 
         <div class="columns">
           <div class="column is-6-desktop is-10-tablet">
-            <h3 class="h3 h3--green">See the docs that suit your DX Cloud experience</h3>
+            <h3 class="h3 h3--green">Docs for your DX Cloud experience</h3>
           </div>
         </div>
 
@@ -574,7 +574,7 @@
           <div class="column is-4-widescreen is-6-desktop is-6-tablet">
             <div class="card-x">
               <h3 class="card-x__title h3"><i class="fa fa-code" aria-hidden="true"></i> Develop</h3>
-              <p class="card-x__p">Discover how to integrate and deploy applications on DX Cloud using our dedicated CI/CD pipelines. Configure critical items through our <code>values.yml</code> file and check out our headless capabilities for rapid development.</p>
+              <p class="card-x__p">Discover how to integrate and deploy applications on DX Cloud using our dedicated CI/CD pipelines. Configure critical items through our <code><a href="{{{siteRootPath}}}/paas/deployment/helm-values/">values.yml</a></code> file and check out our headless capabilities for rapid development.</p>
               <div class="card-x__link-w">
                 <a class="card-x__link link" href="{{{siteRootPath}}}/paas/setup/">Learn more</a>
               </div>
