@@ -1010,6 +1010,10 @@ pre code a:hover {
   color: var(--color-red);
 }
 
+.doc .gold {
+  color: var(--color-primary-gold) !important;
+}
+
 .doc .red-bg {
   background-color: var(--color-red);
   padding: 5px;
