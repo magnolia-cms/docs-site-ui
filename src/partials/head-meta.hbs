@@ -1,4 +1,5 @@
     {{!-- Add additional meta tags here --}}
-    <meta property="og:title" content="Magnolia CMS Documentation">
-    <meta property="og:description" content="Explore Magnolia CMS documentation for comprehensive guides and resources on implementing, integrating, and using Magnolia effectively.">
+    <meta property="og:title" content="{{{detag (or page.title defaultPageTitle)}}}{{#with site.title}} | {{this}}{{/with}}">
+    <meta property="og:description" content="{{{detag (or page.description "Explore Magnolia CMS documentation for comprehensive guides and resources on implementing, integrating, and using Magnolia effectively.")}}}">
+    <meta property="og:url" content="{{site.url}}{{page.url}}">
     <meta property="og:image" content="{{site.url}}/home/_images/meta-og-2024.png">
