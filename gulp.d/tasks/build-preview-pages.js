@@ -58,6 +58,9 @@ module.exports = (src, previewSrc, previewDest, sink = () => map()) => (done) =>
                 }, {})
               uiModel.page.layout = doc.getAttribute('page-layout', 'default')
               uiModel.page.title = doc.getDocumentTitle()
+              uiModel.page.description = doc.getAttribute('description')
+              uiModel.page.keywords = doc.getAttribute('keywords')
+              uiModel.page.author = doc.getAuthor()
               uiModel.page.contents = Buffer.from(doc.convert())
             }
             file.extname = '.html'

@@ -2,7 +2,9 @@
 :page-beta: true
 :beta: true
 = Commenting
-Author Name
+Author Name <author.name@magnolia-cms.com>
+:description: This module brings commenting features to your pages, including moderation and reactions.
+:keywords: commenting, CMS, moderation, reactions
 :idprefix:
 :idseparator: -
 :!example-caption:
@@ -10,6 +12,9 @@ Author Name
 :page-pagination:
 :page-layout: default
 :page-beta: true
+
+{description}
+The module also comes with a REST API for commenting and a Content App to view comments of an item.
 
 // ++++
 // <style>
