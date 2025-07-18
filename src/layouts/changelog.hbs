@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+{{> head defaultPageTitle='Changelog'}}
+    <!-- Inline CSS for modern linear timeline (precise centered alignments from CodyHouse/W3Schools, gradients, fade-in reveals, active highlights) -->
+    <style>
+      body { font-family: Karla, sans-serif; line-height: 1.6; }
+      .timeline-container { max-width: 800px; margin: 40px auto; position: relative; }
+      .timeline-container::after { content: ""; display: table; clear: both; } /* Clearfix for flow */
+      #timeline { position: relative; padding-left: 80px; } /* Increased spacing between entry and line-circle */
+      #timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 18px; width: 4px; background: linear-gradient(to bottom, #f0eee7, #02373f); z-index: 0; transition: background 0.3s; } /* Gradient line, centered at 20px */
+      .entry { position: relative; margin: 60px 0; padding: 0; text-align: left; opacity: 0.8; transition: opacity 0.3s; animation: fadeIn 0.5s ease-out forwards; } /* Subtle fade-in for reveal */
+      .entry.active { opacity: 1; } /* Active entry highlight */
+      .entry::before { content: ''; position: absolute; top: 10px; left: -70px; width: 20px; height: 20px; background: #0569f9; border: 2px solid #fff; border-radius: 50%; z-index: 3; box-shadow: 0 0 10px rgba(0,123,255,0.5); transition: transform 0.3s, background 0.3s, box-shadow 0.3s; } /* Circle with user tweaks (left: -70px, z-index: 500) */
+      .entry.active::before { transform: scale(1.5); background: #0569f9; box-shadow: 0 0 20px rgba(0,123,255,0.8); } /* Active: enlarge, glow */
+      .entry.hidden { display: none; } /* Hide unrevealed batches */
+      .entry ul, .entry ol { margin: 10px 0; padding-left: 20px; } /* List styling */
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } /* Scroll reveal animation */
+      @media screen and (max-width: 600px) { /* Responsive: Adjust for mobile DXP views */
+        #timeline { padding-left: 60px; }
+        #timeline::before { left: 18px; }
+        .entry::before { left: 10px; top: 10px; }
+      }
+      #search-input { width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px; border: 1px solid #ddd; border-radius: 4px; }
+      #search-results { margin-top: 20px; clear: both; }
+      .search-result { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fff; }
+      .search-result h3 { margin-top: 0; }
+      /* No footer overrides; uses global footer.css */
+    </style>
+  </head>
+  <body class="article changelog{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
+{{> header}}
+{{#if (eq page.component.name 'cloud')}}
+{{> banner}}
+{{/if}}
+    <!-- Custom changelog content -->
+    <main class="timeline-container">
+      <input type="text" id="search-input" placeholder="Search all changelog entries...">
+      <div id="search-results"></div>
+      <div id="timeline"></div>
+    </main>
+    <!-- Hidden full content for parsing -->
+    <div id="full-content" style="display: none;">{{{page.contents}}}</div>
+
+{{> footer}}
+{{> feedback}}
+{{> scroll-to-top}}
+{{> location}}
+
+    <!-- Inline JS (Fuse.js via CDN; preload all, reveal batches when last entry in batch is in view) -->
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@latest/dist/fuse.min.js"></script> <!-- Bundle in production -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // Extract entries (unchanged)
+        function extractEntries() {
+          const entries = [];
+          document.querySelectorAll('#full-content .sect1').forEach(sect => {
+            const h2 = sect.querySelector('h2');
+            const title = h2 ? h2.textContent.trim() : 'Untitled Entry';
+            const bodyEl = sect.querySelector('.sectionbody');
+            const body = bodyEl ? bodyEl.innerHTML : '';
+            const text = bodyEl ? bodyEl.textContent.trim() : '';
+            entries.push({ title, body, text });
+          });
+          return entries; // As in adoc order (removed reverse for file sequence)
+        }
+
+        const entriesData = extractEntries(); // Rename to avoid conflict
+        const timeline = document.getElementById('timeline');
+        const batchSize = 5; // Set to 5 for testing; adjust as needed
+        let revealedCount = 0; // Start with 0, reveal first batch immediately
+
+        // Render all entries in DOM, hide all initially
+        const entryElements = entriesData.map((entry, index) => {
+          const div = document.createElement('div');
+          div.classList.add('entry', 'hidden'); // Hide all initially
+          div.innerHTML = `<h3>${entry.title}</h3>${entry.body}`;
+          timeline.appendChild(div);
+          return div;
+        });
+
+        // Function to check if element is in viewport (aligned with 0.5 threshold)
+        function isInViewport(el) {
+          const rect = el.getBoundingClientRect();
+          const elemHeight = rect.bottom - rect.top;
+          const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+          const intersection = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
+          return (intersection / elemHeight >= 0.5);
+        }
+
+        // IntersectionObserver for active highlight (observe all)
+        const activeObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            entry.target.classList.toggle('active', entry.isIntersecting);
+          });
+        }, { threshold: 0.3 }); // Lowered to 0.3 for better detection on last entries
+
+        // IntersectionObserver for triggering next batch reveal when last entry in current batch is in view
+        let loadObserver;
+        function setupLoadObserver(lastEntry) {
+          if (loadObserver) loadObserver.disconnect(); // Disconnect previous if exists
+          loadObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting && revealedCount < entriesData.length) {
+                revealNextBatch();
+              }
+            });
+          }, { threshold: 0.1 }); // Lower threshold to trigger when bottom of entry enters view
+          loadObserver.observe(lastEntry);
+        }
+
+        // Reveal next batch
+        function revealNextBatch() {
+          const nextBatchStart = revealedCount;
+          const nextBatchEnd = Math.min(revealedCount + batchSize, entriesData.length);
+          entryElements.slice(nextBatchStart, nextBatchEnd).forEach((el, i) => {
+            el.classList.remove('hidden');
+            activeObserver.observe(el); // Observe for active highlight
+            if (i === nextBatchEnd - nextBatchStart - 1) { // Last in new batch
+              setupLoadObserver(el);
+            }
+            // Manual check for active on new entries
+            if (isInViewport(el)) {
+              el.classList.add('active');
+            }
+          });
+          revealedCount = nextBatchEnd;
+        }
+
+        // Initial reveal of first batch
+        revealNextBatch();
+
+        // Search (indexes all entriesData with improved config)
+        const fuse = new Fuse(entriesData, {
+          keys: ['title', 'text', 'body'], // Added 'body' for HTML content search
+          includeScore: true,
+          includeMatches: true, // For highlighting (optional styling)
+          threshold: 0.3, // Lowered for more results
+          minMatchCharLength: 2, // Ignore very short queries
+          ignoreLocation: true // Search anywhere in strings
+        });
+
+        const searchInput = document.getElementById('search-input');
+        const resultsContainer = document.getElementById('search-results');
+        searchInput.addEventListener('input', (e) => {
+          resultsContainer.innerHTML = '';
+          const query = e.target.value;
+          if (query.length < 2) return;
+
+          const results = fuse.search(query);
+          results.forEach(result => {
+            const div = document.createElement('div');
+            div.classList.add('search-result');
+            div.innerHTML = `<h3>${result.item.title} (Relevance: ${Math.round((1 - result.score) * 100)}%)</h3>${result.item.body}`;
+            resultsContainer.appendChild(div);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

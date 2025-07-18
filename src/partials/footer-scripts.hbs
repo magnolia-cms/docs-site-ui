@@ -7,130 +7,6 @@
 {{!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script> --}}
 <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 
-{{#if (eq page.layout 'headless')}}
-<script type="text/javascript">
-    docsearch({
-        appId: 'IIQKXJ786V',
-        apiKey: '450fd6db7d4e2f26607012f0d8683a29',
-        indexName: 'headless',
-        container: '#searchBar',
-        searchParameters: { hitsPerPage: 12 },
-        debug: true // prevent it from closing on inspection.
-    });
-
-    function toggleDropDown () {
-      var linkEl = document.querySelectorAll('.has-dropdown');
-      var allDrops =  document.querySelectorAll('.has-dropdown .navbar-dropdown');
-      for (var el of linkEl) {
-        el.addEventListener('click', function (e) {
-          for (var drop of allDrops) {
-            drop.style.display = "none";
-          }
-          e.stopPropagation()
-          e.target.nextElementSibling.style.display = "block";
-        })
-      }
-    }
-    if(window.innerWidth < 1200) {
-      toggleDropDown();
-    }
-
-</script>
-{{/if}}
-
-{{#if (eq page.layout 'saas')}}
-<script type="text/javascript">
-    docsearch({
-        appId: 'IIQKXJ786V',
-        apiKey: '450fd6db7d4e2f26607012f0d8683a29',
-        indexName: 'saas',
-        container: '#searchBar',
-        searchParameters: { hitsPerPage: 12 },
-        debug: true // prevent it from closing on inspection.
-    });
-
-    function toggleDropDown () {
-      var linkEl = document.querySelectorAll('.has-dropdown');
-      var allDrops =  document.querySelectorAll('.has-dropdown .navbar-dropdown');
-      for (var el of linkEl) {
-        el.addEventListener('click', function (e) {
-          for (var drop of allDrops) {
-            drop.style.display = "none";
-          }
-          e.stopPropagation()
-          e.target.nextElementSibling.style.display = "block";
-        })
-      }
-    }
-    if(window.innerWidth < 1200) {
-      toggleDropDown();
-    }
-
-</script>
-{{/if}}
-
-{{#if (eq page.layout 'splash-saas')}}
-<script type="text/javascript">
-    docsearch({
-        appId: 'IIQKXJ786V',
-        apiKey: '450fd6db7d4e2f26607012f0d8683a29',
-        indexName: 'saas',
-        container: '#searchBar',
-        searchParameters: { hitsPerPage: 12 },
-        debug: true // prevent it from closing on inspection.
-    });
-
-    function toggleDropDown () {
-      var linkEl = document.querySelectorAll('.has-dropdown');
-      var allDrops =  document.querySelectorAll('.has-dropdown .navbar-dropdown');
-      for (var el of linkEl) {
-        el.addEventListener('click', function (e) {
-          for (var drop of allDrops) {
-            drop.style.display = "none";
-          }
-          e.stopPropagation()
-          e.target.nextElementSibling.style.display = "block";
-        })
-      }
-    }
-    if(window.innerWidth < 1200) {
-      toggleDropDown();
-    }
-
-</script>
-{{/if}}
-
-{{#if (eq page.layout 'home-saas')}}
-<script type="text/javascript">
-    docsearch({
-        appId: 'IIQKXJ786V',
-        apiKey: '450fd6db7d4e2f26607012f0d8683a29',
-        indexName: 'saas',
-        container: '#searchBar',
-        searchParameters: { hitsPerPage: 12 },
-        debug: true // prevent it from closing on inspection.
-    });
-
-    function toggleDropDown () {
-      var linkEl = document.querySelectorAll('.has-dropdown');
-      var allDrops =  document.querySelectorAll('.has-dropdown .navbar-dropdown');
-      for (var el of linkEl) {
-        el.addEventListener('click', function (e) {
-          for (var drop of allDrops) {
-            drop.style.display = "none";
-          }
-          e.stopPropagation()
-          e.target.nextElementSibling.style.display = "block";
-        })
-      }
-    }
-    if(window.innerWidth < 1200) {
-      toggleDropDown();
-    }
-
-</script>
-{{/if}}
-
 {{#if (and (eq page.layout 'default') (eq page.componentVersion.displayVersion '6.3 rc'))}}
 
 <script type="text/javascript">
@@ -196,6 +72,37 @@
 {{/if}}
 
 {{#if (eq page.layout 'cloud')}}
+<script type="text/javascript">
+    docsearch({
+        appId: 'IIQKXJ786V',
+        apiKey: '450fd6db7d4e2f26607012f0d8683a29',
+        indexName: 'dev_DOCS',
+        container: '#searchBar',
+        searchParameters: { hitsPerPage: 12 },
+        debug: true // prevent it from closing on inspection.
+    });
+
+    function toggleDropDown () {
+      var linkEl = document.querySelectorAll('.has-dropdown');
+      var allDrops =  document.querySelectorAll('.has-dropdown .navbar-dropdown');
+      for (var el of linkEl) {
+        el.addEventListener('click', function (e) {
+          for (var drop of allDrops) {
+            drop.style.display = "none";
+          }
+          e.stopPropagation()
+          e.target.nextElementSibling.style.display = "block";
+        })
+      }
+    }
+    if(window.innerWidth < 1200) {
+      toggleDropDown();
+    }
+
+</script>
+{{/if}}
+
+{{#if (eq page.layout 'changelog')}}
 <script type="text/javascript">
     docsearch({
         appId: 'IIQKXJ786V',
