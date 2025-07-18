@@ -1,6 +1,8 @@
 = Changelog
 :page-layout: changelog
 
+[entry_date="2025-07-12"]
+
 == Entry A
 
 This software update introduces several new features and improvements to enhance user experience. Key highlights include:
@@ -11,6 +13,15 @@ This software update introduces several new features and improvements to enhance
 - **Feature X**: Introduction of Feature X, which allows users to do Y more efficiently.
 
 We encourage all users to update to the latest version to take advantage of these improvements.
+
+=== Other things
+
+test
+
+image::raccoon.png[role="zoom"]
+
+NOTE: TEST
+
 
 == Entry B
 

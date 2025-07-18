@@ -5,7 +5,10 @@
     <!-- Inline CSS for modern linear timeline (precise centered alignments from CodyHouse/W3Schools, gradients, fade-in reveals, active highlights) -->
     <style>
       body { font-family: Karla, sans-serif; line-height: 1.6; }
-      .timeline-container { max-width: 800px; margin: 40px auto; position: relative; }
+      .hero-section { width: 100vw; position: relative; left: 50%; transform: translateX(-50%); text-align: center; padding: 60px 0; background: linear-gradient(135deg, #f8f9fa 0%, #e9f0f5 100%); animation: timelineGlow 10s ease-in-out infinite alternate; border-bottom: 1px solid #ddd; } /* Full-width hero with subtle theme animation */
+      .hero-section h1 { font-size: 2.5em; margin: 0 0 20px; } /* Hero title */
+      #search-input { width: 80%; max-width: 600px; padding: 12px; font-size: 1.1em; border: 1px solid #ddd; border-radius: 6px; display: block; margin: 0 auto; } /* Search in hero, centered and styled */
+      .timeline-container { max-width: 65vw; margin: 40px auto; position: relative; } /* Contained timeline */
       .timeline-container::after { content: ""; display: table; clear: both; } /* Clearfix for flow */
       #timeline { position: relative; padding-left: 80px; } /* Increased spacing between entry and line-circle */
       #timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 18px; width: 4px; background: linear-gradient(to bottom, #f0eee7, #02373f); z-index: 0; transition: background 0.3s; } /* Gradient line, centered at 20px */
@@ -15,13 +18,16 @@
       .entry.active::before { transform: scale(1.5); background: #0569f9; box-shadow: 0 0 20px rgba(0,123,255,0.8); } /* Active: enlarge, glow */
       .entry.hidden { display: none; } /* Hide unrevealed batches */
       .entry ul, .entry ol { margin: 10px 0; padding-left: 20px; } /* List styling */
+      .entry img { max-width: 100%; height: auto; display: block; margin: 10px 0; } /* Contain images within entry */
+      .entry-date { position: absolute; left: -150px; top: 10px; font-size: 0.9em; color: #666; white-space: nowrap; } /* Date left of circle/line, level with entry */
       @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } /* Scroll reveal animation */
+      @keyframes timelineGlow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } } /* Subtle changelog theme animation: gradient shift */
       @media screen and (max-width: 600px) { /* Responsive: Adjust for mobile DXP views */
         #timeline { padding-left: 60px; }
         #timeline::before { left: 18px; }
         .entry::before { left: 10px; top: 10px; }
+        .entry-date { left: -100px; font-size: 0.8em; } /* Adjust date on mobile */
       }
-      #search-input { width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px; border: 1px solid #ddd; border-radius: 4px; }
       #search-results { margin-top: 20px; clear: both; }
       .search-result { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fff; }
       .search-result h3 { margin-top: 0; }
@@ -33,9 +39,13 @@
 {{#if (eq page.component.name 'cloud')}}
 {{> banner}}
 {{/if}}
-    <!-- Custom changelog content -->
+    <!-- Full-width hero section -->
+    <div class="hero-section">
+      <h1>Changelog</h1> <!-- Hero title -->
+      <input type="text" id="search-input" placeholder="Search all changelog entries..."> <!-- Search in hero -->
+    </div>
+    <!-- Custom changelog content (contained) -->
     <main class="timeline-container">
-      <input type="text" id="search-input" placeholder="Search all changelog entries...">
       <div id="search-results"></div>
       <div id="timeline"></div>
     </main>
@@ -51,18 +61,24 @@
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@latest/dist/fuse.min.js"></script> <!-- Bundle in production -->
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        // Extract entries (unchanged)
+        // Extract entries with date from title
         function extractEntries() {
           const entries = [];
           document.querySelectorAll('#full-content .sect1').forEach(sect => {
             const h2 = sect.querySelector('h2');
-            const title = h2 ? h2.textContent.trim() : 'Untitled Entry';
+            let title = h2 ? h2.textContent.trim() : 'Untitled Entry';
+            let date = 'No Date';
+            if (title.includes(' - ')) { // Parse date from title if substituted as 'Entry - Date'
+              const parts = title.split(' - ');
+              title = parts[0];
+              date = parts[1];
+            }
             const bodyEl = sect.querySelector('.sectionbody');
             const body = bodyEl ? bodyEl.innerHTML : '';
             const text = bodyEl ? bodyEl.textContent.trim() : '';
-            entries.push({ title, body, text });
+            entries.push({ title, body, text, date });
           });
-          return entries; // As in adoc order (removed reverse for file sequence)
+          return entries;
         }
 
         const entriesData = extractEntries(); // Rename to avoid conflict
@@ -74,7 +90,7 @@
         const entryElements = entriesData.map((entry, index) => {
           const div = document.createElement('div');
           div.classList.add('entry', 'hidden'); // Hide all initially
-          div.innerHTML = `<h3>${entry.title}</h3>${entry.body}`;
+          div.innerHTML = `<span class="entry-date">${entry.date}</span><h3>${entry.title}</h3>${entry.body}`;
           timeline.appendChild(div);
           return div;
         });
@@ -93,7 +109,7 @@
           entries.forEach(entry => {
             entry.target.classList.toggle('active', entry.isIntersecting);
           });
-        }, { threshold: 0.3 }); // Lowered to 0.3 for better detection on last entries
+        }, { threshold: 0.5 });
 
         // IntersectionObserver for triggering next batch reveal when last entry in current batch is in view
         let loadObserver;
@@ -119,10 +135,6 @@
             if (i === nextBatchEnd - nextBatchStart - 1) { // Last in new batch
               setupLoadObserver(el);
             }
-            // Manual check for active on new entries
-            if (isInViewport(el)) {
-              el.classList.add('active');
-            }
           });
           revealedCount = nextBatchEnd;
         }
@@ -130,14 +142,11 @@
         // Initial reveal of first batch
         revealNextBatch();
 
-        // Search (indexes all entriesData with improved config)
+        // Search (indexes all entriesData)
         const fuse = new Fuse(entriesData, {
-          keys: ['title', 'text', 'body'], // Added 'body' for HTML content search
+          keys: ['title', 'text'],
           includeScore: true,
-          includeMatches: true, // For highlighting (optional styling)
-          threshold: 0.3, // Lowered for more results
-          minMatchCharLength: 2, // Ignore very short queries
-          ignoreLocation: true // Search anywhere in strings
+          threshold: 0.4
         });
 
         const searchInput = document.getElementById('search-input');
