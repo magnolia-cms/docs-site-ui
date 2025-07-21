@@ -17,7 +17,7 @@
       .timeline-container::after { content: ""; display: table; clear: both; } /* Clearfix for flow */
       #timeline { position: relative; padding-left: 80px; } /* Increased spacing between entry and line-circle */
       #timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 18px; width: 4px; background: linear-gradient(to bottom, #f0eee7, #02373f); z-index: 0; transition: background 0.3s; } /* Gradient line, centered at 20px */
-      .entry { position: relative; margin: 60px 0; padding: 0; text-align: left; opacity: 0.8; transition: opacity 0.3s; animation: fadeIn 0.5s ease-out forwards; } /* Subtle fade-in for reveal */
+      .entry { position: relative; margin: 60px 0; padding: 0; text-align: justify; opacity: 0.8; transition: opacity 0.3s; animation: fadeIn 0.5s ease-out forwards; } /* Subtle fade-in for reveal */
       .entry.active { opacity: 1; } /* Active entry highlight */
       .entry::before { content: ''; position: absolute; top: 10px; left: -70px; width: 20px; height: 20px; background-color: #0569f9 !important; border: 2px solid #fff; border-radius: 50% !important; z-index: 3; box-shadow: 0 0 10px rgba(0,123,255,0.5); transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s; overflow: visible; } /* Reinforced circle styles to prevent squashing (explicit background-color, border-radius, !important for overrides) */
       .entry.active::before { transform: scale(1.5); background-color: #0569f9 !important; box-shadow: 0 0 20px rgba(0,123,255,0.8); } /* Active: enlarge, glow */
@@ -40,19 +40,47 @@
       #search-results { margin-top: 20px; clear: both; }
       .search-result { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fff; }
       .search-result h3 { margin-top: 0; }
-      .search-result .highlight { background: yellow; } /* Highlight matching text in search results */
+      .search-result .highlight { background: #d3f0a5; } /* Highlight matching text in search results */
       /* No footer overrides; uses global footer.css */
+      .search-container {
+  position: relative;
+  width: 80%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#search-input {
+  width: 100%;
+  padding-right: 40px; /* Space for clear button */
+  box-sizing: border-box;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px; /* Medium size */
+  color: #666;
+  cursor: pointer;
+  display: none; /* Hidden by default */
+  user-select: none;
+}
+
+.clear-btn:hover {
+  color: #000;
+}
     </style>
   </head>
   <body class="article changelog{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
 {{> header}}
-{{#if (eq page.component.name 'cloud')}}
-{{> banner}}
-{{/if}}
     <!-- Full-width hero section -->
     <div class="hero-section">
       <h1> {{page.component.title}} Changelog</h1>
-      <input type="text" id="search-input" placeholder="Search all changelog entries...">
+      <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search the changelog...">
+        <span id="clear-search" class="clear-btn">×</span>
+      </div>
       <div id="label-filters"></div>
     </div>
     <!-- Custom changelog content (contained) -->
@@ -69,7 +97,7 @@
 {{> location}}
 
     <!-- Inline JS (Fuse.js via CDN; preload all, reveal batches when last entry in batch is in view) -->
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js@latest/dist/fuse.min.js"></script> /* Bundle in production */
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@latest/dist/fuse.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         // Extract entries with date and labels from classes (role="date-YYYY-MM-DD label-feature label-bugfix")
@@ -312,6 +340,20 @@
         }
 
         const searchInput = document.getElementById('search-input');
+        const clearBtn = document.getElementById('clear-search');
+
+        // Show/hide clear button on input change
+        searchInput.addEventListener('input', (e) => {
+          clearBtn.style.display = e.target.value.trim().length > 0 ? 'block' : 'none';
+          // Existing search logic here...
+        });
+
+        // Clear input on click
+        clearBtn.addEventListener('click', () => {
+          searchInput.value = '';
+          clearBtn.style.display = 'none';
+          searchInput.dispatchEvent(new Event('input')); // Trigger search update
+        });
         const resultsContainer = document.getElementById('search-results');
         searchInput.addEventListener('input', (e) => {
           resultsContainer.innerHTML = '';
