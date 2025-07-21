@@ -19,7 +19,7 @@
       .entry.hidden { display: none; } /* Hide unrevealed batches */
       .entry ul, .entry ol { margin: 10px 0; padding-left: 20px; } /* List styling */
       .entry img { max-width: 100%; height: auto; display: block; margin: 10px 0; } /* Contain images within entry */
-      .entry-date { position: absolute; left: -150px; top: 10px; font-size: 0.9em; color: #666; white-space: nowrap; } /* Date left of circle/line, level with entry */
+      .entry-date { position: absolute; left: -150px; top: 10px; font-size: 0.9em; color: #666; white-space: nowrap; margin-left: -2vw; } /* Date left of circle/line, level with entry */
       @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } /* Scroll reveal animation */
       @keyframes timelineGlow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } } /* Subtle changelog theme animation: gradient shift */
       @media screen and (max-width: 600px) { /* Responsive: Adjust for mobile DXP views */
@@ -41,7 +41,7 @@
 {{/if}}
     <!-- Full-width hero section -->
     <div class="hero-section">
-      <h1>{{page.component.title}} Changelog</h1> <!-- Hero title -->
+      <h1>Changelog</h1> <!-- Hero title -->
       <input type="text" id="search-input" placeholder="Search all changelog entries..."> <!-- Search in hero -->
     </div>
     <!-- Custom changelog content (contained) -->
@@ -58,24 +58,25 @@
 {{> location}}
 
     <!-- Inline JS (Fuse.js via CDN; preload all, reveal batches when last entry in batch is in view) -->
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js@latest/dist/fuse.min.js"></script> <!-- Bundle in production -->
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@latest/dist/fuse.min.js"></script> /* Bundle in production */
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        // Extract entries with date from title
+        // Extract entries with date from class (role="date-YYYY-MM-DD")
         function extractEntries() {
           const entries = [];
           document.querySelectorAll('#full-content .sect1').forEach(sect => {
             const h2 = sect.querySelector('h2');
-            let title = h2 ? h2.textContent.trim() : 'Untitled Entry';
-            let date = 'No Date';
-            if (title.includes(' - ')) { // Parse date from title if substituted as 'Entry - Date'
-              const parts = title.split(' - ');
-              title = parts[0];
-              date = parts[1];
-            }
+            const title = h2 ? h2.textContent.trim() : 'Untitled Entry';
             const bodyEl = sect.querySelector('.sectionbody');
             const body = bodyEl ? bodyEl.innerHTML : '';
             const text = bodyEl ? bodyEl.textContent.trim() : '';
+            // Parse date from class starting with "date-"
+            let date = 'No Date';
+            const classes = sect.getAttribute('class') ? sect.getAttribute('class').split(' ') : [];
+            const dateClass = classes.find(cls => cls.startsWith('date-'));
+            if (dateClass) {
+              date = dateClass.replace('date-', '');
+            }
             entries.push({ title, body, text, date });
           });
           return entries;
