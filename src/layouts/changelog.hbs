@@ -30,12 +30,41 @@
       .entry-label { background: #e0e0e0; padding: 2px 5px; border-radius: 3px; } /* Style for individual labels */
       @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } /* Scroll reveal animation */
       @keyframes timelineGlow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } } /* Subtle changelog theme animation: gradient shift */
-      @media screen and (max-width: 600px) { /* Responsive: Adjust for mobile DXP views */
-        #timeline { padding-left: 60px; }
-        #timeline::before { left: 18px; }
-        .entry::before { left: 10px; top: 10px; }
-        .entry-date { left: -100px; margin-left: -3.5vw; font-size: 0.8em; } /* Adjust date on mobile */
-        .entry-labels { left: -100px; margin-left: -3.5vw; top: 30px; font-size: 0.7em; } /* Adjust labels on mobile */
+      @media screen and (max-width: 625px) {
+        #timeline { padding-left: 40px; } /* Reduce indent for mobile */
+        #timeline::before { left: 10px; } /* Shift line left */
+        .entry::before { display: none; } /* Remove circle */
+        .entry { 
+          text-align: left; 
+          display: flex; 
+          flex-direction: column; 
+        } /* Vertical stacking */
+        .entry-date { 
+          position: relative; 
+          left: 0; 
+          margin-left: 0; 
+          top: 0; 
+          font-size: 0.8em; 
+          margin-top: 5px; 
+          margin-bottom: 5px; 
+          order: 2; /* After h3 */
+          white-space: normal; 
+        }
+        .entry-labels { 
+          position: relative; 
+          left: 0; 
+          margin-left: 0; 
+          top: 0; 
+          font-size: 0.7em; 
+          margin-bottom: 10px; 
+          order: 3; /* After date */
+        }
+        .entry h3 { 
+          order: 1; /* Title first */
+        }
+        .entry-body { 
+          order: 4; /* Body last */
+        }
       }
       #search-results { margin-top: 20px; clear: both; }
       .search-result { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fff; }
@@ -43,33 +72,33 @@
       .search-result .highlight { background: #d3f0a5; } /* Highlight matching text in search results */
       /* No footer overrides; uses global footer.css */
       .search-container {
-  position: relative;
-  width: 80%;
-  max-width: 600px;
-  margin: 0 auto;
-}
+        position: relative;
+        width: 80%;
+        max-width: 600px;
+        margin: 0 auto;
+      }
 
-#search-input {
-  width: 100%;
-  padding-right: 40px; /* Space for clear button */
-  box-sizing: border-box;
-}
+      #search-input {
+        width: 100%;
+        padding-right: 40px; /* Space for clear button */
+        box-sizing: border-box;
+      }
 
-.clear-btn {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 20px; /* Medium size */
-  color: #666;
-  cursor: pointer;
-  display: none; /* Hidden by default */
-  user-select: none;
-}
+    .clear-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px; /* Medium size */
+      color: #666;
+      cursor: pointer;
+      display: none; /* Hidden by default */
+      user-select: none;
+    }
 
-.clear-btn:hover {
-  color: #000;
-}
+    .clear-btn:hover {
+      color: #000;
+    }
     </style>
   </head>
   <body class="article changelog{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
@@ -180,8 +209,8 @@
           const div = document.createElement('div');
           div.classList.add('entry', 'hidden'); // Hide all initially
           let labelsHtml = entry.labels.map(label => `<span class="entry-label">${label}</span>`).join('');
-          div.innerHTML = `<span class="entry-date"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> ${entry.date}</span><div class="entry-labels">${labelsHtml}</div><h3>${entry.title}</h3>${entry.body}`;
           div.setAttribute('aria-label', `Entry ${entry.title} on ${entry.date} with labels ${entry.labels.join(', ')}`); // Accessibility for Magnolia users
+          div.innerHTML = `<span class="entry-date"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> ${entry.date}</span><div class="entry-labels">${labelsHtml}</div><h3>${entry.title}</h3><div class="entry-body">${entry.body}</div>`;
           div.setAttribute('data-labels', entry.labels.join(',')); // For filtering
           timeline.appendChild(div);
           return div;
