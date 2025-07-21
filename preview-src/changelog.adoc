@@ -1,7 +1,7 @@
 = Changelog
 :page-layout: changelog
 
-[role="date-2025-July-12"]
+[role="date-2025-July-12 label-ingress label-bugfix"]
 == Entry A
 
 This software update introduces several new features and improvements to enhance user experience. Key highlights include:
@@ -21,7 +21,7 @@ image::raccoon.png[role="zoom"]
 
 NOTE: TEST
 
-[role="date-2025-06-12"]
+[role="date-2025-06-12 label-feature label-bugfix"]
 == Entry B
 
 This release includes a significant breaking change that affects all users. The previous API endpoints have been deprecated and replaced with a new version that offers enhanced functionality and improved security.

@@ -2,6 +2,8 @@
 <html lang="en">
   <head>
 {{> head defaultPageTitle='Changelog'}}
+    <!-- Font Awesome 4.7.0 CDN for fa-calendar-check-o -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Inline CSS for modern linear timeline (precise centered alignments from CodyHouse/W3Schools, gradients, fade-in reveals, active highlights) -->
     <style>
       body { font-family: Karla, sans-serif; line-height: 1.6; }
@@ -14,19 +16,23 @@
       #timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 18px; width: 4px; background: linear-gradient(to bottom, #f0eee7, #02373f); z-index: 0; transition: background 0.3s; } /* Gradient line, centered at 20px */
       .entry { position: relative; margin: 60px 0; padding: 0; text-align: left; opacity: 0.8; transition: opacity 0.3s; animation: fadeIn 0.5s ease-out forwards; } /* Subtle fade-in for reveal */
       .entry.active { opacity: 1; } /* Active entry highlight */
-      .entry::before { content: ''; position: absolute; top: 10px; left: -70px; width: 20px; height: 20px; background: #0569f9; border: 2px solid #fff; border-radius: 50%; z-index: 3; box-shadow: 0 0 10px rgba(0,123,255,0.5); transition: transform 0.3s, background 0.3s, box-shadow 0.3s; } /* Circle with user tweaks (left: -70px, z-index: 500) */
-      .entry.active::before { transform: scale(1.5); background: #0569f9; box-shadow: 0 0 20px rgba(0,123,255,0.8); } /* Active: enlarge, glow */
+      .entry::before { content: ''; position: absolute; top: 10px; left: -70px; width: 20px; height: 20px; background-color: #0569f9 !important; border: 2px solid #fff; border-radius: 50% !important; z-index: 3; box-shadow: 0 0 10px rgba(0,123,255,0.5); transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s; overflow: visible; } /* Reinforced circle styles to prevent squashing (explicit background-color, border-radius, !important for overrides) */
+      .entry.active::before { transform: scale(1.5); background-color: #0569f9 !important; box-shadow: 0 0 20px rgba(0,123,255,0.8); } /* Active: enlarge, glow */
       .entry.hidden { display: none; } /* Hide unrevealed batches */
       .entry ul, .entry ol { margin: 10px 0; padding-left: 20px; } /* List styling */
       .entry img { max-width: 100%; height: auto; display: block; margin: 10px 0; } /* Contain images within entry */
-      .entry-date { position: absolute; left: -150px; top: 10px; font-size: 0.9em; color: #666; white-space: nowrap; margin-left: -2vw; } /* Date left of circle/line, level with entry */
+      .entry-date { display: flex; align-items: center; position: absolute; left: -150px; margin-left: -3.5vw; top: 10px; font-size: 0.9em; color: #666; white-space: nowrap; } /* Date with icon, adjusted spacing */
+      .entry-date .fa { margin-right: 5px; } /* Space between icon and date text */
+      .entry-labels { position: absolute; left: -150px; margin-left: -3.5vw; top: 35px; font-size: 0.8em; color: #888; white-space: nowrap; display: flex; flex-wrap: wrap; gap: 5px; } /* Labels underneath date, aligned left of circle */
+      .entry-label { background: #e0e0e0; padding: 2px 5px; border-radius: 3px; } /* Style for individual labels */
       @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } /* Scroll reveal animation */
       @keyframes timelineGlow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } } /* Subtle changelog theme animation: gradient shift */
       @media screen and (max-width: 600px) { /* Responsive: Adjust for mobile DXP views */
         #timeline { padding-left: 60px; }
         #timeline::before { left: 18px; }
         .entry::before { left: 10px; top: 10px; }
-        .entry-date { left: -100px; font-size: 0.8em; } /* Adjust date on mobile */
+        .entry-date { left: -100px; margin-left: -3.5vw; font-size: 0.8em; } /* Adjust date on mobile */
+        .entry-labels { left: -100px; margin-left: -3.5vw; top: 30px; font-size: 0.7em; } /* Adjust labels on mobile */
       }
       #search-results { margin-top: 20px; clear: both; }
       .search-result { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fff; }
@@ -58,10 +64,10 @@
 {{> location}}
 
     <!-- Inline JS (Fuse.js via CDN; preload all, reveal batches when last entry in batch is in view) -->
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js@latest/dist/fuse.min.js"></script> /* Bundle in production */
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@latest/dist/fuse.min.js"></script> <!-- Bundle in production -->
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        // Extract entries with date from class (role="date-YYYY-MM-DD")
+        // Extract entries with date and labels from classes (role="date-YYYY-MM-DD label-feature label-bugfix")
         function extractEntries() {
           const entries = [];
           document.querySelectorAll('#full-content .sect1').forEach(sect => {
@@ -72,12 +78,16 @@
             const text = bodyEl ? bodyEl.textContent.trim() : '';
             // Parse date from class starting with "date-"
             let date = 'No Date';
+            let labels = [];
             const classes = sect.getAttribute('class') ? sect.getAttribute('class').split(' ') : [];
-            const dateClass = classes.find(cls => cls.startsWith('date-'));
-            if (dateClass) {
-              date = dateClass.replace('date-', '');
-            }
-            entries.push({ title, body, text, date });
+            classes.forEach(cls => {
+              if (cls.startsWith('date-')) {
+                date = cls.replace('date-', '');
+              } else if (cls.startsWith('label-')) {
+                labels.push(cls.replace('label-', ''));
+              }
+            });
+            entries.push({ title, body, text, date, labels });
           });
           return entries;
         }
@@ -91,28 +101,30 @@
         const entryElements = entriesData.map((entry, index) => {
           const div = document.createElement('div');
           div.classList.add('entry', 'hidden'); // Hide all initially
-          div.innerHTML = `<span class="entry-date">${entry.date}</span><h3>${entry.title}</h3>${entry.body}`;
+          let labelsHtml = entry.labels.map(label => `<span class="entry-label">${label}</span>`).join('');
+          div.innerHTML = `<span class="entry-date"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> ${entry.date}</span><div class="entry-labels">${labelsHtml}</div><h3>${entry.title}</h3>${entry.body}`;
+          div.setAttribute('aria-label', `Entry ${entry.title} on ${entry.date} with labels ${entry.labels.join(', ')}`); // Accessibility for Magnolia users
           timeline.appendChild(div);
           return div;
         });
 
-        // Function to check if element is in viewport (aligned with 0.5 threshold)
+        // Function to check if element is in viewport (aligned with 0.2 threshold for earlier activation)
         function isInViewport(el) {
           const rect = el.getBoundingClientRect();
           const elemHeight = rect.bottom - rect.top;
           const windowHeight = window.innerHeight || document.documentElement.clientHeight;
           const intersection = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
-          return (intersection / elemHeight >= 0.5);
+          return (intersection / elemHeight >= 0.2);
         }
 
-        // IntersectionObserver for active highlight (observe all)
+        // IntersectionObserver for active highlight (observe all, lowered threshold for sooner enlargement)
         const activeObserver = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             entry.target.classList.toggle('active', entry.isIntersecting);
           });
-        }, { threshold: 0.5 });
+        }, { threshold: 0.2 });
 
-        // IntersectionObserver for triggering next batch reveal when last entry in current batch is in view
+        // IntersectionObserver for triggering next batch reveal when last entry in batch is in view
         let loadObserver;
         function setupLoadObserver(lastEntry) {
           if (loadObserver) loadObserver.disconnect(); // Disconnect previous if exists
