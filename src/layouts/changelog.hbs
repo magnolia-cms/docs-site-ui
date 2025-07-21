@@ -10,6 +10,9 @@
       .hero-section { width: 100vw; position: relative; left: 50%; transform: translateX(-50%); text-align: center; padding: 60px 0; background: linear-gradient(135deg, #f8f9fa 0%, #e9f0f5 100%); animation: timelineGlow 10s ease-in-out infinite alternate; border-bottom: 1px solid #ddd; } /* Full-width hero with subtle theme animation */
       .hero-section h1 { font-size: 2.5em; margin: 0 0 20px; } /* Hero title */
       #search-input { width: 80%; max-width: 600px; padding: 12px; font-size: 1.1em; border: 1px solid #ddd; border-radius: 6px; display: block; margin: 0 auto; } /* Search in hero, centered and styled */
+      #label-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 5px; margin: 20px auto 0; max-width: 80%; } /* Horizontal filters under search, matching label gap */
+      .label-filter { background: #e0e0e0; padding: 2px 5px; border-radius: 3px; cursor: pointer; transition: background 0.3s; } /* Filter button styled same as labels */
+      .label-filter.selected { background: #0569f9; color: #fff; } /* Selected state */
       .timeline-container { max-width: 65vw; margin: 40px auto; position: relative; } /* Contained timeline */
       .timeline-container::after { content: ""; display: table; clear: both; } /* Clearfix for flow */
       #timeline { position: relative; padding-left: 80px; } /* Increased spacing between entry and line-circle */
@@ -37,6 +40,7 @@
       #search-results { margin-top: 20px; clear: both; }
       .search-result { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fff; }
       .search-result h3 { margin-top: 0; }
+      .search-result .highlight { background: yellow; } /* Highlight matching text in search results */
       /* No footer overrides; uses global footer.css */
     </style>
   </head>
@@ -47,8 +51,9 @@
 {{/if}}
     <!-- Full-width hero section -->
     <div class="hero-section">
-      <h1>Changelog</h1> <!-- Hero title -->
-      <input type="text" id="search-input" placeholder="Search all changelog entries..."> <!-- Search in hero -->
+      <h1> {{page.component.title}} Changelog</h1>
+      <input type="text" id="search-input" placeholder="Search all changelog entries...">
+      <div id="label-filters"></div>
     </div>
     <!-- Custom changelog content (contained) -->
     <main class="timeline-container">
@@ -64,7 +69,7 @@
 {{> location}}
 
     <!-- Inline JS (Fuse.js via CDN; preload all, reveal batches when last entry in batch is in view) -->
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js@latest/dist/fuse.min.js"></script> <!-- Bundle in production -->
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@latest/dist/fuse.min.js"></script> /* Bundle in production */
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         // Extract entries with date and labels from classes (role="date-YYYY-MM-DD label-feature label-bugfix")
@@ -74,8 +79,40 @@
             const h2 = sect.querySelector('h2');
             const title = h2 ? h2.textContent.trim() : 'Untitled Entry';
             const bodyEl = sect.querySelector('.sectionbody');
-            const body = bodyEl ? bodyEl.innerHTML : '';
-            const text = bodyEl ? bodyEl.textContent.trim() : '';
+            
+            // Enhanced content extraction for better search results
+            let body = '';
+            let text = '';
+            let paragraphs = [];
+            let listItems = [];
+            let allText = [];
+            
+            if (bodyEl) {
+              body = bodyEl.innerHTML;
+              
+              // Extract paragraphs specifically from .paragraph divs
+              bodyEl.querySelectorAll('.paragraph').forEach(p => {
+                const pText = p.textContent.trim();
+                if (pText) {
+                  paragraphs.push(pText);
+                  allText.push(pText);
+                }
+              });
+              
+              // Extract list items from ul/ol
+              bodyEl.querySelectorAll('ul li, ol li').forEach(li => {
+                const liText = li.textContent.trim();
+                if (liText) {
+                  listItems.push(liText);
+                  allText.push(liText);
+                }
+              });
+              
+              // Also get any other text content not in paragraphs or lists
+              const otherText = bodyEl.textContent.trim();
+              text = otherText;
+            }
+            
             // Parse date from class starting with "date-"
             let date = 'No Date';
             let labels = [];
@@ -87,7 +124,20 @@
                 labels.push(cls.replace('label-', ''));
               }
             });
-            entries.push({ title, body, text, date, labels });
+            
+            entries.push({ 
+              title, 
+              body, 
+              text, 
+              date, 
+              labels,
+              // New structured content for better search
+              paragraphs: paragraphs.join(' '),
+              listItems: listItems.join(' '),
+              searchableContent: allText.join(' '),
+              // Individual content pieces for granular matching
+              contentPieces: allText
+            });
           });
           return entries;
         }
@@ -104,6 +154,7 @@
           let labelsHtml = entry.labels.map(label => `<span class="entry-label">${label}</span>`).join('');
           div.innerHTML = `<span class="entry-date"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> ${entry.date}</span><div class="entry-labels">${labelsHtml}</div><h3>${entry.title}</h3>${entry.body}`;
           div.setAttribute('aria-label', `Entry ${entry.title} on ${entry.date} with labels ${entry.labels.join(', ')}`); // Accessibility for Magnolia users
+          div.setAttribute('data-labels', entry.labels.join(',')); // For filtering
           timeline.appendChild(div);
           return div;
         });
@@ -155,25 +206,163 @@
         // Initial reveal of first batch
         revealNextBatch();
 
-        // Search (indexes all entriesData)
-        const fuse = new Fuse(entriesData, {
-          keys: ['title', 'text'],
-          includeScore: true,
-          threshold: 0.4
+        // Render dynamic label filters
+        const labelFilters = document.getElementById('label-filters');
+        const allLabels = new Set();
+        entriesData.forEach(entry => {
+          entry.labels.forEach(label => allLabels.add(label));
         });
+        const labelsArray = Array.from(allLabels);
+        if (labelsArray.length > 0) {
+          const allButton = document.createElement('button');
+          allButton.classList.add('label-filter', 'selected');
+          allButton.textContent = 'All';
+          allButton.addEventListener('click', () => filterEntries(null));
+          labelFilters.appendChild(allButton);
+
+          labelsArray.forEach(label => {
+            const button = document.createElement('button');
+            button.classList.add('label-filter');
+            button.textContent = label;
+            button.addEventListener('click', () => filterEntries(label));
+            labelFilters.appendChild(button);
+          });
+        }
+
+        function filterEntries(selectedLabel) {
+          const buttons = labelFilters.querySelectorAll('.label-filter');
+          buttons.forEach(btn => btn.classList.remove('selected'));
+          if (selectedLabel === null) {
+            labelFilters.querySelector('.label-filter:first-child').classList.add('selected');
+            entryElements.forEach(el => {
+              el.style.display = 'block';
+            });
+          } else {
+            const selectedBtn = Array.from(buttons).find(btn => btn.textContent === selectedLabel);
+            selectedBtn.classList.add('selected');
+            entryElements.forEach(el => {
+              const entryLabels = el.getAttribute('data-labels') || '';
+              el.style.display = entryLabels.includes(selectedLabel) ? 'block' : 'none';
+            });
+          }
+        }
+
+        // Optimized Search with better Fuse.js configuration
+        const fuse = new Fuse(entriesData, {
+          keys: [
+            { name: 'title', weight: 0.3 },                    // Highest priority: titles
+            { name: 'searchableContent', weight: 0.25 },       // Combined structured content
+            { name: 'paragraphs', weight: 0.2 },               // Paragraph text specifically
+            { name: 'listItems', weight: 0.15 },               // List items specifically
+            { name: 'labels', weight: 0.1 }                    // Labels for categorization
+          ],
+          includeScore: true,
+          includeMatches: true,
+          threshold: 0.25,                                      // More precise matching
+          minMatchCharLength: 2,
+          ignoreLocation: true,                                 // Don't penalize matches based on position
+          findAllMatches: true,                                 // Find all matching instances
+          useExtendedSearch: true                               // Enable extended search syntax
+        });
+
+        // Enhanced function to highlight matches in text
+        function highlightMatches(text, matches) {
+          if (!matches || matches.length === 0) return text;
+          
+          // Collect all indices from all matches
+          let allIndices = [];
+          matches.forEach(match => {
+            if (match.indices) {
+              match.indices.forEach(([start, end]) => {
+                allIndices.push([start, end]);
+              });
+            }
+          });
+          
+          // Sort indices by start position
+          allIndices.sort((a, b) => a[0] - b[0]);
+          
+          // Merge overlapping indices
+          let mergedIndices = [];
+          for (let [start, end] of allIndices) {
+            if (mergedIndices.length === 0) {
+              mergedIndices.push([start, end]);
+            } else {
+              let lastIndex = mergedIndices[mergedIndices.length - 1];
+              if (start <= lastIndex[1] + 1) {
+                lastIndex[1] = Math.max(lastIndex[1], end);
+              } else {
+                mergedIndices.push([start, end]);
+              }
+            }
+          }
+          
+          // Apply highlights in reverse order to maintain correct indices
+          let highlighted = text;
+          for (let i = mergedIndices.length - 1; i >= 0; i--) {
+            let [start, end] = mergedIndices[i];
+            highlighted = highlighted.slice(0, start) + 
+                         '<span class="highlight">' + 
+                         highlighted.slice(start, end + 1) + 
+                         '</span>' + 
+                         highlighted.slice(end + 1);
+          }
+          
+          return highlighted;
+        }
 
         const searchInput = document.getElementById('search-input');
         const resultsContainer = document.getElementById('search-results');
         searchInput.addEventListener('input', (e) => {
           resultsContainer.innerHTML = '';
-          const query = e.target.value;
+          const query = e.target.value.trim();
           if (query.length < 2) return;
 
           const results = fuse.search(query);
-          results.forEach(result => {
+          
+          if (results.length === 0) {
+            resultsContainer.innerHTML = '<div class="search-result"><p>No results found for your search.</p></div>';
+            return;
+          }
+          
+          results.slice(0, 10).forEach(result => { // Limit to top 10 results
             const div = document.createElement('div');
             div.classList.add('search-result');
-            div.innerHTML = `<h3>${result.item.title} (Relevance: ${Math.round((1 - result.score) * 100)}%)</h3>${result.item.body}`;
+            
+            // Find matches for the searchableContent to highlight
+            const contentMatches = result.matches.filter(m => 
+              m.key === 'searchableContent' || m.key === 'paragraphs' || m.key === 'listItems'
+            );
+            
+            let highlightedBody = result.item.body;
+            if (contentMatches.length > 0) {
+              // Create a temporary div to work with the HTML content
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = result.item.body;
+              
+              // Try to highlight within paragraph and list elements
+              const searchText = query.toLowerCase();
+              tempDiv.querySelectorAll('.paragraph, li').forEach(el => {
+                const text = el.textContent;
+                if (text.toLowerCase().includes(searchText)) {
+                  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                  el.innerHTML = el.innerHTML.replace(regex, '<span class="highlight">$1</span>');
+                }
+              });
+              
+              highlightedBody = tempDiv.innerHTML;
+            }
+            
+            const relevanceScore = Math.round((1 - result.score) * 100);
+            const matchInfo = result.item.labels.length > 0 ? ` • Labels: ${result.item.labels.join(', ')}` : '';
+            
+            div.innerHTML = `
+              <h3>${result.item.title}</h3>
+              <p style="font-size: 0.9em; color: #666; margin: 5px 0;">
+                ${result.item.date} • Relevance: ${relevanceScore}%${matchInfo}
+              </p>
+              ${highlightedBody}
+            `;
             resultsContainer.appendChild(div);
           });
         });
