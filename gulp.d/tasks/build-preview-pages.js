@@ -1,19 +1,14 @@
 'use strict'
 
-// NOTE remove patch after upgrading from asciidoctor.js to @asciidoctor/core
-Error.call = (self, ...args) => {
-  const err = new Error(...args)
-  return Object.assign(self, { message: err.message, stack: err.stack })
-}
-
-const asciidoctor = require('asciidoctor.js')()
+const Asciidoctor = require('@asciidoctor/core')()
 const fs = require('fs-extra')
 const handlebars = require('handlebars')
-const { obj: map } = require('through2')
 const merge = require('merge-stream')
 const ospath = require('path')
 const path = ospath.posix
 const requireFromString = require('require-from-string')
+const { Transform } = require('stream')
+const map = (transform = () => {}, flush = undefined) => new Transform({ objectMode: true, transform, flush })
 const vfs = require('vinyl-fs')
 const yaml = require('js-yaml')
 
@@ -26,7 +21,21 @@ module.exports = (src, previewSrc, previewDest, sink = () => map()) => (done) =>
       merge(compileLayouts(src), registerPartials(src), registerHelpers(src), copyImages(previewSrc, previewDest))
     ),
   ])
-    .then(([baseUiModel, { layouts }]) => [{ ...baseUiModel, env: process.env }, layouts])
+    .then(([baseUiModel, { layouts }]) => {
+      const extensions = ((baseUiModel.asciidoc || {}).extensions || []).map((request) => {
+        ASCIIDOC_ATTRIBUTES[request.replace(/^@|\.js$/, '').replace(/[/]/g, '-') + '-loaded'] = ''
+        const extension = require(request)
+        extension.register.call(Asciidoctor.Extensions)
+        return extension
+      })
+      const asciidoc = { extensions }
+      for (const component of baseUiModel.site.components) {
+        for (const version of component.versions || []) version.asciidoc = asciidoc
+      }
+      baseUiModel = { ...baseUiModel, env: process.env }
+      delete baseUiModel.asciidoc
+      return [baseUiModel, layouts]
+    })
     .then(([baseUiModel, layouts]) =>
       vfs
         .src('**/*.adoc', { base: previewSrc, cwd: previewSrc })
@@ -36,20 +45,22 @@ module.exports = (src, previewSrc, previewDest, sink = () => map()) => (done) =>
             const uiModel = { ...baseUiModel }
             uiModel.page = { ...uiModel.page }
             uiModel.siteRootPath = siteRootPath
-            uiModel.siteRootUrl = path.join(siteRootPath, 'index.html')
             uiModel.uiRootPath = path.join(siteRootPath, '_')
             if (file.stem === '404') {
               uiModel.page = { layout: '404', title: 'Page Not Found' }
             } else {
-              const doc = asciidoctor.load(file.contents, { safe: 'safe', attributes: ASCIIDOC_ATTRIBUTES })
+              const doc = Asciidoctor.load(file.contents, { safe: 'safe', attributes: ASCIIDOC_ATTRIBUTES })
               uiModel.page.attributes = Object.entries(doc.getAttributes())
                 .filter(([name, val]) => name.startsWith('page-'))
                 .reduce((accum, [name, val]) => {
-                  accum[name.substr(5)] = val
+                  accum[name.slice(5)] = val
                   return accum
                 }, {})
               uiModel.page.layout = doc.getAttribute('page-layout', 'default')
               uiModel.page.title = doc.getDocumentTitle()
+              uiModel.page.description = doc.getAttribute('description')
+              uiModel.page.keywords = doc.getAttribute('keywords')
+              uiModel.page.author = doc.getAuthor()
               uiModel.page.contents = Buffer.from(doc.convert())
             }
             file.extname = '.html'
@@ -62,7 +73,7 @@ module.exports = (src, previewSrc, previewDest, sink = () => map()) => (done) =>
           })
         )
         .pipe(vfs.dest(previewDest))
-        .on('error', (e) => done)
+        .on('error', done)
         .pipe(sink())
     )
 
@@ -126,7 +137,7 @@ function transformHandlebarsError ({ message, stack }, layout) {
   const m = stack.match(/^ *at Object\.ret \[as (.+?)\]/m)
   const templatePath = `src/${m ? 'partials/' + m[1] : 'layouts/' + layout}.hbs`
   const err = new Error(`${message}${~message.indexOf('\n') ? '\n^ ' : ' '}in UI template ${templatePath}`)
-  err.stack = [err.toString()].concat(stack.substr(message.length + 8)).join('\n')
+  err.stack = [err.toString()].concat(stack.slice(message.length + 8)).join('\n')
   return err
 }
 
