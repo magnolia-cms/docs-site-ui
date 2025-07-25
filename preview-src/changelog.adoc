@@ -21,7 +21,7 @@ image::raccoon.png[role="zoom"]
 
 NOTE: TEST
 
-[role="date-2025-06-12 label-feature label-bugfix"]
+[role="date-2025-06-12 label-feature label-bugfix label-butt label-tits label-nipples label-arse label-releaseIt"]
 == Entry B
 
 This release includes a significant breaking change that affects all users. The previous API endpoints have been deprecated and replaced with a new version that offers enhanced functionality and improved security.

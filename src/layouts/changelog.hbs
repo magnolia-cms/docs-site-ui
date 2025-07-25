@@ -9,11 +9,34 @@
       body { font-family: Karla, sans-serif; line-height: 1.6; }
       .hero-section { width: 100vw; position: relative; left: 50%; transform: translateX(-50%); text-align: center; padding: 60px 0; background: linear-gradient(135deg, #f8f9fa 0%, #f0eee7 100%); animation: timelineGlow 10s ease-in-out infinite alternate; border-bottom: 1px solid #ddd; } /* Full-width hero with subtle theme animation */
       .hero-section h1 { font-size: 2.5em; margin: 0 0 20px; } /* Hero title */
-      #search-input { width: 80%; max-width: 600px; padding: 12px; font-size: 1.1em; border: 1px solid #ddd; border-radius: 6px; display: block; margin: 0 auto; } /* Search in hero, centered and styled */
-      #label-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 5px; margin: 20px auto 0; max-width: 80%; } /* Horizontal filters under search, matching label gap */
-      .label-filter { background: #e0e0e0; padding: 5px; border-radius: 3px; cursor: pointer; transition: background 0.3s; border: none; } /* Filter button styled same as labels */
+      #search-input { width: 100%; max-width: 600px; padding: 12px; font-size: 1.1em; border: 1px solid #ddd; border-radius: 6px; display: block; margin: 0 auto; } /* Search in hero, centered and styled */
+      
+      /* Improved label filters - match search bar width and wrap properly */
+      #label-filters { 
+        display: flex; 
+        justify-content: center; 
+        flex-wrap: wrap; 
+        gap: 8px; 
+        margin: 20px auto 0; 
+        width: 80%; 
+        max-width: 600px; /* Match search bar max-width */
+        line-height: 1.2; /* Tighter line spacing for wrapped rows */
+      }
+      
+      .label-filter { 
+        background: #e0e0e0; 
+        padding: 6px 12px; 
+        border-radius: 3px; 
+        cursor: pointer; 
+        transition: background 0.3s; 
+        border: none; 
+        font-size: 0.9em;
+        flex-shrink: 0; /* Prevent filters from shrinking */
+        white-space: nowrap; /* Keep filter text on one line */
+      }
       .label-filter.selected { background: #068449; color: #fff; } /* Selected state */
-      .timeline-container { max-width: 65vw; margin: 40px auto; position: relative; } /* Contained timeline */
+      
+      .timeline-container { max-width: 55vw; margin: 40px auto; position: relative; } /* Contained timeline */
       .timeline-container::after { content: ""; display: table; clear: both; } /* Clearfix for flow */
       #timeline { position: relative; padding-left: 80px; } /* Increased spacing between entry and line-circle */
       #timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 18px; width: 4px; background: linear-gradient(to bottom, #f0eee7, #02373f); z-index: 0; transition: background 0.3s; } /* Gradient line, centered at 20px */
@@ -24,13 +47,53 @@
       .entry.hidden { display: none; } /* Hide unrevealed batches */
       .entry ul, .entry ol { margin: 10px 0; padding-left: 20px; } /* List styling */
       .entry img { max-width: 100%; height: auto; display: block; margin: 10px 0; } /* Contain images within entry */
-      .entry-date { display: flex; align-items: center; position: absolute; left: -150px; margin-left: -3.5vw; top: 10px; font-size: 0.9em; color: #666; white-space: nowrap; } /* Date with icon, adjusted spacing */
+      
+      /* Improved entry date and labels positioning */
+      .entry-date { 
+        display: flex; 
+        align-items: center; 
+        position: absolute; 
+        left: -150px; 
+        margin-left: -3.5vw; 
+        top: 10px; 
+        font-size: 0.9em; 
+        color: #666; 
+        white-space: nowrap; 
+        width: 140px; /* Fixed width to prevent overflow */
+      }
       .entry-date .fa { margin-right: 5px; } /* Space between icon and date text */
-      .entry-labels { position: absolute; left: -150px; margin-left: -3.5vw; top: 35px; font-size: 0.8em; color: #888; white-space: nowrap; display: flex; flex-wrap: wrap; gap: 5px; } /* Labels underneath date, aligned left of circle */
-      .entry-label { background: #e0e0e0; padding: 2px 5px; border-radius: 3px; border: none; } /* Style for individual labels */
+      
+      /* Improved entry labels - contained and stacked properly */
+      .entry-labels { 
+        position: absolute; 
+        left: -150px; 
+        margin-left: -3.5vw; 
+        top: 35px; 
+        font-size: 0.8em; 
+        color: #888; 
+        display: flex; 
+        flex-wrap: wrap; 
+        gap: 4px; 
+        width: 140px; /* Fixed width container to prevent overflow */
+        max-width: 140px; /* Ensure it doesn't exceed this width */
+      }
+      
+      .entry-label { 
+        background: #e0e0e0; 
+        padding: 2px 6px; 
+        border-radius: 3px; 
+        border: none; 
+        font-size: 0.75em; /* Slightly smaller to fit better */
+        line-height: 1.2; 
+        flex-shrink: 0; /* Prevent labels from shrinking */
+        word-break: break-word; /* Break long words if necessary */
+      }
+      
       @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } /* Scroll reveal animation */
       @keyframes timelineGlow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } } /* Subtle changelog theme animation: gradient shift */
+      
       @media screen and (max-width: 625px) {
+        .timeline-container { max-width: 80vw; margin: 20px auto; position: relative; }
         #timeline { padding-left: 40px; } /* Reduce indent for mobile */
         #timeline::before { left: 10px; } /* Shift line left */
         .entry::before { display: none; } /* Remove circle */
@@ -49,6 +112,7 @@
           margin-bottom: 5px; 
           order: 2; /* After h3 */
           white-space: normal; 
+          width: auto; /* Remove fixed width on mobile */
         }
         .entry-labels { 
           position: relative; 
@@ -58,6 +122,8 @@
           font-size: 0.7em; 
           margin-bottom: 10px; 
           order: 3; /* After date */
+          width: auto; /* Remove fixed width on mobile */
+          max-width: none; /* Remove max-width on mobile */
         }
         .entry h3 { 
           order: 1; /* Title first */
@@ -65,12 +131,24 @@
         .entry-body { 
           order: 4; /* Body last */
         }
+        
+        /* Adjust label filters for mobile */
+        #label-filters {
+          width: 90%; /* Slightly wider on mobile */
+          gap: 6px; /* Smaller gap on mobile */
+        }
+        .label-filter {
+          font-size: 0.85em; /* Slightly smaller text on mobile */
+          padding: 5px 10px; /* Adjust padding */
+        }
       }
+      
       #search-results { margin-top: 20px; clear: both; }
       .search-result { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fff; }
       .search-result h3 { margin-top: 0; }
       .search-result .highlight { background: #d3f0a5; } /* Highlight matching text in search results */
       /* No footer overrides; uses global footer.css */
+      
       .search-container {
         position: relative;
         width: 80%;
@@ -84,21 +162,21 @@
         box-sizing: border-box;
       }
 
-    .clear-btn {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 20px; /* Medium size */
-      color: #666;
-      cursor: pointer;
-      display: none; /* Hidden by default */
-      user-select: none;
-    }
+      .clear-btn {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px; /* Medium size */
+        color: #666;
+        cursor: pointer;
+        display: none; /* Hidden by default */
+        user-select: none;
+      }
 
-    .clear-btn:hover {
-      color: #000;
-    }
+      .clear-btn:hover {
+        color: #000;
+      }
     </style>
   </head>
   <body class="article changelog{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
