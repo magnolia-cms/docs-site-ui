@@ -1,33 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-{{> head defaultPageTitle='Changelog'}}
+{{> head defaultPageTitle='Changelog'}} 
     <!-- Font Awesome 4.7.0 CDN for fa-calendar-check-o -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Inline CSS for modern linear timeline (precise centered alignments from CodyHouse/W3Schools, gradients, fade-in reveals, active highlights) -->
     <style>
       body { font-family: Karla, sans-serif; line-height: 1.6; }
-      .hero-section { width: 100vw; position: relative; left: 50%; transform: translateX(-50%); text-align: center; padding: 60px 0; background: linear-gradient(135deg, #f8f9fa 0%, #e9f0f5 100%); animation: timelineGlow 10s ease-in-out infinite alternate; border-bottom: 1px solid #ddd; } /* Full-width hero with subtle theme animation */
+      .hero-section { width: 100vw; position: relative; left: 50%; transform: translateX(-50%); text-align: center; padding: 60px 0; background: linear-gradient(135deg, #f8f9fa 0%, #f0eee7 100%); animation: timelineGlow 10s ease-in-out infinite alternate; border-bottom: 1px solid #ddd; } /* Full-width hero with subtle theme animation */
       .hero-section h1 { font-size: 2.5em; margin: 0 0 20px; } /* Hero title */
       #search-input { width: 80%; max-width: 600px; padding: 12px; font-size: 1.1em; border: 1px solid #ddd; border-radius: 6px; display: block; margin: 0 auto; } /* Search in hero, centered and styled */
       #label-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 5px; margin: 20px auto 0; max-width: 80%; } /* Horizontal filters under search, matching label gap */
-      .label-filter { background: #e0e0e0; padding: 2px 5px; border-radius: 3px; cursor: pointer; transition: background 0.3s; } /* Filter button styled same as labels */
-      .label-filter.selected { background: #0569f9; color: #fff; } /* Selected state */
+      .label-filter { background: #e0e0e0; padding: 5px; border-radius: 3px; cursor: pointer; transition: background 0.3s; border: none; } /* Filter button styled same as labels */
+      .label-filter.selected { background: #068449; color: #fff; } /* Selected state */
       .timeline-container { max-width: 65vw; margin: 40px auto; position: relative; } /* Contained timeline */
       .timeline-container::after { content: ""; display: table; clear: both; } /* Clearfix for flow */
       #timeline { position: relative; padding-left: 80px; } /* Increased spacing between entry and line-circle */
       #timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 18px; width: 4px; background: linear-gradient(to bottom, #f0eee7, #02373f); z-index: 0; transition: background 0.3s; } /* Gradient line, centered at 20px */
       .entry { position: relative; margin: 60px 0; padding: 0; text-align: justify; opacity: 0.8; transition: opacity 0.3s; animation: fadeIn 0.5s ease-out forwards; } /* Subtle fade-in for reveal */
-      .entry.active { opacity: 1; } /* Active entry highlight */
-      .entry::before { content: ''; position: absolute; top: 10px; left: -70px; width: 20px; height: 20px; background-color: #0569f9 !important; border: 2px solid #fff; border-radius: 50% !important; z-index: 3; box-shadow: 0 0 10px rgba(0,123,255,0.5); transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s; overflow: visible; } /* Reinforced circle styles to prevent squashing (explicit background-color, border-radius, !important for overrides) */
-      .entry.active::before { transform: scale(1.5); background-color: #0569f9 !important; box-shadow: 0 0 20px rgba(0,123,255,0.8); } /* Active: enlarge, glow */
+      .entry.active { opacity: 1; } /* Active entry highlight */ 
+      .entry::before { content: ''; position: absolute; top: 20px; left: -70px; width: 20px; height: 20px; background-color: #068449 !important; border: 2px solid #fff; border-radius: 50% !important; z-index: 3; box-shadow: 0 0 10px rgba(0,123,255,0.5); transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s; overflow: visible; } /* Reinforced circle styles to prevent squashing (explicit background-color, border-radius, !important for overrides) */
+      .entry.active::before { transform: scale(1.5); background-color: #068449 !important; box-shadow: 0 0 20px rgba(0,123,255,0.8); } /* Active: enlarge, glow */
       .entry.hidden { display: none; } /* Hide unrevealed batches */
       .entry ul, .entry ol { margin: 10px 0; padding-left: 20px; } /* List styling */
       .entry img { max-width: 100%; height: auto; display: block; margin: 10px 0; } /* Contain images within entry */
       .entry-date { display: flex; align-items: center; position: absolute; left: -150px; margin-left: -3.5vw; top: 10px; font-size: 0.9em; color: #666; white-space: nowrap; } /* Date with icon, adjusted spacing */
       .entry-date .fa { margin-right: 5px; } /* Space between icon and date text */
       .entry-labels { position: absolute; left: -150px; margin-left: -3.5vw; top: 35px; font-size: 0.8em; color: #888; white-space: nowrap; display: flex; flex-wrap: wrap; gap: 5px; } /* Labels underneath date, aligned left of circle */
-      .entry-label { background: #e0e0e0; padding: 2px 5px; border-radius: 3px; } /* Style for individual labels */
+      .entry-label { background: #e0e0e0; padding: 2px 5px; border-radius: 3px; border: none; } /* Style for individual labels */
       @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } /* Scroll reveal animation */
       @keyframes timelineGlow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } } /* Subtle changelog theme animation: gradient shift */
       @media screen and (max-width: 625px) {
@@ -107,7 +107,7 @@
     <div class="hero-section">
       <h1> {{page.component.title}} Changelog</h1>
       <div class="search-container">
-        <input type="text" id="search-input" placeholder="Search the changelog...">
+        <input type="text" id="search-input" autocomplete="off" placeholder="Search the changelog...">
         <span id="clear-search" class="clear-btn">×</span>
       </div>
       <div id="label-filters"></div>
@@ -429,7 +429,7 @@
             
             div.innerHTML = `
               <h3>${result.item.title}</h3>
-              <p style="font-size: 0.9em; color: #666; margin: 5px 0;">
+              <p style="font-size: 0.9em; color: #000; margin: 5px 0;">
                 ${result.item.date} • Relevance: ${relevanceScore}%${matchInfo}
               </p>
               ${highlightedBody}
