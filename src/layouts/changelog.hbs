@@ -88,34 +88,37 @@
         height: auto;
       }
       
-      /* Improved entry date and labels positioning */
+      /* Improved entry date and labels positioning - right-aligned for consistency */
       .entry-date { 
         display: flex; 
         align-items: center; 
+        justify-content: flex-end; /* Right-align the content */
         position: absolute; 
-        left: -150px; 
-        margin-left: -3.5vw; 
+        right: calc(100% + 90px); /* Position to the right of the timeline with consistent 20px gap */
         top: 10px; 
         font-size: 0.9em; 
         color: #666; 
         white-space: nowrap; 
-        width: 140px; /* Fixed width to prevent overflow */
+        width: auto; /* Let it size naturally */
+        min-width: 120px; /* Minimum width for shorter dates */
+        text-align: right; /* Ensure text aligns to the right */
       }
       .entry-date .fa { margin-right: 5px; } /* Space between icon and date text */
       
-      /* Improved entry labels - contained and stacked properly */
+      /* Improved entry labels - right-aligned and stacked properly */
       .entry-labels { 
         position: absolute; 
-        left: -150px; 
-        margin-left: -3.5vw; 
+        right: calc(100% + 90px); /* Same positioning as date */
         top: 35px; 
         font-size: 0.8em; 
         color: #888; 
         display: flex; 
         flex-wrap: wrap; 
+        justify-content: flex-end; /* Right-align the labels */
         gap: 4px; 
-        width: 140px; /* Fixed width container to prevent overflow */
-        max-width: 140px; /* Ensure it doesn't exceed this width */
+        width: auto; /* Let it size naturally */
+        min-width: 120px; /* Minimum width for consistency */
+        text-align: right; /* Ensure labels align to the right */
       }
       
       .entry-label { 
@@ -133,6 +136,7 @@
       @keyframes timelineGlow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } } /* Subtle changelog theme animation: gradient shift */
       
       @media screen and (max-width: 625px) {
+        .timeline-container { max-width: 80vw; margin: 20px auto; position: relative; }
         #timeline { padding-left: 40px; } /* Reduce indent for mobile */
         #timeline::before { left: 10px; } /* Shift line left */
         .entry::before { display: none; } /* Remove circle */
@@ -141,10 +145,24 @@
           display: flex; 
           flex-direction: column; 
         } /* Vertical stacking */
+        
+        /* Enhanced mobile image handling */
+        .entry img,
+        .entry .imageblock img,
+        .entry .image img {
+          max-width: 100%;
+          width: auto;
+          height: auto;
+        }
+        
+        .entry-body {
+          overflow-x: auto; /* Allow horizontal scroll on mobile if needed */
+        }
+        
         .entry-date { 
           position: relative; 
-          left: 0; 
-          margin-left: 0; 
+          right: auto; /* Reset right positioning */
+          left: 0;
           top: 0; 
           font-size: 0.8em; 
           margin-top: 5px; 
@@ -152,17 +170,22 @@
           order: 2; /* After h3 */
           white-space: normal; 
           width: auto; /* Remove fixed width on mobile */
+          min-width: auto; /* Remove min-width on mobile */
+          text-align: left; /* Left-align on mobile */
+          justify-content: flex-start; /* Left-align content */
         }
         .entry-labels { 
           position: relative; 
-          left: 0; 
-          margin-left: 0; 
+          right: auto; /* Reset right positioning */
+          left: 0;
           top: 0; 
           font-size: 0.7em; 
           margin-bottom: 10px; 
           order: 3; /* After date */
           width: auto; /* Remove fixed width on mobile */
-          max-width: none; /* Remove max-width on mobile */
+          min-width: auto; /* Remove min-width on mobile */
+          text-align: left; /* Left-align on mobile */
+          justify-content: flex-start; /* Left-align labels */
         }
         .entry h3 { 
           order: 1; /* Title first */
@@ -244,6 +267,8 @@
 
     <!-- Inline JS (Fuse.js via CDN; preload all, reveal batches when last entry in batch is in view) -->
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@latest/dist/fuse.min.js"></script>
+    <!-- Medium Zoom for image zoom functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         // Extract entries with date and labels from classes (role="date-YYYY-MM-DD label-feature label-bugfix")
@@ -379,6 +404,30 @@
 
         // Initial reveal of first batch
         revealNextBatch();
+
+        // Initialize Medium Zoom for images with role=zoom
+        function initializeMediumZoom() {
+          // Target images with role=zoom class (Antora converts role=zoom to class="zoom")
+          const zoomImages = document.querySelectorAll('.entry img.zoom, .entry img[data-zoom], .search-result img.zoom, .search-result img[data-zoom]');
+          if (zoomImages.length > 0 && typeof mediumZoom !== 'undefined') {
+            mediumZoom(zoomImages, {
+              margin: 24,
+              background: 'rgba(0, 0, 0, 0.8)',
+              scrollOffset: 0
+            });
+          }
+        }
+
+        // Initialize zoom after initial batch reveal
+        setTimeout(initializeMediumZoom, 100);
+
+        // Re-initialize zoom when new batches are revealed
+        const originalRevealNextBatch = revealNextBatch;
+        revealNextBatch = function() {
+          originalRevealNextBatch();
+          // Wait a bit for DOM to update, then re-initialize zoom
+          setTimeout(initializeMediumZoom, 100);
+        };
 
         // Render dynamic label filters
         const labelFilters = document.getElementById('label-filters');
@@ -553,6 +602,9 @@
             `;
             resultsContainer.appendChild(div);
           });
+          
+          // Re-initialize medium zoom for search results
+          setTimeout(initializeMediumZoom, 100);
         });
       });
     </script>
