@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+{{> head defaultPageTitle='Changelog'}} 
+    <!-- Font Awesome 4.7.0 CDN for fa-calendar-check-o -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Inline CSS for modern linear timeline (precise centered alignments from CodyHouse/W3Schools, gradients, fade-in reveals, active highlights) -->
+    <style>
+      body { font-family: Karla, sans-serif; line-height: 1.6; }
+      .hero-section { width: 100vw; position: relative; left: 50%; transform: translateX(-50%); text-align: center; padding: 60px 0; background: linear-gradient(135deg, #f8f9fa 0%, #f0eee7 100%); animation: timelineGlow 10s ease-in-out infinite alternate; border-bottom: 1px solid #ddd; } /* Full-width hero with subtle theme animation */
+      .hero-section h1 { font-size: 2.5em; margin: 0 0 20px; } /* Hero title */
+      #search-input { width: 100%; max-width: 600px; padding: 12px; font-size: 1.1em; border: 1px solid #ddd; border-radius: 6px; display: block; margin: 0 auto; } /* Search in hero, centered and styled */
+      
+      /* Improved label filters - match search bar width and wrap properly */
+      #label-filters { 
+        display: flex; 
+        justify-content: center; 
+        flex-wrap: wrap; 
+        gap: 8px; 
+        margin: 20px auto 0; 
+        width: 80%; 
+        max-width: 600px; /* Match search bar max-width */
+        line-height: 1.2; /* Tighter line spacing for wrapped rows */
+      }
+      
+      .label-filter { 
+        background: #e0e0e0; 
+        padding: 6px 12px; 
+        border-radius: 3px; 
+        cursor: pointer; 
+        transition: background 0.3s; 
+        border: none; 
+        font-size: 0.9em;
+        flex-shrink: 0; /* Prevent filters from shrinking */
+        white-space: nowrap; /* Keep filter text on one line */
+      }
+      .label-filter.selected { background: #068449; color: #fff; } /* Selected state */
+      
+      .timeline-container { max-width: 65vw; margin: 40px auto; position: relative; } /* Contained timeline */
+      .timeline-container::after { content: ""; display: table; clear: both; } /* Clearfix for flow */
+      #timeline { position: relative; padding-left: 80px; } /* Increased spacing between entry and line-circle */
+      #timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 18px; width: 4px; background: linear-gradient(to bottom, #f0eee7, #02373f); z-index: 0; transition: background 0.3s; } /* Gradient line, centered at 20px */
+      .entry { position: relative; margin: 60px 0; padding: 0; text-align: justify; opacity: 0.8; transition: opacity 0.3s; animation: fadeIn 0.5s ease-out forwards; } /* Subtle fade-in for reveal */
+      .entry.active { opacity: 1; } /* Active entry highlight */ 
+      .entry::before { content: ''; position: absolute; top: 20px; left: -70px; width: 20px; height: 20px; background-color: #068449 !important; border: 2px solid #fff; border-radius: 50% !important; z-index: 3; box-shadow: 0 0 10px rgba(0,123,255,0.5); transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s; overflow: visible; } /* Reinforced circle styles to prevent squashing (explicit background-color, border-radius, !important for overrides) */
+      .entry.active::before { transform: scale(1.5); background-color: #068449 !important; box-shadow: 0 0 20px rgba(0,123,255,0.8); } /* Active: enlarge, glow */
+      .entry.hidden { display: none; } /* Hide unrevealed batches */
+      .entry ul, .entry ol { margin: 10px 0; padding-left: 20px; } /* List styling */
+      
+      /* Enhanced image containment */
+      .entry img { 
+        max-width: 100%; 
+        height: auto; 
+        display: block; 
+        margin: 10px 0; 
+        box-sizing: border-box;
+      }
+      
+      /* Ensure all content within entries stays contained */
+      .entry-body {
+        max-width: 100%;
+        overflow-x: auto; /* Handle wide content with horizontal scroll if needed */
+        word-wrap: break-word; /* Break long words */
+      }
+      
+      /* Target specific AsciiDoc image containers */
+      .entry .imageblock,
+      .entry .image {
+        max-width: 100%;
+        overflow: hidden; /* Crop if absolutely necessary */
+      }
+      
+      .entry .imageblock img,
+      .entry .image img {
+        max-width: 100%;
+        height: auto;
+        object-fit: contain; /* Maintain aspect ratio while fitting */
+      }
+      
+      /* Handle figures and captions */
+      .entry figure {
+        max-width: 100%;
+        margin: 10px 0;
+      }
+      
+      .entry figure img {
+        max-width: 100%;
+        height: auto;
+      }
+      
+      /* Improved entry date and labels positioning - right-aligned for consistency */
+      .entry-date { 
+        display: flex; 
+        align-items: center; 
+        justify-content: flex-end; /* Right-align the content */
+        position: absolute; 
+        right: calc(100% + 90px); /* Position to the right of the timeline with consistent 20px gap */
+        top: 10px; 
+        font-size: 0.9em; 
+        color: #666; 
+        white-space: nowrap; 
+        width: auto; /* Let it size naturally */
+        min-width: 120px; /* Minimum width for shorter dates */
+        text-align: right; /* Ensure text aligns to the right */
+      }
+      .entry-date .fa { margin-right: 5px; } /* Space between icon and date text */
+      
+      /* Improved entry labels - right-aligned and stacked properly */
+      .entry-labels { 
+        position: absolute; 
+        right: calc(100% + 90px); /* Same positioning as date */
+        top: 35px; 
+        font-size: 0.8em; 
+        color: #888; 
+        display: flex; 
+        flex-wrap: wrap; 
+        justify-content: flex-end; /* Right-align the labels */
+        gap: 4px; 
+        width: auto; /* Let it size naturally */
+        min-width: 120px; /* Minimum width for consistency */
+        text-align: right; /* Ensure labels align to the right */
+      }
+      
+      .entry-label { 
+        background: #e0e0e0; 
+        padding: 2px 6px; 
+        border-radius: 3px; 
+        border: none; 
+        font-size: 0.75em; /* Slightly smaller to fit better */
+        line-height: 1.2; 
+        flex-shrink: 0; /* Prevent labels from shrinking */
+        word-break: break-word; /* Break long words if necessary */
+      }
+      
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } /* Scroll reveal animation */
+      @keyframes timelineGlow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } } /* Subtle changelog theme animation: gradient shift */
+      
+      @media screen and (max-width: 625px) {
+        .timeline-container { max-width: 80vw; margin: 20px auto; position: relative; }
+        #timeline { padding-left: 40px; } /* Reduce indent for mobile */
+        #timeline::before { left: 10px; } /* Shift line left */
+        .entry::before { display: none; } /* Remove circle */
+        .entry { 
+          text-align: left; 
+          display: flex; 
+          flex-direction: column; 
+        } /* Vertical stacking */
+        
+        /* Enhanced mobile image handling */
+        .entry img,
+        .entry .imageblock img,
+        .entry .image img {
+          max-width: 100%;
+          width: auto;
+          height: auto;
+        }
+        
+        .entry-body {
+          overflow-x: auto; /* Allow horizontal scroll on mobile if needed */
+        }
+        
+        .entry-date { 
+          position: relative; 
+          right: auto; /* Reset right positioning */
+          left: 0;
+          top: 0; 
+          font-size: 0.8em; 
+          margin-top: 5px; 
+          margin-bottom: 5px; 
+          order: 2; /* After h3 */
+          white-space: normal; 
+          width: auto; /* Remove fixed width on mobile */
+          min-width: auto; /* Remove min-width on mobile */
+          text-align: left; /* Left-align on mobile */
+          justify-content: flex-start; /* Left-align content */
+        }
+        .entry-labels { 
+          position: relative; 
+          right: auto; /* Reset right positioning */
+          left: 0;
+          top: 0; 
+          font-size: 0.7em; 
+          margin-bottom: 10px; 
+          order: 3; /* After date */
+          width: auto; /* Remove fixed width on mobile */
+          min-width: auto; /* Remove min-width on mobile */
+          text-align: left; /* Left-align on mobile */
+          justify-content: flex-start; /* Left-align labels */
+        }
+        .entry h3 { 
+          order: 1; /* Title first */
+        }
+        .entry-body { 
+          order: 4; /* Body last */
+        }
+        
+        /* Adjust label filters for mobile */
+        #label-filters {
+          width: 90%; /* Slightly wider on mobile */
+          gap: 6px; /* Smaller gap on mobile */
+        }
+        .label-filter {
+          font-size: 0.85em; /* Slightly smaller text on mobile */
+          padding: 5px 10px; /* Adjust padding */
+        }
+      }
+      
+      #search-results { margin-top: 20px; clear: both; }
+      .search-result { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fff; }
+      .search-result h3 { margin-top: 0; }
+      .search-result .highlight { background: #d3f0a5; } /* Highlight matching text in search results */
+      /* No footer overrides; uses global footer.css */
+      
+      .search-container {
+        position: relative;
+        width: 80%;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      #search-input {
+        width: 100%;
+        padding-right: 40px; /* Space for clear button */
+        box-sizing: border-box;
+      }
+
+      .clear-btn {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px; /* Medium size */
+        color: #666;
+        cursor: pointer;
+        display: none; /* Hidden by default */
+        user-select: none;
+      }
+
+      .clear-btn:hover {
+        color: #000;
+      }
+
+      /* Additional styles for search result body wrapper */
+.search-result-body {
+  max-width: 100%;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+/* Force all images within search results to be contained */
+.search-result img,
+.search-result-body img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+  margin: 10px 0;
+}
+
+/* Handle any nested containers that might have inline styles */
+.search-result * {
+  max-width: 100% !important;
+}
+
+/* Specific overrides for images with inline width/height */
+.search-result img[width],
+.search-result img[height] {
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Handle responsive images in search results */
+.search-result .imageblock,
+.search-result .image,
+.search-result figure {
+  max-width: 100% !important;
+  overflow: hidden;
+}
+
+.search-result .imageblock img,
+.search-result .image img,
+.search-result figure img {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+    </style>
+  </head>
+  <body class="article changelog{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
+{{> header}}
+    <!-- Full-width hero section -->
+    <div class="hero-section">
+      <h1> {{page.component.title}} Changelog</h1>
+      <div class="search-container">
+        <input type="text" id="search-input" autocomplete="off" placeholder="Search the changelog...">
+        <span id="clear-search" class="clear-btn">×</span>
+      </div>
+      <div id="label-filters"></div>
+    </div>
+    <!-- Custom changelog content (contained) -->
+    <main class="timeline-container">
+      <div id="search-results"></div>
+      <div id="timeline"></div>
+    </main>
+    <!-- Hidden full content for parsing -->
+    <div id="full-content" style="display: none;">{{{page.contents}}}</div>
+
+{{> footer}}
+{{> feedback}}
+{{> scroll-to-top}}
+{{> location}}
+
+    <!-- Inline JS (Fuse.js via CDN; preload all, reveal batches when last entry in batch is in view) -->
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@latest/dist/fuse.min.js"></script>
+    <!-- Medium Zoom for image zoom functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // Extract entries with date and labels from classes (role="date-YYYY-MM-DD label-feature label-bugfix")
+        function extractEntries() {
+          const entries = [];
+          document.querySelectorAll('#full-content .sect1').forEach(sect => {
+            const h2 = sect.querySelector('h2');
+            const title = h2 ? h2.textContent.trim() : 'Untitled Entry';
+            const bodyEl = sect.querySelector('.sectionbody');
+            
+            // Enhanced content extraction for better search results
+            let body = '';
+            let text = '';
+            let paragraphs = [];
+            let listItems = [];
+            let allText = [];
+            
+            if (bodyEl) {
+              body = bodyEl.innerHTML;
+              
+              // Extract paragraphs specifically from .paragraph divs
+              bodyEl.querySelectorAll('.paragraph').forEach(p => {
+                const pText = p.textContent.trim();
+                if (pText) {
+                  paragraphs.push(pText);
+                  allText.push(pText);
+                }
+              });
+              
+              // Extract list items from ul/ol
+              bodyEl.querySelectorAll('ul li, ol li').forEach(li => {
+                const liText = li.textContent.trim();
+                if (liText) {
+                  listItems.push(liText);
+                  allText.push(liText);
+                }
+              });
+              
+              // Also get any other text content not in paragraphs or lists
+              const otherText = bodyEl.textContent.trim();
+              text = otherText;
+            }
+            
+            // Parse date from class starting with "date-"
+            let date = 'No Date';
+            let labels = [];
+            const classes = sect.getAttribute('class') ? sect.getAttribute('class').split(' ') : [];
+            classes.forEach(cls => {
+              if (cls.startsWith('date-')) {
+                date = cls.replace('date-', '');
+              } else if (cls.startsWith('label-')) {
+                labels.push(cls.replace('label-', ''));
+              }
+            });
+            
+            entries.push({ 
+              title, 
+              body, 
+              text, 
+              date, 
+              labels,
+              // New structured content for better search
+              paragraphs: paragraphs.join(' '),
+              listItems: listItems.join(' '),
+              searchableContent: allText.join(' '),
+              // Individual content pieces for granular matching
+              contentPieces: allText
+            });
+          });
+          return entries;
+        }
+
+        const entriesData = extractEntries(); // Rename to avoid conflict
+        const timeline = document.getElementById('timeline');
+        const batchSize = 5; // Set to 5 for testing; adjust as needed
+        let revealedCount = 0; // Start with 0, reveal first batch immediately
+
+        // Render all entries in DOM, hide all initially
+        const entryElements = entriesData.map((entry, index) => {
+          const div = document.createElement('div');
+          div.classList.add('entry', 'hidden'); // Hide all initially
+          let labelsHtml = entry.labels.map(label => `<span class="entry-label">${label}</span>`).join('');
+          div.setAttribute('aria-label', `Entry ${entry.title} on ${entry.date} with labels ${entry.labels.join(', ')}`); // Accessibility for Magnolia users
+          div.innerHTML = `<span class="entry-date"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> ${entry.date}</span><div class="entry-labels">${labelsHtml}</div><h3>${entry.title}</h3><div class="entry-body">${entry.body}</div>`;
+          div.setAttribute('data-labels', entry.labels.join(',')); // For filtering
+          timeline.appendChild(div);
+          return div;
+        });
+
+        // Function to check if element is in viewport (aligned with 0.2 threshold for earlier activation)
+        function isInViewport(el) {
+          const rect = el.getBoundingClientRect();
+          const elemHeight = rect.bottom - rect.top;
+          const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+          const intersection = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
+          return (intersection / elemHeight >= 0.2);
+        }
+
+        // IntersectionObserver for active highlight (observe all, lowered threshold for sooner enlargement)
+        const activeObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            entry.target.classList.toggle('active', entry.isIntersecting);
+          });
+        }, { threshold: 0.2 });
+
+        // IntersectionObserver for triggering next batch reveal when last entry in batch is in view
+        let loadObserver;
+        function setupLoadObserver(lastEntry) {
+          if (loadObserver) loadObserver.disconnect(); // Disconnect previous if exists
+          loadObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting && revealedCount < entriesData.length) {
+                revealNextBatch();
+              }
+            });
+          }, { threshold: 0.1 }); // Lower threshold to trigger when bottom of entry enters view
+          loadObserver.observe(lastEntry);
+        }
+
+        // Reveal next batch
+        function revealNextBatch() {
+          const nextBatchStart = revealedCount;
+          const nextBatchEnd = Math.min(revealedCount + batchSize, entriesData.length);
+          entryElements.slice(nextBatchStart, nextBatchEnd).forEach((el, i) => {
+            el.classList.remove('hidden');
+            activeObserver.observe(el); // Observe for active highlight
+            if (i === nextBatchEnd - nextBatchStart - 1) { // Last in new batch
+              setupLoadObserver(el);
+            }
+          });
+          revealedCount = nextBatchEnd;
+        }
+
+        // Initial reveal of first batch
+        revealNextBatch();
+
+        // Initialize Medium Zoom for images with role=zoom
+        function initializeMediumZoom() {
+          // Target images with role=zoom class (Antora converts role=zoom to class="zoom")
+          const zoomImages = document.querySelectorAll('.entry img.zoom, .entry img[data-zoom], .search-result img.zoom, .search-result img[data-zoom]');
+          if (zoomImages.length > 0 && typeof mediumZoom !== 'undefined') {
+            mediumZoom(zoomImages, {
+              margin: 24,
+              background: 'rgba(0, 0, 0, 0.8)',
+              scrollOffset: 0
+            });
+          }
+        }
+
+        // Initialize zoom after initial batch reveal
+        setTimeout(initializeMediumZoom, 100);
+
+        // Re-initialize zoom when new batches are revealed
+        const originalRevealNextBatch = revealNextBatch;
+        revealNextBatch = function() {
+          originalRevealNextBatch();
+          // Wait a bit for DOM to update, then re-initialize zoom
+          setTimeout(initializeMediumZoom, 100);
+        };
+
+        // Render dynamic label filters
+        const labelFilters = document.getElementById('label-filters');
+        const allLabels = new Set();
+        entriesData.forEach(entry => {
+          entry.labels.forEach(label => allLabels.add(label));
+        });
+        const labelsArray = Array.from(allLabels);
+        if (labelsArray.length > 0) {
+          const allButton = document.createElement('button');
+          allButton.classList.add('label-filter', 'selected');
+          allButton.textContent = 'All';
+          allButton.addEventListener('click', () => filterEntries(null));
+          labelFilters.appendChild(allButton);
+
+          labelsArray.forEach(label => {
+            const button = document.createElement('button');
+            button.classList.add('label-filter');
+            button.textContent = label;
+            button.addEventListener('click', () => filterEntries(label));
+            labelFilters.appendChild(button);
+          });
+        }
+
+        function filterEntries(selectedLabel) {
+          const buttons = labelFilters.querySelectorAll('.label-filter');
+          buttons.forEach(btn => btn.classList.remove('selected'));
+          if (selectedLabel === null) {
+            labelFilters.querySelector('.label-filter:first-child').classList.add('selected');
+            entryElements.forEach(el => {
+              el.style.display = 'block';
+            });
+          } else {
+            const selectedBtn = Array.from(buttons).find(btn => btn.textContent === selectedLabel);
+            selectedBtn.classList.add('selected');
+            entryElements.forEach(el => {
+              const entryLabels = el.getAttribute('data-labels') || '';
+              el.style.display = entryLabels.includes(selectedLabel) ? 'block' : 'none';
+            });
+          }
+        }
+
+        // Optimized Search with better Fuse.js configuration
+        const fuse = new Fuse(entriesData, {
+          keys: [
+            { name: 'title', weight: 0.3 },                    // Highest priority: titles
+            { name: 'searchableContent', weight: 0.25 },       // Combined structured content
+            { name: 'paragraphs', weight: 0.2 },               // Paragraph text specifically
+            { name: 'listItems', weight: 0.15 },               // List items specifically
+            { name: 'labels', weight: 0.1 }                    // Labels for categorization
+          ],
+          includeScore: true,
+          includeMatches: true,
+          threshold: 0.25,                                      // More precise matching
+          minMatchCharLength: 2,
+          ignoreLocation: true,                                 // Don't penalize matches based on position
+          findAllMatches: true,                                 // Find all matching instances
+          useExtendedSearch: true                               // Enable extended search syntax
+        });
+
+        // Enhanced function to highlight matches in text
+        function highlightMatches(text, matches) {
+          if (!matches || matches.length === 0) return text;
+          
+          // Collect all indices from all matches
+          let allIndices = [];
+          matches.forEach(match => {
+            if (match.indices) {
+              match.indices.forEach(([start, end]) => {
+                allIndices.push([start, end]);
+              });
+            }
+          });
+          
+          // Sort indices by start position
+          allIndices.sort((a, b) => a[0] - b[0]);
+          
+          // Merge overlapping indices
+          let mergedIndices = [];
+          for (let [start, end] of allIndices) {
+            if (mergedIndices.length === 0) {
+              mergedIndices.push([start, end]);
+            } else {
+              let lastIndex = mergedIndices[mergedIndices.length - 1];
+              if (start <= lastIndex[1] + 1) {
+                lastIndex[1] = Math.max(lastIndex[1], end);
+              } else {
+                mergedIndices.push([start, end]);
+              }
+            }
+          }
+          
+          // Apply highlights in reverse order to maintain correct indices
+          let highlighted = text;
+          for (let i = mergedIndices.length - 1; i >= 0; i--) {
+            let [start, end] = mergedIndices[i];
+            highlighted = highlighted.slice(0, start) + 
+                         '<span class="highlight">' + 
+                         highlighted.slice(start, end + 1) + 
+                         '</span>' + 
+                         highlighted.slice(end + 1);
+          }
+          
+          return highlighted;
+        }
+
+        const searchInput = document.getElementById('search-input');
+        const clearBtn = document.getElementById('clear-search');
+
+        // Show/hide clear button on input change
+        searchInput.addEventListener('input', (e) => {
+          clearBtn.style.display = e.target.value.trim().length > 0 ? 'block' : 'none';
+          // Existing search logic here...
+        });
+
+        // Clear input on click
+        clearBtn.addEventListener('click', () => {
+          searchInput.value = '';
+          clearBtn.style.display = 'none';
+          searchInput.dispatchEvent(new Event('input')); // Trigger search update
+        });
+        const resultsContainer = document.getElementById('search-results');
+        searchInput.addEventListener('input', (e) => {
+          resultsContainer.innerHTML = '';
+          const query = e.target.value.trim();
+          if (query.length < 2) return;
+
+          const results = fuse.search(query);
+          
+          if (results.length === 0) {
+            resultsContainer.innerHTML = '<div class="search-result"><p>No results found for your search.</p></div>';
+            return;
+          }
+          
+results.slice(0, 10).forEach(result => { // Limit to top 10 results
+  const div = document.createElement('div');
+  div.classList.add('search-result');
+  
+  // Find matches for the searchableContent to highlight
+  const contentMatches = result.matches.filter(m => 
+    m.key === 'searchableContent' || m.key === 'paragraphs' || m.key === 'listItems'
+  );
+  
+  let highlightedBody = result.item.body;
+  if (contentMatches.length > 0) {
+    // Create a temporary div to work with the HTML content
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = result.item.body;
+    
+    // Try to highlight within paragraph and list elements
+    const searchText = query.toLowerCase();
+    tempDiv.querySelectorAll('.paragraph, li').forEach(el => {
+      const text = el.textContent;
+      if (text.toLowerCase().includes(searchText)) {
+        const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        el.innerHTML = el.innerHTML.replace(regex, '<span class="highlight">$1</span>');
+      }
+    });
+    
+    highlightedBody = tempDiv.innerHTML;
+  }
+  
+  const relevanceScore = Math.round((1 - result.score) * 100);
+  const matchInfo = result.item.labels.length > 0 ? ` • Labels: ${result.item.labels.join(', ')}` : '';
+  
+  // Create a content wrapper div to ensure proper containment
+  div.innerHTML = `
+    <h3>${result.item.title}</h3>
+    <p style="font-size: 0.9em; color: #000; margin: 5px 0;">
+      ${result.item.date} • Relevance: ${relevanceScore}%${matchInfo}
+    </p>
+    <div class="search-result-body">
+      ${highlightedBody}
+    </div>
+  `;
+  resultsContainer.appendChild(div);
+});
+          
+          // Re-initialize medium zoom for search results
+          setTimeout(initializeMediumZoom, 100);
+        });
+      });
+    </script>
+  </body>
+</html>
