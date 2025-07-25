@@ -239,6 +239,51 @@
       .clear-btn:hover {
         color: #000;
       }
+
+      /* Additional styles for search result body wrapper */
+.search-result-body {
+  max-width: 100%;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+/* Force all images within search results to be contained */
+.search-result img,
+.search-result-body img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+  margin: 10px 0;
+}
+
+/* Handle any nested containers that might have inline styles */
+.search-result * {
+  max-width: 100% !important;
+}
+
+/* Specific overrides for images with inline width/height */
+.search-result img[width],
+.search-result img[height] {
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Handle responsive images in search results */
+.search-result .imageblock,
+.search-result .image,
+.search-result figure {
+  max-width: 100% !important;
+  overflow: hidden;
+}
+
+.search-result .imageblock img,
+.search-result .image img,
+.search-result figure img {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
     </style>
   </head>
   <body class="article changelog{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
@@ -562,46 +607,49 @@
             return;
           }
           
-          results.slice(0, 10).forEach(result => { // Limit to top 10 results
-            const div = document.createElement('div');
-            div.classList.add('search-result');
-            
-            // Find matches for the searchableContent to highlight
-            const contentMatches = result.matches.filter(m => 
-              m.key === 'searchableContent' || m.key === 'paragraphs' || m.key === 'listItems'
-            );
-            
-            let highlightedBody = result.item.body;
-            if (contentMatches.length > 0) {
-              // Create a temporary div to work with the HTML content
-              const tempDiv = document.createElement('div');
-              tempDiv.innerHTML = result.item.body;
-              
-              // Try to highlight within paragraph and list elements
-              const searchText = query.toLowerCase();
-              tempDiv.querySelectorAll('.paragraph, li').forEach(el => {
-                const text = el.textContent;
-                if (text.toLowerCase().includes(searchText)) {
-                  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-                  el.innerHTML = el.innerHTML.replace(regex, '<span class="highlight">$1</span>');
-                }
-              });
-              
-              highlightedBody = tempDiv.innerHTML;
-            }
-            
-            const relevanceScore = Math.round((1 - result.score) * 100);
-            const matchInfo = result.item.labels.length > 0 ? ` • Labels: ${result.item.labels.join(', ')}` : '';
-            
-            div.innerHTML = `
-              <h3>${result.item.title}</h3>
-              <p style="font-size: 0.9em; color: #000; margin: 5px 0;">
-                ${result.item.date} • Relevance: ${relevanceScore}%${matchInfo}
-              </p>
-              ${highlightedBody}
-            `;
-            resultsContainer.appendChild(div);
-          });
+results.slice(0, 10).forEach(result => { // Limit to top 10 results
+  const div = document.createElement('div');
+  div.classList.add('search-result');
+  
+  // Find matches for the searchableContent to highlight
+  const contentMatches = result.matches.filter(m => 
+    m.key === 'searchableContent' || m.key === 'paragraphs' || m.key === 'listItems'
+  );
+  
+  let highlightedBody = result.item.body;
+  if (contentMatches.length > 0) {
+    // Create a temporary div to work with the HTML content
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = result.item.body;
+    
+    // Try to highlight within paragraph and list elements
+    const searchText = query.toLowerCase();
+    tempDiv.querySelectorAll('.paragraph, li').forEach(el => {
+      const text = el.textContent;
+      if (text.toLowerCase().includes(searchText)) {
+        const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        el.innerHTML = el.innerHTML.replace(regex, '<span class="highlight">$1</span>');
+      }
+    });
+    
+    highlightedBody = tempDiv.innerHTML;
+  }
+  
+  const relevanceScore = Math.round((1 - result.score) * 100);
+  const matchInfo = result.item.labels.length > 0 ? ` • Labels: ${result.item.labels.join(', ')}` : '';
+  
+  // Create a content wrapper div to ensure proper containment
+  div.innerHTML = `
+    <h3>${result.item.title}</h3>
+    <p style="font-size: 0.9em; color: #000; margin: 5px 0;">
+      ${result.item.date} • Relevance: ${relevanceScore}%${matchInfo}
+    </p>
+    <div class="search-result-body">
+      ${highlightedBody}
+    </div>
+  `;
+  resultsContainer.appendChild(div);
+});
           
           // Re-initialize medium zoom for search results
           setTimeout(initializeMediumZoom, 100);
