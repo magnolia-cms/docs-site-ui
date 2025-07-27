@@ -473,6 +473,15 @@
 
         function filterEntries(selectedLabel) {
           currentFilter = selectedLabel;
+          
+          // If filtering by label, reveal all entries first
+          if (selectedLabel !== null && revealedCount < entryElements.length) {
+            revealAllEntries();
+          } else if (selectedLabel === null && !currentSearchQuery) {
+            // If clearing filter and no search active, reset to batch loading
+            resetToBatchLoading();
+          }
+          
           applyFilters();
           
           // Update button states
@@ -610,6 +619,29 @@
           searchInput.dispatchEvent(new Event('input')); // Trigger search update
         });
 
+        // Function to reveal all entries for search
+        function revealAllEntries() {
+          entryElements.forEach(el => {
+            el.classList.remove('hidden');
+            activeObserver.observe(el); // Observe all for active highlight
+          });
+          revealedCount = entryElements.length;
+          if (loadObserver) loadObserver.disconnect(); // Stop lazy loading
+        }
+
+        // Function to reset to batch loading
+        function resetToBatchLoading() {
+          // Hide all entries first
+          entryElements.forEach(el => {
+            el.classList.add('hidden');
+            activeObserver.unobserve(el);
+          });
+          
+          // Reset reveal count and start over
+          revealedCount = 0;
+          revealNextBatch();
+        }
+
         searchInput.addEventListener('input', (e) => {
           const query = e.target.value.trim();
           
@@ -624,7 +656,17 @@
           if (query.length < 2) {
             searchResults = [];
             applyFilters();
+            
+            // If search is cleared and no filter is active, reset to batch loading
+            if (!query && currentFilter === null) {
+              resetToBatchLoading();
+            }
             return;
+          }
+
+          // Reveal all entries when searching
+          if (revealedCount < entryElements.length) {
+            revealAllEntries();
           }
 
           // Perform search
