@@ -45,6 +45,7 @@
       .entry::before { content: ''; position: absolute; top: 20px; left: -70px; width: 20px; height: 20px; background-color: #068449 !important; border: 2px solid #fff; border-radius: 50% !important; z-index: 3; box-shadow: 0 0 10px rgba(0,123,255,0.5); transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s; overflow: visible; } /* Reinforced circle styles to prevent squashing (explicit background-color, border-radius, !important for overrides) */
       .entry.active::before { transform: scale(1.5); background-color: #068449 !important; box-shadow: 0 0 20px rgba(0,123,255,0.8); } /* Active: enlarge, glow */
       .entry.hidden { display: none; } /* Hide unrevealed batches */
+      .entry.filtered-out { display: none !important; } /* Hide entries that don't match search */
       .entry ul, .entry ol { margin: 10px 0; padding-left: 20px; } /* List styling */
       
       /* Enhanced image containment */
@@ -132,6 +133,27 @@
         word-break: break-word; /* Break long words if necessary */
       }
       
+      /* Highlight search matches */
+      .entry .highlight { 
+        background: #d3f0a5; 
+        font-weight: 500; 
+        padding: 0 2px;
+        border-radius: 2px;
+      }
+      
+      /* Search status message */
+      #search-status {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 1.1em;
+        color: #666;
+        display: none;
+      }
+      
+      #search-status.visible {
+        display: block;
+      }
+      
       @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } /* Scroll reveal animation */
       @keyframes timelineGlow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } } /* Subtle changelog theme animation: gradient shift */
       
@@ -205,12 +227,6 @@
         }
       }
       
-      #search-results { margin-top: 20px; clear: both; }
-      .search-result { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fff; }
-      .search-result h3 { margin-top: 0; }
-      .search-result .highlight { background: #d3f0a5; } /* Highlight matching text in search results */
-      /* No footer overrides; uses global footer.css */
-      
       .search-container {
         position: relative;
         width: 80%;
@@ -239,51 +255,6 @@
       .clear-btn:hover {
         color: #000;
       }
-
-      /* Additional styles for search result body wrapper */
-.search-result-body {
-  max-width: 100%;
-  overflow: hidden;
-  word-wrap: break-word;
-}
-
-/* Force all images within search results to be contained */
-.search-result img,
-.search-result-body img {
-  max-width: 100% !important;
-  height: auto !important;
-  display: block;
-  margin: 10px 0;
-}
-
-/* Handle any nested containers that might have inline styles */
-.search-result * {
-  max-width: 100% !important;
-}
-
-/* Specific overrides for images with inline width/height */
-.search-result img[width],
-.search-result img[height] {
-  width: auto !important;
-  max-width: 100% !important;
-  height: auto !important;
-}
-
-/* Handle responsive images in search results */
-.search-result .imageblock,
-.search-result .image,
-.search-result figure {
-  max-width: 100% !important;
-  overflow: hidden;
-}
-
-.search-result .imageblock img,
-.search-result .image img,
-.search-result figure img {
-  width: 100% !important;
-  max-width: 100% !important;
-  height: auto !important;
-}
     </style>
   </head>
   <body class="article changelog{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
@@ -299,7 +270,7 @@
     </div>
     <!-- Custom changelog content (contained) -->
     <main class="timeline-container">
-      <div id="search-results"></div>
+      <div id="search-status"></div>
       <div id="timeline"></div>
     </main>
     <!-- Hidden full content for parsing -->
@@ -390,6 +361,8 @@
         const timeline = document.getElementById('timeline');
         const batchSize = 5; // Set to 5 for testing; adjust as needed
         let revealedCount = 0; // Start with 0, reveal first batch immediately
+        let currentFilter = null; // Track current filter state
+        let currentSearchQuery = ''; // Track current search query
 
         // Render all entries in DOM, hide all initially
         const entryElements = entriesData.map((entry, index) => {
@@ -399,6 +372,7 @@
           div.setAttribute('aria-label', `Entry ${entry.title} on ${entry.date} with labels ${entry.labels.join(', ')}`); // Accessibility for Magnolia users
           div.innerHTML = `<span class="entry-date"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> ${entry.date}</span><div class="entry-labels">${labelsHtml}</div><h3>${entry.title}</h3><div class="entry-body">${entry.body}</div>`;
           div.setAttribute('data-labels', entry.labels.join(',')); // For filtering
+          div.setAttribute('data-index', index); // Store index for search
           timeline.appendChild(div);
           return div;
         });
@@ -453,7 +427,7 @@
         // Initialize Medium Zoom for images with role=zoom
         function initializeMediumZoom() {
           // Target images with role=zoom class (Antora converts role=zoom to class="zoom")
-          const zoomImages = document.querySelectorAll('.entry img.zoom, .entry img[data-zoom], .search-result img.zoom, .search-result img[data-zoom]');
+          const zoomImages = document.querySelectorAll('.entry img.zoom, .entry img[data-zoom]');
           if (zoomImages.length > 0 && typeof mediumZoom !== 'undefined') {
             mediumZoom(zoomImages, {
               margin: 24,
@@ -498,20 +472,17 @@
         }
 
         function filterEntries(selectedLabel) {
+          currentFilter = selectedLabel;
+          applyFilters();
+          
+          // Update button states
           const buttons = labelFilters.querySelectorAll('.label-filter');
           buttons.forEach(btn => btn.classList.remove('selected'));
           if (selectedLabel === null) {
             labelFilters.querySelector('.label-filter:first-child').classList.add('selected');
-            entryElements.forEach(el => {
-              el.style.display = 'block';
-            });
           } else {
             const selectedBtn = Array.from(buttons).find(btn => btn.textContent === selectedLabel);
             selectedBtn.classList.add('selected');
-            entryElements.forEach(el => {
-              const entryLabels = el.getAttribute('data-labels') || '';
-              el.style.display = entryLabels.includes(selectedLabel) ? 'block' : 'none';
-            });
           }
         }
 
@@ -533,60 +504,104 @@
           useExtendedSearch: true                               // Enable extended search syntax
         });
 
-        // Enhanced function to highlight matches in text
-        function highlightMatches(text, matches) {
-          if (!matches || matches.length === 0) return text;
+        // Function to remove all highlights
+        function removeAllHighlights() {
+          document.querySelectorAll('.entry .highlight').forEach(highlight => {
+            const parent = highlight.parentNode;
+            parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+            parent.normalize(); // Merge adjacent text nodes
+          });
+        }
+
+        // Function to highlight text in an element
+        function highlightTextInElement(element, searchText) {
+          const walker = document.createTreeWalker(
+            element,
+            NodeFilter.SHOW_TEXT,
+            {
+              acceptNode: function(node) {
+                // Skip script and style elements
+                if (node.parentElement.tagName === 'SCRIPT' || 
+                    node.parentElement.tagName === 'STYLE') {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                return NodeFilter.FILTER_ACCEPT;
+              }
+            },
+            false
+          );
+
+          const textNodes = [];
+          let node;
+          while (node = walker.nextNode()) {
+            textNodes.push(node);
+          }
+
+          const regex = new RegExp(`(${searchText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
           
-          // Collect all indices from all matches
-          let allIndices = [];
-          matches.forEach(match => {
-            if (match.indices) {
-              match.indices.forEach(([start, end]) => {
-                allIndices.push([start, end]);
-              });
+          textNodes.forEach(textNode => {
+            const matches = textNode.textContent.match(regex);
+            if (matches) {
+              const span = document.createElement('span');
+              span.innerHTML = textNode.textContent.replace(regex, '<span class="highlight">$1</span>');
+              textNode.parentNode.replaceChild(span, textNode);
+            }
+          });
+        }
+
+        // Combined filter function for both label and search
+        function applyFilters() {
+          let visibleCount = 0;
+          
+          entryElements.forEach((el, index) => {
+            let shouldShow = true;
+            
+            // Apply label filter
+            if (currentFilter !== null) {
+              const entryLabels = el.getAttribute('data-labels') || '';
+              if (!entryLabels.includes(currentFilter)) {
+                shouldShow = false;
+              }
+            }
+            
+            // Apply search filter
+            if (shouldShow && currentSearchQuery) {
+              const entryIndex = parseInt(el.getAttribute('data-index'));
+              const matchingIndices = searchResults.map(r => r.refIndex);
+              if (!matchingIndices.includes(entryIndex)) {
+                shouldShow = false;
+              }
+            }
+            
+            // Show/hide entry
+            if (shouldShow) {
+              el.classList.remove('filtered-out');
+              visibleCount++;
+            } else {
+              el.classList.add('filtered-out');
             }
           });
           
-          // Sort indices by start position
-          allIndices.sort((a, b) => a[0] - b[0]);
-          
-          // Merge overlapping indices
-          let mergedIndices = [];
-          for (let [start, end] of allIndices) {
-            if (mergedIndices.length === 0) {
-              mergedIndices.push([start, end]);
-            } else {
-              let lastIndex = mergedIndices[mergedIndices.length - 1];
-              if (start <= lastIndex[1] + 1) {
-                lastIndex[1] = Math.max(lastIndex[1], end);
-              } else {
-                mergedIndices.push([start, end]);
-              }
-            }
-          }
-          
-          // Apply highlights in reverse order to maintain correct indices
-          let highlighted = text;
-          for (let i = mergedIndices.length - 1; i >= 0; i--) {
-            let [start, end] = mergedIndices[i];
-            highlighted = highlighted.slice(0, start) + 
-                         '<span class="highlight">' + 
-                         highlighted.slice(start, end + 1) + 
-                         '</span>' + 
-                         highlighted.slice(end + 1);
-          }
-          
-          return highlighted;
+          // Update search status
+          updateSearchStatus(visibleCount);
         }
 
+        // Update search status message
+        function updateSearchStatus(visibleCount) {
+          const statusEl = document.getElementById('search-status');
+          
+          if (currentSearchQuery) {
+            statusEl.textContent = `Found ${visibleCount} ${visibleCount === 1 ? 'entry' : 'entries'} matching "${currentSearchQuery}"`;
+            statusEl.classList.add('visible');
+          } else {
+            statusEl.classList.remove('visible');
+          }
+        }
+
+        let searchResults = [];
+        
         const searchInput = document.getElementById('search-input');
         const clearBtn = document.getElementById('clear-search');
-
-        // Show/hide clear button on input change
-        searchInput.addEventListener('input', (e) => {
-          clearBtn.style.display = e.target.value.trim().length > 0 ? 'block' : 'none';
-          // Existing search logic here...
-        });
 
         // Clear input on click
         clearBtn.addEventListener('click', () => {
@@ -594,65 +609,40 @@
           clearBtn.style.display = 'none';
           searchInput.dispatchEvent(new Event('input')); // Trigger search update
         });
-        const resultsContainer = document.getElementById('search-results');
-        searchInput.addEventListener('input', (e) => {
-          resultsContainer.innerHTML = '';
-          const query = e.target.value.trim();
-          if (query.length < 2) return;
 
-          const results = fuse.search(query);
+        searchInput.addEventListener('input', (e) => {
+          const query = e.target.value.trim();
           
-          if (results.length === 0) {
-            resultsContainer.innerHTML = '<div class="search-result"><p>No results found for your search.</p></div>';
+          // Clear button handling
+          clearBtn.style.display = query.length > 0 ? 'block' : 'none';
+          
+          // Remove previous highlights
+          removeAllHighlights();
+          
+          currentSearchQuery = query;
+          
+          if (query.length < 2) {
+            searchResults = [];
+            applyFilters();
             return;
           }
+
+          // Perform search
+          searchResults = fuse.search(query);
           
-results.slice(0, 10).forEach(result => { // Limit to top 10 results
-  const div = document.createElement('div');
-  div.classList.add('search-result');
-  
-  // Find matches for the searchableContent to highlight
-  const contentMatches = result.matches.filter(m => 
-    m.key === 'searchableContent' || m.key === 'paragraphs' || m.key === 'listItems'
-  );
-  
-  let highlightedBody = result.item.body;
-  if (contentMatches.length > 0) {
-    // Create a temporary div to work with the HTML content
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = result.item.body;
-    
-    // Try to highlight within paragraph and list elements
-    const searchText = query.toLowerCase();
-    tempDiv.querySelectorAll('.paragraph, li').forEach(el => {
-      const text = el.textContent;
-      if (text.toLowerCase().includes(searchText)) {
-        const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-        el.innerHTML = el.innerHTML.replace(regex, '<span class="highlight">$1</span>');
-      }
-    });
-    
-    highlightedBody = tempDiv.innerHTML;
-  }
-  
-  const relevanceScore = Math.round((1 - result.score) * 100);
-  const matchInfo = result.item.labels.length > 0 ? ` • Labels: ${result.item.labels.join(', ')}` : '';
-  
-  // Create a content wrapper div to ensure proper containment
-  div.innerHTML = `
-    <h3>${result.item.title}</h3>
-    <p style="font-size: 0.9em; color: #000; margin: 5px 0;">
-      ${result.item.date} • Relevance: ${relevanceScore}%${matchInfo}
-    </p>
-    <div class="search-result-body">
-      ${highlightedBody}
-    </div>
-  `;
-  resultsContainer.appendChild(div);
-});
+          // Apply filters to show/hide entries
+          applyFilters();
           
-          // Re-initialize medium zoom for search results
-          setTimeout(initializeMediumZoom, 100);
+          // Highlight matches in visible entries
+          if (searchResults.length > 0) {
+            searchResults.forEach(result => {
+              const entryEl = entryElements[result.refIndex];
+              if (!entryEl.classList.contains('filtered-out')) {
+                const bodyEl = entryEl.querySelector('.entry-body');
+                highlightTextInElement(bodyEl, query);
+              }
+            });
+          }
         });
       });
     </script>
