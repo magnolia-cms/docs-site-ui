@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
   {{!-- <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" /> --}}
   <link rel="stylesheet" href="{{{uiRootPath}}}/css/site.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@beta" />
   <link rel="icon" href="{{{uiRootPath}}}/img/mgnl-favicon-darkTeal-32.png" type="image/png">
   {{> header-scripts}}
   {{> head-scripts}}
@@ -618,14 +618,15 @@
   })
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@beta"></script>
   <script type="text/javascript">
     docsearch({
+      appId: 'NZWE7TXMBR',
+      apiKey: '9117a4e7751be182a32d4e70a11d176a',
+      indexName: 'magnolia-cms',
       container: '#docsearch',
-      appId: 'IIQKXJ786V',
-      apiKey: '450fd6db7d4e2f26607012f0d8683a29',
-      indexName: 'dev_DOCS',
       searchParameters: { hitsPerPage: 12, attributesToHighlight: ["hierarchy.lvl0"] },
+      askAi: 'C6xQL7oXbB6z'
     });
   </script>
 </body>

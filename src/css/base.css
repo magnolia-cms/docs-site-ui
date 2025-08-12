@@ -247,16 +247,16 @@ footer.DocSearch-Footer div.DocSearch-Logo a {
 }
 
 .DocSearch-Hit[aria-selected="true"] a {
-  background-color: var(--rebrand-color-primary-green) !important;
+  background-color: var(--rebrand-color-primary-sand) !important;
 }
 
 .DocSearch-Dropdown li.DocSearch-Hit a:hover {
-  background-color: var(--rebrand-color-primary-green) !important;
+  background-color: var(--rebrand-color-primary-sand) !important;
   text-decoration: none !important;
 }
 
 .DocSearch-Dropdown li.DocSearch-Hit a:focus {
-  background-color: var(--rebrand-color-primary-green) !important;
+  background-color: var(--rebrand-color-primary-sand) !important;
   opacity: 0.8;
 }
 

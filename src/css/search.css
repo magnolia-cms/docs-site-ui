@@ -1,208 +1,24 @@
-.search-input-wrapper {
-  position: relative;
-  display: flex;
-  margin-left: 1.5rem;
-}
-
-.search-input-wrapper__icon {
-  position: absolute;
-  left: 17px;
-  top: 52%;
-  transform: translateY(-50%);
-  color: var(--color-gray-30);
-  transition: opacity 0.2s ease-in-out;
-  opacity: 0.5;
-}
-
-.search-input-wrapper.focused .search-input-wrapper__icon {
-  opacity: 0.25;
-}
-
-::-webkit-input-placeholder {
-  /* Edge */
-  color: var(--color-gray-light);
-}
-
-:-ms-input-placeholder {
-  /* Internet Explorer 10-11 */
-  color: var(--color-gray-light);
-}
-
-::placeholder {
-  color: var(--color-gray-light);
-}
-
-#searchBar.ds-input {
-  border: none;
-  background-color: var(--color-smoke-70);
-  height: 44px;
-  width: 18rem;
-  border-radius: 45px;
-  font-family: var(--body-font-family);
-  font-size: 0.875rem;
-  cursor: auto;
+button#searchBar {
   outline: none;
-  padding: 0 1rem;
-  padding-left: 3rem;
-  transition: width 0.5s ease;
-}
-
-@media screen and (max-width: 615px) {
-  #searchBar.ds-input {
-    width: 14rem;
-  }
-}
-
-nav.saas-nav #searchBar.ds-input:focus {
-  width: 29rem;
-  margin-right: 2px;
-  border: 2px solid var(--color-jet-80);
-  background-color: var(--color-smoke-50);
-}
-
-#searchBar.ds-input:focus {
-  width: 29rem;
-  margin-right: 2px;
-  border: 2px solid var(--rebrand-color-primary-green);
-  background-color: var(--color-smoke-50);
+  border: none;
+  background-color: transparent;
+  top: 3vh;
+  position: relative;
+  margin-left: 3.75vw;
 }
 
 .DocSearch-Button {
-  padding: 1.25rem !important;
+  background-color: var(--rebrand-color-primary-sand) !important;
+  transition: 0.3s ease !important;
+  outline: none;
+  border: none;
+  padding: 4px !important;
 }
 
-button.DocSearch.DocSearch-Button {
-  background: var(--rebrand-color-primary-sand) !important;
-  outline: none !important;
-  transition: 0.3s ease;
+.DocSearch-Button:hover {
+  background-color: var(--rebrand-color-primary-dew) !important;
 }
 
-button.DocSearch.DocSearch-Button:hover,
-button.DocSearch.DocSearch-Button:active,
-button.DocSearch.DocSearch-Button:focus {
-  box-shadow: 1px 1px 2px -1px var(--rebrand-color-primary-teal) !important;
-  background: var(--rebrand-color-primary-sand) !important;
-  outline: none !important;
-}
-
-.DocSearch-Button .DocSearch-Search-Icon {
-  width: 3vw;
-  display: block !important;
-}
-
-@media screen and (max-width: 1220px) {
-  #searchBar.ds-input:focus {
-    width: 22.35rem;
-    margin-right: 2px;
-    border: 2px solid var(--rebrand-color-primary-green);
-    background-color: var(--color-smoke-50);
-  }
-}
-
-@media screen and (max-width: 615px) {
-  #searchBar.ds-input:focus {
-    width: 14rem;
-    border: 2px solid var(--rebrand-color-primary-green);
-    background-color: var(--color-smoke-50);
-  }
-
-  nav.saas-nav #searchBar.ds-input:focus {
-    width: 14rem;
-    border: 2px solid var(--color-jet-80);
-    background-color: var(--color-smoke-50);
-  }
-
-  .DocSearch-Button .DocSearch-Search-Icon {
-    width: 5vw !important;
-  }
-}
-
-.search-input-wrapper__icon kbd {
-  margin-left: 0.15rem;
-  color: var(--color-gray-30);
-  opacity: 0.5;
-  border: 2px solid rgba(47, 79, 79, 0.438);
-  box-shadow: 2px 2px rgba(47, 79, 79, 0.438);
-  font-size: 0.85em;
-  line-height: 0.85em;
-  display: inline-block;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  padding: 3px 5px;
-  white-space: nowrap;
-  font-family: var(--body-font-family);
-}
-
-.search-input-wrapper__icon i {
-  opacity: 0.5;
-}
-
-.search-input-wrapper span.algolia-autocomplete {
-  display: flex !important;
-  align-items: center;
-  border: none !important;
-  background: none !important;
-}
-
-#searchBar,
-span.algolia-autocomplete {
-  width: 100%;
-  border: none !important;
-  background: none !important;
-}
-
-#keyboardShortcut,
-#keyboardShortcutMac {
-  display: inline-block;
-}
-
-@media screen and (max-width: 1200px) {
-  #searchBar,
-  span.algolia-autocomplete {
-    width: 100%;
-    border: none !important;
-    background: none !important;
-  }
-
-  .search-input-wrapper {
-    width: 100%;
-    margin: auto;
-    padding: 0 0.75rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .search-input-wrapper__icon {
-    margin-left: 0.5rem;
-  }
-
-  .navbar-brand svg {
-    width: 132px;
-  }
-
-  .algolia-autocomplete .ds-dropdown-menu [class^="ds-dataset-"] {
-    overflow: scroll !important;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  #searchBar,
-  span.algolia-autocomplete {
-    width: 100%;
-  }
-
-  .search-input-wrapper__icon {
-    display: none;
-  }
-
-  .algolia-autocomplete .ds-dropdown-menu [class^="ds-dataset-"] {
-    overflow: scroll !important;
-    width: 90vw;
-    margin-left: -10vw;
-  }
-}
-
-@media screen and (min-width: 1200px) {
-  #searchBar:disabled {
-    background: var(--color-gray-10);
-  }
+.DocSearch-Button-Container {
+  margin-left: 2vw !important;
 }

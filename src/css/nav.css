@@ -29,10 +29,11 @@
 }
 
 .nav {
-  background: var(--rebrand-color-primary-dew);
+  background: white;
   position: relative;
   top: 0;
   height: var(--nav-height);
+  border-right: 1px solid grey;
 }
 
 @media screen and (min-width: 769px) {
