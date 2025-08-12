@@ -5,7 +5,7 @@
 <script async src="{{{uiRootPath}}}/js/vendor/collapse.js"></script>
 
 {{!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script> --}}
-<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@beta"></script>
 
 {{#if (and (eq page.layout 'default') (eq page.componentVersion.displayVersion '6.3 rc'))}}
 
@@ -41,14 +41,14 @@
 {{else if (eq page.layout 'default')}}
 
 <script type="text/javascript">
-    docsearch({
-        appId: 'IIQKXJ786V',
-        apiKey: '450fd6db7d4e2f26607012f0d8683a29',
-        indexName: 'dev_DOCS',
-        container: '#searchBar',
-        searchParameters: { hitsPerPage: 12, attributesToHighlight: ["hierarchy.lvl0"] },
-        debug: true // prevent it from closing on inspection.
-    });
+  docsearch({
+    appId: 'PMZUYBQDAK',
+    apiKey: '24b09689d5b4223813d9b8e48563c8f6',
+    indexName: 'docsearch',
+    container: '#searchBar',
+    searchParameters: { hitsPerPage: 12, attributesToHighlight: ["hierarchy.lvl0"] },
+    askAi: 'askAIDemo'
+  });
 
     function toggleDropDown () {
       var linkEl = document.querySelectorAll('.has-dropdown');
