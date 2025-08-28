@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magnolia Incubator Modules</title>
+  <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{{uiRootPath}}}/css/site.css">
+  <link rel="icon" href="{{{uiRootPath}}}/img/mgnl-favicon-darkTeal-32.png" type="image/png">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  {{> header-scripts}}
+  {{> head-scripts}}
+  <style>
+    :root {
+        --navbar-height: 5rem !important;
+        --lora: 'Lora', serif !important;
+        --labPurple: #008246;
+        --labTeal: #0891B2;
+        --labGreen: #059669;
+        --labOrange: #EA580C;
+        --labBg: #F8FAFC;
+        --labCardBg: #FFFFFF;
+        --experimentalGlow: rgba(107, 70, 193, 0.15);
+        --fresh: #E2F0E4;
+        --darkTeal: #02373F;
+        --green: #068449;
+        --blue: #0569F9;
+    }
+
+    /* Lab-themed animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 0 rgba(107, 70, 193, 0.4); }
+      50% { box-shadow: 0 0 20px rgba(107, 70, 193, 0.6); }
+    }
+
+    @keyframes beaker-bubble {
+      0% { opacity: 0; transform: translateY(10px) scale(0.8); }
+      50% { opacity: 1; transform: translateY(-5px) scale(1.1); }
+      100% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+    }
+
+    /* Hero title bubbling lab effect */
+    @keyframes bubble-float {
+      0% { opacity: 0.7; transform: translateY(0px) scale(1); }
+      25% { opacity: 1; transform: translateY(-8px) scale(1.1); }
+      50% { opacity: 0.8; transform: translateY(-15px) scale(0.9); }
+      75% { opacity: 1; transform: translateY(-10px) scale(1.05); }
+      100% { opacity: 0.7; transform: translateY(0px) scale(1); }
+    }
+
+    /* Enhanced lab theme styling with full-body background */
+    html, body {
+        background-color: var(--labBg) !important; /* use your base bg */
+        color: #333 !important;
+    }
+
+    .hero-body {
+      flex-grow: 0!important;
+    }
+
+    /* Hero title with bubbling lab effect */
+    .titled {
+      font-family: var(--lora)!important;
+      font-size: 68px !important;
+      font-weight: 400 !important;
+      line-height: 102px !important;
+      background: linear-gradient(135deg, var(--labPurple), var(--labTeal));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Bubbling lab equipment between words */
+    .lab-bubbles {
+      display: inline-block;
+      position: relative;
+      margin: 0 20px;
+      vertical-align: middle;
+      width: 60px;
+      height: 80px;
+      overflow: visible; /* Ensure nothing gets clipped */
+    }
+
+    .lab-equipment {
+      position: absolute;
+      font-size: 2rem;
+      left: 1%;
+      top: 7%;
+      transform: translate(-50%, -50%);
+      animation: float 3s ease-in-out infinite;
+      z-index: 10;
+      background: none !important;
+      -webkit-text-fill-color: initial !important; /* Override parent's text-fill */
+      color: initial !important; /* Use default emoji colors */
+      text-shadow: none !important;
+      display: block !important;
+      width: auto !important;
+      height: auto !important;
+    }
+
+    .bubble-dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      left: 50%;
+      animation: bubble-float 2s ease-in-out infinite;
+      z-index: 5; /* Below the equipment */
+    }
+
+    .bubble-dot:nth-child(2) {
+      background: var(--labPurple);
+      top: 20px;
+      left: 45%;
+      animation-delay: 0s;
+    }
+
+    .bubble-dot:nth-child(3) {
+      background: var(--labTeal);
+      top: 15px;
+      left: 55%;
+      animation-delay: 0.3s;
+    }
+
+    .bubble-dot:nth-child(4) {
+      background: var(--labGreen);
+      top: 25px;
+      left: 50%;
+      animation-delay: 0.6s;
+    }
+
+    .bubble-dot:nth-child(5) {
+      background: var(--labOrange);
+      top: 10px;
+      left: 48%;
+      animation-delay: 0.9s;
+    }
+
+    .bubble-dot:nth-child(6) {
+      background: var(--labPurple);
+      top: 30px;
+      left: 52%;
+      animation-delay: 1.2s;
+    }
+
+    .paragraph {
+      font-size: 22px;
+      line-height: 32px;
+      margin-bottom: 40px;
+      color: #475569;
+    }
+
+    .subtitled {
+      font-family: var(--lora)!important;
+      font-size: 48px !important;
+      font-weight: 700 !important;
+      line-height: 52px !important;
+      margin-bottom: 2rem!important;
+      color: var(--labPurple) !important;
+    }
+
+    /* Lab-style navigation */
+    .navbar {
+      background: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid var(--experimentalGlow);
+    }
+
+    .navbar-item img {
+      max-width: 217px;
+      max-height: none !important;
+      width: 100%;
+    }
+
+    a.navbar-item {
+      color: var(--labPurple) !important;
+      font-weight: 600;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    a.navbar-item:hover {
+      color: var(--labTeal) !important;
+      background-color: rgba(107, 70, 193, 0.05) !important;
+      transform: translateY(-2px);
+    }
+
+    /* Enhanced experimental cards */
+    .card-x {
+       box-shadow: 
+         0 4px 20px rgba(107, 70, 193, 0.1),
+         0 0 0 1px rgba(107, 70, 193, 0.1);
+       padding: 32px;
+       border-radius: 16px;
+       background: linear-gradient(135deg, var(--labCardBg) 0%, #FEFEFE 100%);
+       display: flex;
+       flex-direction: column;
+       height: 100%;
+       transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+       position: relative;
+       overflow: hidden;
+    }
+
+    .card-x::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--labPurple), var(--labTeal), var(--labGreen));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card-x:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 
+        0 20px 40px rgba(107, 70, 193, 0.2),
+        0 0 0 2px rgba(107, 70, 193, 0.2);
+    }
+
+    .card-x:hover::before {
+      opacity: 1;
+    }
+
+    .card-x .card-x__p {
+      font-size: 18px;
+      line-height: 28px;
+      color: #64748B;
+    }
+
+    .card-x__link-w {
+      padding-top: 24px;
+      margin-top: auto;
+    }
+
+    /* Lab-style status indicators */
+    .experimental-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: linear-gradient(135deg, var(--labPurple), var(--labTeal));
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    /* Enhanced links */
+    .link:not(.link-button) {
+      font-size: 16px!important;
+      color: var(--labPurple)!important;
+      font-weight: 600;
+      padding: 8px 16px!important;
+      background: linear-gradient(135deg, rgba(107, 70, 193, 0.1), rgba(8, 145, 178, 0.1));
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      border: 1px solid rgba(107, 70, 193, 0.2);
+      display: inline-block;
+    }
+
+    .link:hover {
+      background: linear-gradient(135deg, rgba(107, 70, 193, 0.2), rgba(8, 145, 178, 0.2));
+      transform: translateX(4px);
+      color: var(--labTeal)!important;
+    }
+
+    .h3 {
+      font-size: 28px;
+      font-family: var(--lora);
+      font-weight: 700;
+      color: var(--labPurple);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .h3 i {
+      background: linear-gradient(135deg, var(--labPurple), var(--labTeal));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.2em;
+    }
+
+    /* Offset scroll target for sections with IDs to account for fixed navbar */
+    section[id] {
+      scroll-margin-top: var(--navbar-height);
+    }
+
+    /* Lab section styling - flat sections, no card appearance */
+    .lab-section {
+      background: transparent;
+      backdrop-filter: none;
+      border: none;
+      border-radius: 0;
+      margin: 2rem 0;
+      padding: 3rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lab-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--labPurple), var(--labTeal), var(--labGreen), var(--labOrange));
+      opacity: 0; /* Hide by default */
+    }
+
+    /* Only show the color spectrum on the experimental features section */
+    #experimental-features.lab-section::before {
+      opacity: 1;
+    }
+
+    /* Hero section enhancements - simplified since background is now on body */
+    #hero-header {
+      text-align: center!important;
+    }
+
+    section.hero .hero-body {
+      background: transparent !important;
+      position: relative;
+    }
+
+    /* Buttons */
+    .button {
+      border-radius: 8px!important;
+      font-weight: 600!important;
+      transition: all 0.3s ease!important;
+    }
+
+    .button.is-primary {
+      background: linear-gradient(135deg, var(--labPurple), var(--labTeal)) !important;
+      border: none !important;
+      color: var(--fresh) !important;
+    }
+
+    .button.is-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(107, 70, 193, 0.3);
+      text-decoration: none !important;
+    }
+
+    .columns:last-child {
+      margin-bottom: 0!important;
+    }
+
+    .columns {
+      margin-top: 0!important;
+    }
+
+    .columns-breaker {
+      flex-wrap: wrap;
+    }
+
+    /* Special lab equipment decorations */
+    .lab-decoration {
+      position: absolute;
+      opacity: 0.1;
+      pointer-events: none;
+      font-size: 2rem;
+      color: var(--labPurple);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .lab-decoration:nth-child(2) { animation-delay: 1s; }
+    .lab-decoration:nth-child(3) { animation-delay: 2s; }
+
+    /* Responsive adjustments */
+    @media print, screen and (max-width: 768px) {
+      .lab-bubbles {
+        width: 40px;
+        height: 60px;
+        margin: 0 10px;
+      }
+      
+      .lab-equipment {
+        font-size: 24px;
+      }
+      
+      .hero.is-medium .hero-body {
+          padding: 40px 20px!important;
+      }
+
+       h1.title.titled {
+        font-size: 40px!important;
+      }
+    }
+
+    @media print, screen and (min-width: 769px) {
+      .hero.is-medium  .hero-body {
+          padding: 100px 0!important;
+      }
+    }
+
+    @media screen and (max-width:1023px) {
+      h2, h2.subtitled {
+        font-size: 30px!important;
+        line-height: initial!important;
+      }
+
+      .paragraph, .card-x .card-x__p {
+        font-size: 18px;
+        line-height: initial;
+      }
+
+      .h3 {
+        font-size: 24px;
+        margin-bottom: 16px;
+      }
+
+      .link:not(.link-button) {
+        font-size: 14px!important;
+      }
+    }
+
+    @media(max-width: 1215px) {
+      .columns-breaker .column {
+        margin-bottom: 1.2rem;
+      }
+    }
+
+    .hero-link {
+        background: #fff !important;      /* card-like background */
+        border-radius: 1rem;              /* pill shape */
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        font-weight: 500;
+        color: var(--labPurple) !important;
+        border: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        white-space: nowrap;              /* keeps text in one line */
+        }
+
+    .hero-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+        color: var(--labPurple) !important;
+        text-decoration: none !important;
+    }
+
+    .hero {
+        background: 
+            linear-gradient(135deg, var(--fresh) 0%, rgba(248, 250, 252, 0.8) 100%),
+            url("data:image/svg+xml,%3Csvg ... %3C/svg%3E");
+        background-size: cover, 1200px 600px;
+        background-position: center, right -100px top 50px;
+        background-repeat: no-repeat, no-repeat;
+        position: relative; /* keep ::after working */
+    }
+
+    .hero::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 80px;
+        background: linear-gradient(to bottom, rgba(248, 250, 252, 0), var(--labBg));
+        pointer-events: none;
+    }
+
+.tier-carousel {
+  padding: 50px 0; /* Adds vertical spacing above and below the carousel */
+}
+
+.tier-carousel .column {
+  padding: 10px; /* Adds spacing around each card */
+}
+
+.tier-carousel .slick-slide {
+  margin: 0 10px; /* Adds horizontal spacing between slides */
+}
+
+.tier-carousel .slick-list {
+  margin: 0 -10px; /* Compensates for slide margins to prevent overflow */
+}
+
+.tier-carousel .card-x {
+  height: 100%; /* Ensures cards take full height of slide */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Optional: Adjust arrow positioning to avoid overlap */
+.tier-carousel .slick-prev,
+.tier-carousel .slick-next {
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.tier-carousel .slick-prev {
+  left: 10px;
+}
+
+.tier-carousel .slick-next {
+  right: 10px;
+}
+
+/* Ensure dots don't overlap content */
+.tier-carousel .slick-dots {
+  padding-top: 10px;
+}
+  </style>
+</head>
+
+<body>
+  <!-- Lab Equipment Decorations -->
+  <div class="lab-decoration" style="top: 20%; left: 10%;">🧪</div>
+  <div class="lab-decoration" style="top: 60%; right: 15%;">⚗️</div>
+  <div class="lab-decoration" style="top: 40%; left: 85%;">🔬</div>
+
+  <!-- Enhanced NavBar -->
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="{{{siteRootPath}}}/index.html">
+        <img src="{{{uiRootPath}}}/img/rebrand-logo-dark-new.png" width="112" height="28">
+      </a>
+    </div>
+
+    <div class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#core-modules">
+          Tier 1 modules
+        </a>
+        <a class="navbar-item" href="#experimental-features">
+          Tier 2 modules
+        </a>
+        <div class="navbar-item navbar-item--button">
+          <span class="control">
+            <a class="button is-primary" href="https://docs.magnolia-cms.com" target="_blank">Main Docs</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+<!-- Hero Section -->
+<section class="hero is-medium has-text-centered">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns">
+        <div class="column">
+          <h1 class="title titled is-1 mb-5" id="hero-header">
+            Incubator
+            <div class="lab-bubbles">
+              <div class="lab-equipment">🧪</div>
+              <div class="bubble-dot"></div>
+              <div class="bubble-dot"></div>
+              <div class="bubble-dot"></div>
+              <div class="bubble-dot"></div>
+              <div class="bubble-dot"></div>
+            </div>
+            Modules
+          </h1>
+
+          <p class="paragraph">
+            Incubator modules are developed by Magnolia Services in collaboration with customers. 
+            They extend Magnolia or integrate with third-party applications. 
+            Free for DX Core license owners, but provided “as is,” with no SLA coverage.
+          </p>
+
+          <!-- Primary CTA -->
+          <div class="buttons is-centered mb-5">
+            <a class="button is-primary is-large" href="#tiered-system">
+              <i class="fa fa-flask"></i>&nbsp;&nbsp; Explore the modules
+            </a>
+          </div>
+
+          <!-- New swipeable links -->
+          <div class="buttons is-centered is-flex is-flex-wrap-nowrap overflow-x-auto hero-buttons" style="gap:1rem; margin-top: 3rem;">
+            <a href="#news" class="button hero-link">📰 News and updates</a>
+            <a href="#support" class="button hero-link">💡 Submitting a ticket</a>
+            <a href="#security" class="button hero-link">🔒 Security considerations</a>
+            <a href="#deprecations" class="button hero-link">⛔ Deprecations</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tiered System Section -->
+<section id="tiered-system" class="lab-section">
+ <div class="container">
+   <h2 class="subtitled subtitle">🔬 Tiered Module System</h2>
+   <p class="paragraph">
+     We've introduced a tiering system for Incubator modules to facilitate better maintenance and ensure higher quality, 
+     even though they are not covered by the MLA or SLA. Each year, Magnolia identifies modules for active maintenance 
+     based on strategic alignment, customer usage, and market demand.
+
+     For details on installing and customizing modules, see <a href="{{{siteRootPath}}}/incubator-modules/usage/" target="_blank">Incubator module usage</a>.
+   </p>
+   
+   <div class="columns">
+     <div class="column is-4">
+       <div style="background: linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(16, 185, 129, 0.1)); border-left: 4px solid var(--labGreen); border-radius: 8px; padding: 1.5rem; height: 100%;">
+         <h4 style="color: var(--labGreen); font-weight: 600; margin-bottom: 1rem;">Tier 1: Active</h4>
+         <ul style="color: #64748B; font-size: 0.95rem; line-height: 1.6; margin: 0; padding-left: 1.5rem;">
+           <li>Actively maintained</li>
+           <li>Aligned to current strategy</li>
+           <li>Widely adopted by customers</li>
+           <li>Tested for compatibility with upcoming versions</li>
+         </ul>
+       </div>
+     </div>
+     
+     <div class="column is-4">
+       <div style="background: linear-gradient(135deg, rgba(234, 88, 12, 0.1), rgba(249, 115, 22, 0.1)); border-left: 4px solid var(--labTeal); border-radius: 8px; padding: 1.5rem; height: 100%;">
+         <h4 style="color: var(--labTeal); font-weight: 600; margin-bottom: 1rem;">Tier 2: Parked</h4>
+         <ul style="color: #64748B; font-size: 0.95rem; line-height: 1.6; margin: 0; padding-left: 1.5rem;">
+           <li>Not actively maintained</li>
+           <li>Provided "as is" with limited updates</li>
+           <li>Low or unclear usage</li>
+           <li>Carries risk - candidate for deprecation</li>
+           <li>Not tested against upcoming versions</li>
+         </ul>
+       </div>
+     </div>
+     
+     <div class="column is-4">
+       <div style="background: linear-gradient(135deg, rgba(107, 114, 128, 0.1), rgba(156, 163, 175, 0.1)); border-left: 4px solid #6B7280; border-radius: 8px; padding: 1.5rem; height: 100%;">
+         <h4 style="color: #6B7280; font-weight: 600; margin-bottom: 1rem;">Tier 3: Deprecated</h4>
+         <ul style="color: #64748B; font-size: 0.95rem; line-height: 1.6; margin: 0; padding-left: 1.5rem;">
+           <li>No longer maintained or updated</li>
+           <li>Legacy modules with better alternatives</li>
+           <li>May not be compatible with current versions</li>
+           <li>Carries higher risk</li>
+           <li>Reactivation requires proven viable need</li>
+         </ul>
+       </div>
+     </div>
+   </div>
+
+   <p style="color: #94A3B8; font-size: 0.9rem; margin-top: 1.5rem; text-align: center;">
+     <strong style="color: #02373F; !important">Note:</strong> Magnolia reserves the right to reclassify modules without prior notice.
+   </p>
+ </div>
+</section>
+
+
+<!-- Core Incubator Modules Section -->
+<section id="core-modules" class="lab-section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8-desktop is-10-tablet">
+        <h2 class="subtitled subtitle">⚗️ Tier 1: Actively maintained</h2>
+        <p class="paragraph">
+          These modules are aligned with our strategy, widely used, and tested for upcoming Magnolia versions. 
+          While not covered by the MLA/SLA, they receive regular updates and fixes.
+        </p>
+      </div>
+    </div>
+
+    <div class="tier-carousel tier1-carousel">
+      <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+        <div class="card-x">
+          <div class="experimental-badge" style="background: linear-gradient(135deg, var(--labGreen), #10B981);">STABLE</div>
+          <h3 class="card-x__title h3">
+            <i class="fa fa-comments" aria-hidden="true"></i> 
+            CTSX ChatGPT
+          </h3>
+          <p class="card-x__p">
+            The ChatGPT translation submodule harnesses the power of OpenAI APIs to deliver seamless translations. 
+            As a vital component of the Content Translation Support Extended framework, it transforms the way content is localized. 
+          </p>
+          <div class="card-x__link-w">
+            <a class="card-x__link link" href="{{{siteRootPath}}}/content-translation-support-ext/chatgpt/">
+              Learn more
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+        <div class="card-x">
+          <div class="experimental-badge" style="background: linear-gradient(135deg, var(--labGreen), #10B981);">STABLE</div>
+          <h3 class="card-x__title h3">
+            <i class="fa fa-file-text" aria-hidden="true"></i> 
+            Dynamic Form
+          </h3>
+          <p class="card-x__p">
+            The Dynamic Form module empowers you to effortlessly create and publish interactive forms and polls that captivate your audience.
+            With seamless integration into external databases, you can harness the full potential of your data, transforming feedback into actionable strategies. 
+          </p>
+          <div class="card-x__link-w">
+            <a class="card-x__link link" href="{{{siteRootPath}}}/dynamic-form/">
+              Learn more
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+        <div class="card-x">
+          <div class="experimental-badge" style="background: linear-gradient(135deg, var(--labGreen), #10B981);">STABLE</div>
+          <h3 class="card-x__title h3">
+            <i class="fa fa-link" aria-hidden="true"></i> 
+            URL Translation
+          </h3>
+          <p class="card-x__p">
+            The Magnolia URL Translation module revolutionizes your multilingual website experience.
+            Unlock the power of global reach and enhance user engagement with dynamic, localized URLs that drive traffic and improve SEO. 
+          </p>
+          <div class="card-x__link-w">
+            <a class="card-x__link link" href="{{{siteRootPath}}}/url-translation/">
+              Learn More
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+        <div class="card-x">
+          <div class="experimental-badge" style="background: linear-gradient(135deg, var(--labGreen), #10B981);">STABLE</div>
+          <h3 class="card-x__title h3">
+            <i class="fa fa-share" aria-hidden="true"></i> 
+            CDN Helper
+          </h3>
+          <p class="card-x__p">
+                The CDN Helper module provides an extension to the current browser cache policy to support the private attribute that tells external systems like a CDN to exclude content from their cache.
+          </p>
+          <div class="card-x__link-w">
+            <a class="card-x__link link" href="{{{siteRootPath}}}/cdn-helper/">
+              Learn more
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+        <div class="card-x">
+          <div class="experimental-badge" style="background: linear-gradient(135deg, var(--labGreen), #10B981);">STABLE</div>
+          <h3 class="card-x__title h3">
+            <i class="fa fa-picture-o" aria-hidden="true"></i> 
+            Frontify DAM
+          </h3>
+          <p class="card-x__p">
+            The Frontify DAM connector provides a connector to Frontify to use assets form this service. 
+            It incorporates Frontify Media browser widget that allows users to select assets to be included in the website.
+          </p>
+          <div class="card-x__link-w">
+            <a class="card-x__link link" href="{{{siteRootPath}}}/frontify-dam-connector/">
+              Learn more
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+        <div class="card-x">
+          <div class="experimental-badge" style="background: linear-gradient(135deg, var(--labGreen), #10B981);">STABLE</div>
+          <h3 class="card-x__title h3">
+            <i class="fa fa-picture-o" aria-hidden="true"></i> 
+            Veeva DAM Connector
+          </h3>
+          <p class="card-x__p">
+            The Veeva DAM Connector module serves as a DAM connector for Magnolia, enabling seamless integration with Veeva. 
+            It facilitates browsing assets and provides a dialog for incorporating these directly into your website.
+          </p>
+          <div class="card-x__link-w">
+            <a class="card-x__link link" href="{{{siteRootPath}}}/veeva/">
+              Learn more
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <a href="{{{siteRootPath}}}/incubator-modules/incubator-module-list/" class="card-x__link link">See more Tier 1 modules</a>
+    </div>
+  </div>
+</section>
+
+<!-- Experimental Features Section -->
+<section id="experimental-features" class="lab-section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8-desktop is-10-tablet">
+        <h2 class="subtitled subtitle">🧪 Tier 2: Early stage or inactive</h2>
+        <p class="paragraph">
+          Provided “as is,” with limited or no updates. 
+          These modules may carry risk, are not tested against upcoming Magnolia versions, 
+          and may be candidates for deprecation.
+        </p>
+      </div>
+    </div>
+
+    <div class="tier-carousel tier2-carousel">
+      <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+        <div class="card-x">
+          <div class="experimental-badge">INACTIVE</div>
+          <h3 class="card-x__title h3">
+            <i class="fa fa-folder-open" aria-hidden="true"></i> 
+            Celum DAM Connector
+          </h3>
+          <p class="card-x__p">
+            The Celum DAM Connector module provides a connector to Celum to use assets from this service. 
+            It provides an app to browse and add or remove images, and a dialog to use these images and/or videos in your website.
+          </p>
+          <div class="card-x__link-w">
+            <a class="card-x__link link" href="{{{siteRootPath}}}/celum-dam-connector/">
+              Learn more
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+        <div class="card-x">
+          <div class="experimental-badge">INACTIVE</div>
+          <h3 class="card-x__title h3">
+            <i class="fa fa-map" aria-hidden="true"></i> 
+            Customer Journey Mapping
+          </h3>
+          <p class="card-x__p">
+            With this module, you can create personalized nudges to effectively guide their customers through complex journeys. 
+            This module empowers you to design tailored experiences that enhance engagement and drive conversions.
+          </p>
+          <div class="card-x__link-w">
+            <a class="card-x__link link" href="{{{siteRootPath}}}/customer-journey/">
+              Learn more
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+        <div class="card-x">
+          <div class="experimental-badge">INACTIVE</div>
+          <h3 class="card-x__title h3">
+            <i class="fa fa-external-link-square" aria-hidden="true"></i> 
+            Content Exporter
+          </h3>
+          <p class="card-x__p">
+            Easily export and import content with Magnolia using CSV files, streamlining your content management process. 
+            This module simplifies data migration and enhances integration capabilities.
+          </p>
+          <div class="card-x__link-w">
+            <a class="card-x__link link" href="{{{siteRootPath}}}/content-exporter/">
+              Learn more
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+        <div class="card-x">
+          <div class="experimental-badge">INACTIVE</div>
+          <h3 class="card-x__title h3">
+            <i class="fa fa-comments-o" aria-hidden="true"></i> 
+            WeChat Login
+          </h3>
+          <p class="card-x__p">
+            The WeChat Login module integrates WeChat as an authentication method for Magnolia. 
+            It builds on top of the SSO Module by adding necessary configuration and client support for WeChat.
+          </p>
+          <div class="card-x__link-w">
+            <a class="card-x__link link" href="{{{siteRootPath}}}/wechat-connector/">
+              Learn more
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+        <div class="card-x">
+          <div class="experimental-badge">INACTIVE</div>
+          <h3 class="card-x__title h3">
+            <i class="fa fa-code" aria-hidden="true"></i> 
+            Content locking
+          </h3>
+          <p class="card-x__p">
+            The Content Locking module provides editors with features to lock a JCR node. 
+            Locking the node prevents other users from modifying its content until the lock is removed.
+          </p>
+          <div class="card-x__link-w">
+            <a class="card-x__link link" href="{{{siteRootPath}}}/content-locking/">
+              Learn more
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-4-widescreen is-6-desktop is-6-tablet">
+        <div class="card-x">
+          <div class="experimental-badge">INACTIVE</div>
+          <h3 class="card-x__title h3">
+            <i class="fa fa-snowflake-o" aria-hidden="true"></i> 
+            Freeze
+          </h3>
+          <p class="card-x__p">
+            The Freeze module allows you to stop all publication activity on a Magnolia author instance temporarily. 
+            Authors can continue to work in the system during the freeze but they cannot version content or publish content.
+          </p>
+          <div class="card-x__link-w">
+            <a class="card-x__link link" href="{{{siteRootPath}}}/freeze/">
+              Learn more
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <a href="{{{siteRootPath}}}/incubator-modules/incubator-module-list/" class="card-x__link link">See more Tier 2 modules</a>
+    </div>
+  </div>
+</section>
+
+<!-- News and updates -->
+<section id="news" class="lab-section">
+  <div class="container">
+    <h2 class="subtitled subtitle">📰 News and updates</h2>
+    <p class="paragraph">
+      <strong style="color: #02373F !important;">Hybrid Assets & Image Focal:</strong> Official supported replacements are coming soon.  
+      These modules are in maintenance mode only and will be deprecated once new versions are released.  
+      Free 1-hour migration assistance is available (first-come, not SLA-based).  
+      Email <a href="mailto:incubator@magnolia-cms.com">incubator@magnolia-cms.com</a> to plan.
+    </p>
+  </div>
+</section>
+  
+<!-- Support / Submitting Ticket -->
+<section id="support" class="lab-section">
+  <div class="container">
+    <h2 class="subtitled subtitle">💡 Support & Maintenance</h2>
+    <p class="paragraph">
+      Incubator modules are not covered by the Magnolia License Agreement or SLA. 
+      They are provided on a good-faith basis, with no guaranteed resolution times. 
+      Urgent assistance may be purchased through on-demand services.  
+    </p>
+    <p class="paragraph">
+      <strong style="color: #02373F !important;">Bugs & issues:</strong> open a Jira support ticket or email 
+      <a href="mailto:incubator@magnolia-cms.com">incubator@magnolia-cms.com</a>.
+    </p>
+    <p class="paragraph">For detailed instructions on Submitting a ticket, see <a href="{{{siteRootPath}}}/incubator-modules/submitting-tickets/" target="_blank">Submitting incubator tickets</a>.</p>
+  </div>
+</section>
+
+<!-- Security -->
+<section id="security" class="lab-section">
+  <div class="container">
+    <h2 class="subtitled subtitle">🔒 Performance & Security considerations</h2>
+    <p class="paragraph">
+      Always assess performance and security impact before using Incubator modules. 
+      Tier 2 modules, in particular, may not be compatible with future versions and carry higher risk. 
+      Magnolia is not liable for vulnerabilities in parked or deprecated modules.
+    </p>
+  </div>
+</section>
+
+<!-- Deprecations -->
+<section id="deprecations" class="lab-section">
+  <div class="container">
+    <h2 class="subtitled subtitle">⛔ Deprecations</h2>
+    <p class="paragraph">
+      Magnolia reviews Incubator modules annually.  
+      Modules placed in Tier 2 are potential candidates for deprecation.  
+      For an up-to-date list, see the <a href="{{{siteRootPath}}}/incubator-modules/deprecations/" target="_blank">Deprecated incubator modules</a> page.
+    </p>
+  </div>
+</section>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script>
+$(document).ready(function(){
+  $('.tier-carousel').slick({
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    arrows: true,
+    dots: true,
+    infinite: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1
+        }
+      }
+    ]
+  });
+});
+</script>
+
+  {{> footer}}
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Enhanced navbar functionality
+    var navbarToggles = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0)
+    if (navbarToggles.length === 0) return
+    navbarToggles.forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.stopPropagation()
+        el.classList.toggle('is-active')
+        document.getElementById(el.dataset.target).classList.toggle('is-active')
+        document.documentElement.classList.toggle('is-clipped--navbar')
+      })
+    })
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Add some interactive lab effects
+    const cards = document.querySelectorAll('.card-x');
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-8px) scale(1.02)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+      });
+    });
+
+    // Add parallax effect to lab decorations
+    window.addEventListener('scroll', function() {
+      const scrolled = window.pageYOffset;
+      const decorations = document.querySelectorAll('.lab-decoration');
+      
+      decorations.forEach((decoration, index) => {
+        const speed = 0.1 + (index * 0.05);
+        decoration.style.transform = `translateY(${scrolled * speed}px)`;
+      });
+    });
+  })
+  </script>
+
+</body>
+</html>

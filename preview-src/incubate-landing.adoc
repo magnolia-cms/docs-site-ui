@@ -1,0 +1,7 @@
+:idprefix:
+:idseparator: -
+:!example-caption:
+:page-layout: incubate-home
+
+= Incubate landing
+
