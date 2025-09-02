@@ -32,6 +32,8 @@
     "gulp-connect": "~5.7",
     "gulp-eslint": "~6.0",
     "gulp-imagemin": "~6.2",
+    "gulp-libsquoosh": "^1.0.2",
+    "gulp-svgmin": "^4.1.0",
     "gulp-postcss": "~8.0",
     "gulp-stylelint": "~11.0",
     "gulp-uglify": "~3.0",

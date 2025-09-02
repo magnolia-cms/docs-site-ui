@@ -6,7 +6,7 @@ const buffer = require('vinyl-buffer')
 const concat = require('gulp-concat')
 const cssnano = require('cssnano')
 const fs = require('fs-extra')
-const imagemin = require('gulp-imagemin')
+// NOTE: Lazy-require image optimizers inside the task to allow builds on unsupported Node versions
 const { obj: map } = require('through2')
 const merge = require('merge-stream')
 const ospath = require('path')
@@ -22,6 +22,19 @@ const vfs = require('vinyl-fs')
 module.exports = (src, dest, preview) => () => {
   const opts = { base: src, cwd: src }
   const sourcemaps = preview || process.env.SOURCEMAPS === 'true'
+  const shouldOptimizeImages = !preview && process.env.SKIP_IMAGEMIN !== 'true'
+  let squoosh
+  let svgmin
+  let optimizersAvailable = false
+  if (shouldOptimizeImages) {
+    try {
+      squoosh = require('gulp-libsquoosh')
+      svgmin = require('gulp-svgmin')
+      optimizersAvailable = true
+    } catch (e) {
+      optimizersAvailable = false
+    }
+  }
   const postcssPlugins = [
     postcssImport,
     (css, { messages, opts: { file } }) =>
@@ -98,18 +111,26 @@ module.exports = (src, dest, preview) => () => {
       .src('css/site.css', { ...opts, sourcemaps })
       .pipe(postcss((file) => ({ plugins: postcssPlugins, options: { file } }))),
     vfs.src('font/*.{ttf,woff*(2)}', opts),
-    vfs
-      .src('img/**/*.{gif,ico,jpg,png,svg}', opts)
-      .pipe(
-        imagemin(
-          [
-            imagemin.gifsicle(),
-            imagemin.jpegtran(),
-            imagemin.optipng(),
-            imagemin.svgo({ plugins: [{ removeViewBox: false }] }),
-          ].reduce((accum, it) => (it ? accum.concat(it) : accum), [])
-        )
-      ),
+    // Images: use squoosh for raster formats, svgmin for SVGs; passthrough others
+    (!shouldOptimizeImages || !optimizersAvailable
+      ? vfs.src('img/**/*.{gif,ico,jpg,png,svg}', opts)
+      : merge(
+        vfs
+          .src('img/**/*.{jpg,png}', opts)
+          .pipe(
+            squoosh({
+              encodeOptions: {
+                mozjpeg: {},
+                oxipng: {},
+              },
+            })
+          ),
+        vfs
+          .src('img/**/*.svg', opts)
+          .pipe(svgmin({ plugins: [{ name: 'removeViewBox', active: false }] })),
+        vfs.src('img/**/*.{gif,ico}', opts)
+      )
+    ),
     vfs.src('helpers/*.js', opts),
     vfs.src('layouts/*.hbs', opts),
     vfs.src('partials/*.hbs', opts)
