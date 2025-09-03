@@ -212,6 +212,7 @@
        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
        position: relative;
        overflow: hidden;
+       flex: 1;
     }
 
     .card-x::before {
@@ -334,6 +335,10 @@
       opacity: 1;
     }
 
+    .link:not(.link-button--no-arrow)::before {
+      display: none !important;
+    }
+
     /* Hero section enhancements - simplified since background is now on body */
     #hero-header {
       text-align: center!important;
@@ -369,6 +374,14 @@
 
     .columns {
       margin-top: 0!important;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+    }
+
+    .columns .column {
+      display: flex;
+      flex-direction: column;
     }
 
     .columns-breaker {
@@ -482,7 +495,7 @@
     }
 
 .tier-carousel {
-  padding: 50px 0; /* Adds vertical spacing above and below the carousel */
+  margin-top: -3rem !important;
 }
 
 .tier-carousel .column {
@@ -490,18 +503,13 @@
 }
 
 .tier-carousel .slick-slide {
-  margin: 0 10px; /* Adds horizontal spacing between slides */
+  display: flex;       /* Make slide a flex container */
+  flex-direction: column;
+  height: auto;        /* Let content dictate height */
 }
 
 .tier-carousel .slick-list {
   margin: 0 -10px; /* Compensates for slide margins to prevent overflow */
-}
-
-.tier-carousel .card-x {
-  height: 100%; /* Ensures cards take full height of slide */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 /* Optional: Adjust arrow positioning to avoid overlap */
@@ -683,13 +691,12 @@
     <div class="tier-carousel tier1-carousel">
       <div class="column is-4-widescreen is-6-desktop is-6-tablet">
         <div class="card-x">
-          <div class="experimental-badge" style="background: linear-gradient(135deg, var(--labGreen), #10B981);">STABLE</div>
           <h3 class="card-x__title h3">
             <i class="fa fa-comments" aria-hidden="true"></i> 
             CTSX ChatGPT
           </h3>
           <p class="card-x__p">
-            The ChatGPT translation submodule harnesses the power of OpenAI APIs to deliver seamless translations. 
+            Leverage the power of OpenAI APIs to deliver seamless translations. 
             As a vital component of the Content Translation Support Extended framework, it transforms the way content is localized. 
           </p>
           <div class="card-x__link-w">
@@ -702,14 +709,13 @@
 
       <div class="column is-4-widescreen is-6-desktop is-6-tablet">
         <div class="card-x">
-          <div class="experimental-badge" style="background: linear-gradient(135deg, var(--labGreen), #10B981);">STABLE</div>
           <h3 class="card-x__title h3">
             <i class="fa fa-file-text" aria-hidden="true"></i> 
             Dynamic Form
           </h3>
           <p class="card-x__p">
-            The Dynamic Form module empowers you to effortlessly create and publish interactive forms and polls that captivate your audience.
-            With seamless integration into external databases, you can harness the full potential of your data, transforming feedback into actionable strategies. 
+            Effortlessly create and publish interactive forms and polls that captivate your audience.
+            Integrate into external databases and harness the power of your data, using feedback for actionable strategies. 
           </p>
           <div class="card-x__link-w">
             <a class="card-x__link link" href="{{{siteRootPath}}}/dynamic-form/">
@@ -721,14 +727,13 @@
 
       <div class="column is-4-widescreen is-6-desktop is-6-tablet">
         <div class="card-x">
-          <div class="experimental-badge" style="background: linear-gradient(135deg, var(--labGreen), #10B981);">STABLE</div>
           <h3 class="card-x__title h3">
             <i class="fa fa-link" aria-hidden="true"></i> 
             URL Translation
           </h3>
           <p class="card-x__p">
             The Magnolia URL Translation module revolutionizes your multilingual website experience.
-            Unlock the power of global reach and enhance user engagement with dynamic, localized URLs that drive traffic and improve SEO. 
+            Unlock the power of global reach and enhance user engagement with localized URLs that improve SEO. 
           </p>
           <div class="card-x__link-w">
             <a class="card-x__link link" href="{{{siteRootPath}}}/url-translation/">
@@ -740,7 +745,6 @@
 
       <div class="column is-4-widescreen is-6-desktop is-6-tablet">
         <div class="card-x">
-          <div class="experimental-badge" style="background: linear-gradient(135deg, var(--labGreen), #10B981);">STABLE</div>
           <h3 class="card-x__title h3">
             <i class="fa fa-share" aria-hidden="true"></i> 
             CDN Helper
@@ -758,13 +762,12 @@
 
       <div class="column is-4-widescreen is-6-desktop is-6-tablet">
         <div class="card-x">
-          <div class="experimental-badge" style="background: linear-gradient(135deg, var(--labGreen), #10B981);">STABLE</div>
           <h3 class="card-x__title h3">
             <i class="fa fa-picture-o" aria-hidden="true"></i> 
             Frontify DAM
           </h3>
           <p class="card-x__p">
-            The Frontify DAM connector provides a connector to Frontify to use assets form this service. 
+            The Frontify DAM connector provides a connector to Frontify to use assets from this service. 
             It incorporates Frontify Media browser widget that allows users to select assets to be included in the website.
           </p>
           <div class="card-x__link-w">
@@ -777,14 +780,13 @@
 
       <div class="column is-4-widescreen is-6-desktop is-6-tablet">
         <div class="card-x">
-          <div class="experimental-badge" style="background: linear-gradient(135deg, var(--labGreen), #10B981);">STABLE</div>
           <h3 class="card-x__title h3">
             <i class="fa fa-picture-o" aria-hidden="true"></i> 
             Veeva DAM Connector
           </h3>
           <p class="card-x__p">
             The Veeva DAM Connector module serves as a DAM connector for Magnolia, enabling seamless integration with Veeva. 
-            It facilitates browsing assets and provides a dialog for incorporating these directly into your website.
+            Browse assets and use the Veeva dialog to incorporate them directly into your website.
           </p>
           <div class="card-x__link-w">
             <a class="card-x__link link" href="{{{siteRootPath}}}/veeva/">
@@ -824,7 +826,7 @@
             Celum DAM Connector
           </h3>
           <p class="card-x__p">
-            The Celum DAM Connector module provides a connector to Celum to use assets from this service. 
+            Connect with Celum DAM to use assets from this service. 
             It provides an app to browse and add or remove images, and a dialog to use these images and/or videos in your website.
           </p>
           <div class="card-x__link-w">
@@ -840,11 +842,11 @@
 
           <h3 class="card-x__title h3">
             <i class="fa fa-map" aria-hidden="true"></i> 
-            Customer Journey Mapping
+            Customer Journey Map
           </h3>
           <p class="card-x__p">
-            With this module, you can create personalized nudges to effectively guide their customers through complex journeys. 
-            This module empowers you to design tailored experiences that enhance engagement and drive conversions.
+            Create personalized nudges to effectively guide their customers through complex journeys. 
+            Design tailored experiences that enhance engagement and drive conversions.
           </p>
           <div class="card-x__link-w">
             <a class="card-x__link link" href="{{{siteRootPath}}}/customer-journey/">
@@ -920,7 +922,7 @@
           </h3>
           <p class="card-x__p">
             The Freeze module allows you to stop all publication activity on a Magnolia author instance temporarily. 
-            Authors can continue to work in the system during the freeze but they cannot version content or publish content.
+            Authors work in the system during the freeze but they cannot version content or publish content.
           </p>
           <div class="card-x__link-w">
             <a class="card-x__link link" href="{{{siteRootPath}}}/freeze/">
