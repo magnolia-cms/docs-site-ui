@@ -4,3 +4,4 @@
 /local-build/
 .local-playbook.yml
 .vscode
+.DS_Store
