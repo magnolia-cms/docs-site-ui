@@ -32,7 +32,7 @@ footer .container {
 }
 
 .footer .col li.list-topic {
-  color: var(--rebrand-color-primary-fresh);
+  color: var(--rebrand-color-primary-light-green);
   font-weight: bold;
 }
 
@@ -52,7 +52,7 @@ footer .container {
 
 .footer__links .footer-terms span,
 .footer__links .footer-terms p {
-  color: var(--rebrand-color-primary-fresh);
+  color: var(--rebrand-color-primary-light-green);
 }
 
 .footer__links .footer-terms a {
