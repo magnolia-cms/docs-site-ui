@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-{{> head defaultPageTitle='Changelog'}} 
+{{> head defaultPageTitle='Changelog'}}
+    {{#if (or page.attributes.rss page.attributes.page-rss)}}
+    <!-- RSS Feed Link -->
+    <link rel="alternate" type="application/rss+xml" title="{{page.component.title}} Changelog RSS" href="feed.xml">
+    <meta name="page-rss" content="true">
+    {{/if}}
     <!-- Font Awesome 4.7.0 CDN for fa-calendar-check-o -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Inline CSS for modern linear timeline (precise centered alignments from CodyHouse/W3Schools, gradients, fade-in reveals, active highlights) -->
@@ -255,13 +260,64 @@
       .clear-btn:hover {
         color: #000;
       }
+
+      /* RSS button styles - positioned in content flow */
+      .rss-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #0569f9;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-top: 5px;
+        margin-bottom: 20px;
+      }
+      
+      .rss-button:hover {
+        background: #0569f9;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        color: white;
+        text-decoration: none;
+      }
+      
+      .rss-icon {
+        width: 14px;
+        height: 14px;
+        fill: currentColor;
+      }
+      
+      /* Mobile responsive for RSS button */
+      @media screen and (max-width: 625px) {
+        .rss-button {
+          font-size: 12px;
+          padding: 6px 12px;
+        }
+      }
     </style>
   </head>
-  <body class="article changelog{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
+  <body class="article changelog{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}"{{#if (or page.attributes.rss page.attributes.page-rss)}} data-rss="true"{{/if}}>
 {{> header}}
     <!-- Full-width hero section -->
     <div class="hero-section">
-      <h1> {{page.component.title}} Changelog</h1>
+      <h1>{{page.component.title}} Changelog</h1>
+      
+      {{#if (or page.attributes.rss page.attributes.page-rss)}}
+      <!-- RSS Subscription Button - positioned after title, before search -->
+      <a href="feed.xml" class="rss-button" title="Subscribe to RSS feed" aria-label="Subscribe to RSS feed" target="_blank">
+        <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248S0 22.546 0 20.752s1.456-3.248 3.252-3.248 3.251 1.454 3.251 3.248zM1.677 6.155v4.301c5.493 0 9.967 4.474 9.967 9.967h4.301c0-7.869-6.398-14.268-14.268-14.268zM1.677.014v4.301C11.44 4.315 19.317 12.191 19.317 22h4.301c0-12.344-10.034-22.378-22.379-22.378z"/>
+        </svg>
+        Subscribe to RSS
+      </a>
+      {{/if}}
+      
       <div class="search-container">
         <input type="text" id="search-input" autocomplete="off" placeholder="Search the changelog...">
         <span id="clear-search" class="clear-btn">×</span>
