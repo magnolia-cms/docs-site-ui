@@ -300,6 +300,46 @@
           padding: 6px 12px;
         }
       }
+
+      /* Toast notification styles */
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #068449;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        max-width: 300px;
+      }
+      
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      
+      .toast-icon {
+        display: inline-block;
+        margin-right: 8px;
+        font-weight: bold;
+      }
+      
+      @media screen and (max-width: 625px) {
+        .toast {
+          bottom: 10px;
+          right: 10px;
+          left: 10px;
+          max-width: none;
+          text-align: center;
+        }
+      }
     </style>
   </head>
   <body class="article changelog{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}"{{#if (or page.attributes.rss page.attributes.page-rss)}} data-rss="true"{{/if}}>
@@ -308,13 +348,13 @@
     <div class="hero-section">
       <h1>{{page.component.title}} Changelog</h1>
       
-      
-      <!-- RSS Subscription Button - positioned after title, before search -->
-      <a href="feed.xml" class="rss-button" title="Subscribe to RSS feed" aria-label="Subscribe to RSS feed" target="_blank">
+      {{#if (or page.attributes.rss page.attributes.page-rss)}}
+      <!-- RSS Subscription Button -->
+      <a href="feed.xml" class="rss-button" title="Subscribe to RSS feed" aria-label="Subscribe to RSS feed" onclick="copyRSSUrl(event)">
       <i class="fa fa-rss" aria-hidden="true"></i>
         Subscribe to RSS
       </a>
-      
+      {{/if}}
       
       <div class="search-container">
         <input type="text" id="search-input" autocomplete="off" placeholder="Search the changelog...">
@@ -327,6 +367,11 @@
       <div id="search-status"></div>
       <div id="timeline"></div>
     </main>
+    <!-- Toast notification -->
+    <div id="rss-toast" class="toast">
+      <span class="toast-icon">✓</span>
+      RSS feed URL copied! Follow in your reader.
+    </div>
     <!-- Hidden full content for parsing -->
     <div id="full-content" style="display: none;">{{{page.contents}}}</div>
 
@@ -741,6 +786,40 @@
           }
         });
       });
+    </script>
+    <script>
+      // RSS copy functionality
+      function copyRSSUrl(event) {
+        event.preventDefault();
+        
+        // Get the current page URL and construct feed URL
+        const currentUrl = window.location.href.replace(/\/$/, '');
+        const feedUrl = currentUrl + '/feed.xml';
+        
+        // Copy to clipboard
+        navigator.clipboard.writeText(feedUrl).then(() => {
+          showToast();
+        }).catch(() => {
+          // Fallback for older browsers
+          const textArea = document.createElement('textarea');
+          textArea.value = feedUrl;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          showToast();
+        });
+      }
+      
+      function showToast() {
+        const toast = document.getElementById('rss-toast');
+        toast.classList.add('show');
+        
+        // Hide toast after 3 seconds
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+      }
     </script>
   </body>
 </html>
