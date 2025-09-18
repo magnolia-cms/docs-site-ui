@@ -308,15 +308,13 @@
     <div class="hero-section">
       <h1>{{page.component.title}} Changelog</h1>
       
-      {{#if (or page.attributes.rss page.attributes.page-rss)}}
+      
       <!-- RSS Subscription Button - positioned after title, before search -->
       <a href="feed.xml" class="rss-button" title="Subscribe to RSS feed" aria-label="Subscribe to RSS feed" target="_blank">
-        <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248S0 22.546 0 20.752s1.456-3.248 3.252-3.248 3.251 1.454 3.251 3.248zM1.677 6.155v4.301c5.493 0 9.967 4.474 9.967 9.967h4.301c0-7.869-6.398-14.268-14.268-14.268zM1.677.014v4.301C11.44 4.315 19.317 12.191 19.317 22h4.301c0-12.344-10.034-22.378-22.379-22.378z"/>
-        </svg>
+      <i class="fa fa-rss" aria-hidden="true"></i>
         Subscribe to RSS
       </a>
-      {{/if}}
+      
       
       <div class="search-container">
         <input type="text" id="search-input" autocomplete="off" placeholder="Search the changelog...">
