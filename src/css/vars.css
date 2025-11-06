@@ -32,7 +32,7 @@
   --rebrand-color-bloom-dark: #bd5ba6;
   --rebrand-color-primary-red: #c02d2d;
   --color-orange: #f48a16;
-  --color-red: #f76733;
+  --color-red: var(--rebrand-color-primary-red);
   --color-status-red: #fed8d2;
   --color-trials: #080a37;
   --color-white: #fff;
