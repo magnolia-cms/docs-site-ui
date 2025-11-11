@@ -58,61 +58,86 @@
   <div id="home-slide-dialog" class="slide-dialog" role="dialog" aria-live="polite" aria-label="Notice" aria-hidden="true">
     <button class="slide-dialog__close" type="button" aria-label="Dismiss notice">&times;</button>
     <div class="slide-dialog__content">
-      <div class="slide-dialog__title">Magnolia 6.4 is coming</div>
-      <p class="slide-dialog__text">Magnolia 6.4 is currently a RC. GA is coming soon. 
-        For a sneak peek, check out the <a href="{{{siteRootPath}}}/product-docs/releases/release-notes-for-magnolia-cms-6.4/">Magnolia 6.4 Release notes</a>.</p>
+      <div class="slide-dialog__title">Magnolia 6.4 is here!</div>
+      <p class="slide-dialog__text">Magnolia 6.4 is now available.
+        For full details, check out the <a href="{{{siteRootPath}}}/product-docs/releases/release-notes-for-magnolia-dx-core-6.4/">Magnolia 6.4 Release notes</a>.</p>
     </div>
   </div>
 
-    <script>
-    (function () {
-      var COOKIE_NAME = 'mgnl_home_dialog_dismissed';
-      var COOKIE_DAYS = 2;
+<script>
+  (function () {
+    var COOKIE_NAME = 'mgnl_home_dialog_dismissed';
+    var COOKIE_DAYS = 2;
 
-      function setCookie(name, value, days) {
-        var d = new Date();
-        d.setTime(d.getTime() + (days*24*60*60*1000));
-        var expires = "expires="+ d.toUTCString();
-        document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/;SameSite=Lax";
+    function setCookie(name, value, days) {
+      var d = new Date();
+      d.setTime(d.getTime() + (days*24*60*60*1000));
+      var expires = "expires="+ d.toUTCString();
+      document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/;SameSite=Lax";
+    }
+
+    function getCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
       }
+      return null;
+    }
 
-      function getCookie(name) {
-        var nameEQ = name + "=";
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-          var c = ca[i].trim();
-          if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
-        }
-        return null;
-      }
+    function showDialog() {
+      var el = document.getElementById('home-slide-dialog');
+      if (!el) return;
+      el.setAttribute('aria-hidden', 'false');
+      el.classList.add('show');
+    }
 
-      function showDialog() {
-        var el = document.getElementById('home-slide-dialog');
-        if (!el) return;
-        el.setAttribute('aria-hidden', 'false');
-        el.classList.add('show');
-      }
+    function hideDialog() {
+      var el = document.getElementById('home-slide-dialog');
+      if (!el) return;
+      el.classList.remove('show');
+      el.setAttribute('aria-hidden', 'true');
+    }
 
-      function hideDialog() {
-        var el = document.getElementById('home-slide-dialog');
-        if (!el) return;
-        el.classList.remove('show');
-        el.setAttribute('aria-hidden', 'true');
-      }
+    function normalizePath(p) {
+      var a = document.createElement('a');
+      a.href = p || '/';
+      var path = a.pathname || '/';
+      path = path.replace(/\/+$/, '/');
+      if (!path.startsWith('/')) path = '/' + path;
+      return path;
+    }
 
-      document.addEventListener('DOMContentLoaded', function () {
-        if (!getCookie(COOKIE_NAME)) {
-          // Delay a bit so it doesn’t clash with above-the-fold rendering
-          setTimeout(showDialog, 800);
-        }
-
-        var closeBtn = document.querySelector('#home-slide-dialog .slide-dialog__close');
-        if (closeBtn) {
-          closeBtn.addEventListener('click', function () {
-            hideDialog();
-            setCookie(COOKIE_NAME, '1', COOKIE_DAYS);
-          });
-        }
+    document.addEventListener('DOMContentLoaded', function () {
+      var path = normalizePath(window.location.pathname);
+      var targets = [
+        '/product-docs/releases/release-notes-for-magnolia-dx-core-6.4/',
+        '/product-docs/releases/release-notes-for-magnolia-dx-core-6.4.html',
+        '/product-docs/releases/release-notes-for-magnolia-dx-core-6.4/index.html'
+      ];
+      var isReleaseNotes = targets.some(function (t) {
+        var nt = normalizePath(t);
+        return path === nt || path.endsWith(nt);
       });
-    })();
+
+      if (isReleaseNotes) {
+        var el = document.getElementById('home-slide-dialog');
+        if (el && el.parentNode) el.parentNode.removeChild(el);
+        return;
+      }
+
+      if (!getCookie(COOKIE_NAME)) {
+        setTimeout(showDialog, 800);
+      }
+
+      var closeBtn = document.querySelector('#home-slide-dialog .slide-dialog__close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+          hideDialog();
+          setCookie(COOKIE_NAME, '1', COOKIE_DAYS);
+        });
+      }
+    });
+  })();
   </script>
