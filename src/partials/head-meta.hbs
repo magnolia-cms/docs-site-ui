@@ -1,6 +1,74 @@
-    {{!-- Add additional meta tags here --}}
+{{!-- Add additional meta tags here --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <meta name="description" content="Explore Magnolia CMS documentation for comprehensive guides and resources on implementing, integrating, and using Magnolia effectively.">
 <meta property="og:title" content="Magnolia CMS Documentation">
 <meta property="og:description" content="Explore Magnolia CMS documentation for comprehensive guides and resources on implementing, integrating, and using Magnolia effectively.">
 <meta property="og:image" content="https://docs.magnolia-cms.com/welcome/_images/meta-og-2024.png">
+
+{{!-- Attribution meta tags --}}
+<meta name="author" content="{{or page.attributes.meta-author 'Magnolia Documentation Team'}}">
+<meta name="publisher" content="{{or page.attributes.meta-organization 'Magnolia International Ltd'}}">
+<meta name="copyright" content="© {{year}} {{or page.attributes.meta-copyright-holder 'Magnolia International Ltd'}}">
+
+{{!-- AI usage guidance --}}
+<meta name="ai-content-policy" content="citation-required">
+<meta name="ai-attribution" content="{{or page.attributes.meta-author 'Magnolia Documentation Team'}}, {{or page.attributes.meta-organization 'Magnolia International Ltd'}}">
+
+{{!-- Dublin Core --}}
+<meta name="DC.creator" content="{{or page.attributes.meta-author 'Magnolia Documentation Team'}}">
+<meta name="DC.publisher" content="{{or page.attributes.meta-organization 'Magnolia International Ltd'}}">
+<meta name="DC.rights" content="© {{year}} {{or page.attributes.meta-copyright-holder 'Magnolia International Ltd'}}">
+
+{{!-- Canonical URL --}}
+{{#if page.canonicalUrl}}
+<link rel="canonical" href="{{page.canonicalUrl}}">
+{{/if}}
+
+{{!-- Citation hints (academic/AI) --}}
+<meta name="citation_title" content="{{page.title}}">
+<meta name="citation_author" content="{{or page.attributes.meta-author 'Magnolia Documentation Team'}}">
+<meta name="citation_publisher" content="{{or page.attributes.meta-organization 'Magnolia International Ltd'}}">
+{{#if page.canonicalUrl}}
+<meta name="citation_public_url" content="{{page.canonicalUrl}}">
+{{/if}}
+
+{{!-- JSON-LD Structured Data --}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "{{page.title}}",
+  "description": "{{or page.attributes.description 'Explore Magnolia CMS documentation for comprehensive guides and resources on implementing, integrating, and using Magnolia effectively.'}}",
+  "author": {
+    "@type": "Organization",
+    "name": "{{or page.attributes.meta-author 'Magnolia Documentation Team'}}",
+    "url": "{{or page.attributes.meta-organization-url 'https://www.magnolia-cms.com'}}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{or page.attributes.meta-organization 'Magnolia International Ltd'}}",
+    "url": "{{or page.attributes.meta-organization-url 'https://www.magnolia-cms.com'}}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://docs.magnolia-cms.com/welcome/_images/meta-og-2024.png"
+    }
+  },
+  {{#if page.canonicalUrl}}
+  "url": "{{page.canonicalUrl}}",
+  "mainEntityOfPage": "{{page.canonicalUrl}}",
+  {{/if}}
+  "inLanguage": "en",
+  "license": "{{or page.attributes.meta-content-usage-url 'https://docs.magnolia-cms.com/content-usage/'}}",
+  "usageInfo": "{{or page.attributes.meta-content-usage-url 'https://docs.magnolia-cms.com/content-usage/'}}",
+  "copyrightHolder": {
+    "@type": "Organization",
+    "name": "{{or page.attributes.meta-copyright-holder 'Magnolia International Ltd'}}"
+  },
+  "copyrightYear": "{{year}}",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Magnolia CMS Documentation",
+    "url": "https://docs.magnolia-cms.com"
+  }
+}
+</script>
