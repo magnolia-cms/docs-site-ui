@@ -4,7 +4,7 @@
 <script async src="{{{uiRootPath}}}/js/vendor/medium-zoom.js"></script>
 <script async src="{{{uiRootPath}}}/js/vendor/collapse.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@beta"></script>
 
 <script type="text/javascript">
 (function() {
@@ -14,19 +14,35 @@
   // and survives DocSearch re-initialization
   window.__magnoliaVersionFilter = sessionStorage.getItem('docsearch-version-filter') || '';
   
-  // Function to determine version from URL
+  // Function to determine version/category from URL
+  // Uses specific path detection for accurate categorization
   function getVersionFromUrl(url) {
     if (!url) return '';
-    if (url.includes('/6.2/')) return '6.2';
-    if (url.includes('/6.3/')) return '6.3';
+    
+    // Product docs with specific versions
+    if (url.includes('/product-docs/6.2/')) return '6.2';
+    if (url.includes('/product-docs/6.3/')) return '6.3';
+    // Product docs without version number = latest (6.4)
     if (url.includes('/product-docs/')) return 'latest';
+    
+    // Cloud/PaaS docs
     if (url.includes('/paas/')) return 'cloud';
-    if (url.includes('/rest/') || url.includes('/magnolia-sso/') || 
-        url.includes('/dam/') || url.includes('/site/') || 
-        url.includes('/headless/')) return 'modules';
-    if (url.includes('/support/') || url.includes('/magnolia-cli/') || 
-        url.includes('/incubator/')) return 'general';
-    return '';
+    if (url.includes('/cockpit/')) return 'cloud';
+    
+    // General content (not modules)
+    if (url.includes('/support/')) return 'general';
+    if (url.includes('/magnolia-cli/')) return 'general';
+    if (url.includes('/incubator-modules/')) return 'general';
+    if (url.includes('/incubator/')) return 'general';
+    
+    // These are standalone docs, NOT modules - categorize as general
+    if (url.includes('/performance-tuning/')) return 'general';
+    if (url.includes('/magnolia-5-ui-documentation/')) return 'general';
+    if (url.includes('/headless/')) return 'general';
+    
+    // Everything else is a standalone module
+    // This includes /live-copy/, /rest/, /magnolia-sso/, /dam/, /ecommerce/, etc.
+    return 'modules';
   }
   
   // Function to check if item matches selected version
@@ -34,39 +50,12 @@
     if (!selectedVersion) return true; // No filter = show all
     
     var url = item.url || '';
-    var itemVersion = item.version || getVersionFromUrl(url);
+    var itemVersion = getVersionFromUrl(url);
     
-    // Direct match
-    if (itemVersion === selectedVersion) return true;
-    
-    // URL-based fallback matching
-    switch(selectedVersion) {
-      case 'latest':
-        return url.includes('/product-docs/') && 
-               !url.includes('/6.2/') && 
-               !url.includes('/6.3/');
-      case '6.3':
-        return url.includes('/6.3/');
-      case '6.2':
-        return url.includes('/6.2/');
-      case 'cloud':
-        return url.includes('/paas/');
-      case 'modules':
-        return url.includes('/rest/') || 
-               url.includes('/magnolia-sso/') ||
-               url.includes('/dam/') ||
-               url.includes('/site/') ||
-               url.includes('/headless/');
-      case 'general':
-        return url.includes('/support/') || 
-               url.includes('/magnolia-cli/') ||
-               url.includes('/incubator/');
-      default:
-        return true;
-    }
+    return itemVersion === selectedVersion;
   }
   
-  // Initialize DocSearch
+  // Initialize DocSearch with original parameters (using beta version for correct UI)
   docsearch({
     appId: 'NZWE7TXMBR',
     apiKey: '9117a4e7751be182a32d4e70a11d176a',
@@ -88,22 +77,8 @@
         return matchesFilter(item, selectedVersion);
       });
       
-      // Add version badges
-      return filteredItems.map(function(item) {
-        var version = getVersionFromUrl(item.url);
-        
-        if (version && item._highlightResult && item._highlightResult.hierarchy) {
-          var badgeHtml = ' <span class="ds-version-badge ds-version-badge--' + version.replace('.', '-') + '">' + version + '</span>';
-          
-          if (item._highlightResult.hierarchy.lvl1 && item._highlightResult.hierarchy.lvl1.value) {
-            item._highlightResult.hierarchy.lvl1.value += badgeHtml;
-          } else if (item._highlightResult.hierarchy.lvl0 && item._highlightResult.hierarchy.lvl0.value) {
-            item._highlightResult.hierarchy.lvl0.value += badgeHtml;
-          }
-        }
-        
-        return item;
-      }).slice(0, 12); // Return max 12 results after filtering
+      // Return max 12 results after filtering
+      return filteredItems.slice(0, 12);
     }
   });
   
@@ -296,48 +271,9 @@
 }
 
 .ds-version-filter__btn.active {
-  background: #0f172a;
-  border-color: #0f172a;
-  color: #fff;
-}
-
-/* Version badges in search results */
-.ds-version-badge {
-  display: inline-block;
-  padding: 1px 5px;
-  font-size: 9px;
-  font-weight: 600;
-  border-radius: 3px;
-  margin-left: 6px;
-  vertical-align: middle;
-  text-transform: uppercase;
-  letter-spacing: 0.2px;
-}
-
-.ds-version-badge--latest {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.ds-version-badge--6-3,
-.ds-version-badge--6-2 {
-  background: #dbeafe;
-  color: #1e40af;
-}
-
-.ds-version-badge--cloud {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.ds-version-badge--modules {
-  background: #f3e8ff;
-  color: #7c3aed;
-}
-
-.ds-version-badge--general {
-  background: #f1f5f9;
-  color: #475569;
+  background: var(--rebrand-color-primary-sand);
+  border-color: var(--rebrand-color-primary-green);
+  color: var(--rebrand-color-primary-teal);;
 }
 
 /* Mobile responsive */
