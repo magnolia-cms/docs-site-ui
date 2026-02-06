@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
  * Magnolia Docs Search Client
  * 
