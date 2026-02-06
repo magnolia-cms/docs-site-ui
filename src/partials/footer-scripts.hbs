@@ -4,204 +4,52 @@
 <script async src="{{{uiRootPath}}}/js/vendor/medium-zoom.js"></script>
 <script async src="{{{uiRootPath}}}/js/vendor/collapse.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@beta"></script>
+{{!-- Native Search Widget --}}
+<script src="{{{uiRootPath}}}/js/vendor/magnolia-search.js"></script>
 
 <script type="text/javascript">
 (function() {
   'use strict';
   
-  // IMPORTANT: Store filter state on window so it's accessible from transformItems closure
-  // and survives DocSearch re-initialization
-  window.__magnoliaVersionFilter = sessionStorage.getItem('docsearch-version-filter') || '';
-  
-  // Function to determine version/category from URL
-  // Uses specific path detection for accurate categorization
-  function getVersionFromUrl(url) {
-    if (!url) return '';
-    
-    // Product docs with specific versions
-    if (url.includes('/product-docs/6.2/')) return '6.2';
-    if (url.includes('/product-docs/6.3/')) return '6.3';
-    // Product docs without version number = latest (6.4)
-    if (url.includes('/product-docs/')) return 'latest';
-    
-    // Cloud/PaaS docs
-    if (url.includes('/paas/')) return 'cloud';
-    if (url.includes('/cockpit/')) return 'cloud';
-    
-    // General content (not modules)
-    if (url.includes('/support/')) return 'general';
-    if (url.includes('/magnolia-cli/')) return 'general';
-    if (url.includes('/incubator-modules/')) return 'general';
-    if (url.includes('/incubator/')) return 'general';
-    
-    // These are standalone docs, NOT modules - categorize as general
-    if (url.includes('/performance-tuning/')) return 'general';
-    if (url.includes('/magnolia-5-ui-documentation/')) return 'general';
-    if (url.includes('/headless/')) return 'general';
-    
-    // Everything else is a standalone module
-    // This includes /live-copy/, /rest/, /magnolia-sso/, /dam/, /ecommerce/, etc.
-    return 'modules';
-  }
-  
-  // Function to check if item matches selected version
-  function matchesFilter(item, selectedVersion) {
-    if (!selectedVersion) return true; // No filter = show all
-    
-    var url = item.url || '';
-    var itemVersion = getVersionFromUrl(url);
-    
-    return itemVersion === selectedVersion;
-  }
-  
-  // Initialize DocSearch with original parameters (using beta version for correct UI)
-  docsearch({
-    appId: 'NZWE7TXMBR',
-    apiKey: '9117a4e7751be182a32d4e70a11d176a',
-    indexName: 'magnolia-cms',
-    container: '#searchBar',
-    searchParameters: { 
-      hitsPerPage: 50, // Fetch extra results for client-side filtering
-      attributesToHighlight: ["hierarchy.lvl0"]
-    },
-    askAi: 'C6xQL7oXbB6z',
-    
-    // This function is called on EVERY search result
-    // It reads window.__magnoliaVersionFilter which we update when filter changes
-    transformItems: function(items) {
-      var selectedVersion = window.__magnoliaVersionFilter || '';
-      
-      // Filter items based on selected version
-      var filteredItems = items.filter(function(item) {
-        return matchesFilter(item, selectedVersion);
-      });
-      
-      // Return max 12 results after filtering
-      return filteredItems.slice(0, 12);
+  function initNativeSearch() {
+    if (typeof MagnoliaSearchUI === 'undefined') {
+      console.warn('MagnoliaSearchUI not loaded');
+      return;
     }
-  });
-  
-  // ========================================
-  // Filter UI Injection
-  // ========================================
-  
-  function createFilterUI() {
-    var container = document.createElement('div');
-    container.className = 'ds-version-filter';
-    container.innerHTML = '\
-      <span class="ds-version-filter__label">Filter:</span>\
-      <div class="ds-version-filter__buttons">\
-        <button type="button" class="ds-version-filter__btn' + (!window.__magnoliaVersionFilter ? ' active' : '') + '" data-version="">All</button>\
-        <button type="button" class="ds-version-filter__btn' + (window.__magnoliaVersionFilter === 'latest' ? ' active' : '') + '" data-version="latest">Latest</button>\
-        <button type="button" class="ds-version-filter__btn' + (window.__magnoliaVersionFilter === '6.3' ? ' active' : '') + '" data-version="6.3">6.3</button>\
-        <button type="button" class="ds-version-filter__btn' + (window.__magnoliaVersionFilter === '6.2' ? ' active' : '') + '" data-version="6.2">6.2</button>\
-        <button type="button" class="ds-version-filter__btn' + (window.__magnoliaVersionFilter === 'cloud' ? ' active' : '') + '" data-version="cloud">DX Cloud</button>\
-        <button type="button" class="ds-version-filter__btn' + (window.__magnoliaVersionFilter === 'modules' ? ' active' : '') + '" data-version="modules">Modules</button>\
-      </div>\
-    ';
     
-    // Add click handlers
-    container.querySelectorAll('.ds-version-filter__btn').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        var newVersion = this.getAttribute('data-version');
-        
-        // Update global state
-        window.__magnoliaVersionFilter = newVersion;
-        
-        // Save to sessionStorage
-        if (newVersion) {
-          sessionStorage.setItem('docsearch-version-filter', newVersion);
-        } else {
-          sessionStorage.removeItem('docsearch-version-filter');
-        }
-        
-        // Update button active states
-        container.querySelectorAll('.ds-version-filter__btn').forEach(function(b) {
-          b.classList.remove('active');
-        });
-        this.classList.add('active');
-        
-        // Trigger re-search by dispatching input event
-        triggerReSearch();
-      });
+    var container = document.getElementById('nativeSearch');
+    if (!container) {
+      console.warn('Search container #nativeSearch not found');
+      return;
+    }
+    
+    new MagnoliaSearchUI({
+      container: '#nativeSearch',
+      indexUrl: '/search-data/search-index.min.json',
+      metadataUrl: '/search-data/metadata.json',
+      placeholder: 'Search Magnolia docs…',
+      hotkey: '/',
+      maxResults: 15,
+      showFilters: true,
+      showFooter: true,
+      branding: 'Powered by Magnolia NativeSearch',
+      filters: [
+        { key: '', label: 'All' },
+        { key: 'latest', label: 'Latest' },
+        { key: '6.3', label: '6.3' },
+        { key: '6.2', label: '6.2' },
+        { key: 'cloud', label: 'DX Cloud' },
+        { key: 'modules', label: 'Modules' }
+      ]
     });
-    
-    return container;
   }
   
-  function triggerReSearch() {
-    var searchInput = document.querySelector('.DocSearch-Input');
-    if (searchInput) {
-      var currentValue = searchInput.value;
-      if (currentValue) {
-        // Add and remove a space to trigger re-search
-        var event = new Event('input', { bubbles: true, cancelable: true });
-        searchInput.value = currentValue + ' ';
-        searchInput.dispatchEvent(event);
-        
-        // Restore immediately
-        requestAnimationFrame(function() {
-          searchInput.value = currentValue;
-          searchInput.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
-        });
-      }
-    }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNativeSearch);
+  } else {
+    initNativeSearch();
   }
   
-  function injectFilter() {
-    var dropdown = document.querySelector('.DocSearch-Dropdown');
-    if (dropdown && !dropdown.querySelector('.ds-version-filter')) {
-      var filterUI = createFilterUI();
-      dropdown.insertBefore(filterUI, dropdown.firstChild);
-    }
-  }
-  
-  // Watch for DocSearch modal
-  var observer = new MutationObserver(function(mutations) {
-    var shouldInject = false;
-    
-    mutations.forEach(function(mutation) {
-      mutation.addedNodes.forEach(function(node) {
-        if (node.nodeType === 1) {
-          if (node.classList && (
-            node.classList.contains('DocSearch-Modal') ||
-            node.classList.contains('DocSearch-Dropdown')
-          )) {
-            shouldInject = true;
-          }
-          if (node.querySelector) {
-            if (node.querySelector('.DocSearch-Dropdown')) {
-              shouldInject = true;
-            }
-          }
-        }
-      });
-    });
-    
-    if (shouldInject) {
-      // Small delay to ensure DOM is ready
-      setTimeout(injectFilter, 50);
-    }
-    
-    // Also check if dropdown exists but filter doesn't
-    var dropdown = document.querySelector('.DocSearch-Dropdown');
-    if (dropdown && !dropdown.querySelector('.ds-version-filter')) {
-      setTimeout(injectFilter, 50);
-    }
-  });
-  
-  observer.observe(document.body, { 
-    childList: true, 
-    subtree: true 
-  });
-  
-  // ========================================
-  // Existing toggleDropDown function
-  // ========================================
   function toggleDropDown() {
     var linkEl = document.querySelectorAll('.has-dropdown');
     var allDrops = document.querySelectorAll('.has-dropdown .navbar-dropdown');
@@ -223,75 +71,3 @@
   }
 })();
 </script>
-
-<style>
-/* Version Filter in Dropdown */
-.ds-version-filter {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  background: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.ds-version-filter__label {
-  font-size: 11px;
-  font-weight: 600;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.ds-version-filter__buttons {
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-}
-
-.ds-version-filter__btn {
-  padding: 4px 8px;
-  font-size: 11px;
-  font-weight: 500;
-  border: 1px solid #e2e8f0;
-  border-radius: 4px;
-  background: #fff;
-  color: #475569;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  line-height: 1.2;
-}
-
-.ds-version-filter__btn:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-}
-
-.ds-version-filter__btn.active {
-  background: #f0eee7;
-  border-color: #068449;
-  color: #02373f;
-}
-
-/* Mobile responsive */
-@media (max-width: 500px) {
-  .ds-version-filter {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-  
-  .ds-version-filter__buttons {
-    width: 100%;
-  }
-  
-  .ds-version-filter__btn {
-    flex: 1;
-    text-align: center;
-    padding: 6px 4px;
-  }
-}
-</style>
