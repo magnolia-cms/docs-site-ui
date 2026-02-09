@@ -34,7 +34,7 @@
     {{!-- <redoc spec-url='{{{page.attributes.spec}}}'></redoc> --}}
     <script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
     <script>
-      Redoc.init("{{{siteRootPath}}}/{{{page.component.name}}}/_attachments/{{{lowercase page.title}}}.yaml", {
+        Redoc.init("{{{siteRootPath}}}/{{{page.component.name}}}/_attachments/{{{lowercase (replace page.title ' ' '-')}}}.yaml", {
         scrollYOffset: '#topbar',
         noAutoAuth: true,
         hideDownloadButton: true,
