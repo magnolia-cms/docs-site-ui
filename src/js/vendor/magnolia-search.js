@@ -385,15 +385,8 @@
   };
 
   MagnoliaSearchUI.prototype._loadData = function() {
-    var self = this;
-    
-    // Load search index
-    this.search.load().catch(function(err) {
-      console.warn('MagnoliaSearchUI: Failed to load search index:', err);
-      self.indexLoadFailed = true;
-    });
-    
     // Load metadata for dynamic filters (if not manually specified)
+    // NOTE: Search index is now loaded lazily when user opens search modal
     if (this.options.filters === null && this.options.showFilters) {
       this._loadMetadata();
     } else if (this.options.filters) {
@@ -628,8 +621,35 @@
   };
 
   MagnoliaSearchUI.prototype.open = function() {
+    var self = this;
+    
     this.modal.classList.add('is-open');
     this.isOpen = true;
+    
+    // Lazy load search index when modal opens (saves bandwidth!)
+    if (!this.search.loaded && !this.indexLoadFailed && !this.indexLoading) {
+      this.indexLoading = true;
+      var resultsContainer = this.modal.querySelector('.mgnl-search-results');
+      resultsContainer.innerHTML = '<div class="mgnl-search-empty">Loading search index...</div>';
+      
+      this.search.load().then(function() {
+        self.indexLoading = false;
+        var input = self.modal.querySelector('.mgnl-search-modal__input');
+        if (input.value) {
+          self._performSearch(input.value);
+        }
+      }).catch(function(err) {
+        console.warn('MagnoliaSearchUI: Failed to load search index:', err);
+        self.indexLoadFailed = true;
+        self.indexLoading = false;
+        var resultsContainer = self.modal.querySelector('.mgnl-search-results');
+        if (self.options.devMode) {
+          resultsContainer.innerHTML = '<div class="mgnl-search-empty">Search index failed to load. Using dev mode.</div>';
+        } else {
+          resultsContainer.innerHTML = '<div class="mgnl-search-empty">Small issue rendering results. Give us a moment.</div>';
+        }
+      });
+    }
     
     var input = this.modal.querySelector('.mgnl-search-modal__input');
     setTimeout(function() {

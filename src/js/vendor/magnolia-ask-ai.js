@@ -518,8 +518,7 @@
     this._createModal();
     this._bindEvents();
     
-    // Load chunks
-    this._loadChunks();
+    // NOTE: Chunks are now loaded lazily when user opens Ask AI modal (saves bandwidth!)
   };
 
   MagnoliaAskAIUI.prototype._loadSessionState = function() {
@@ -901,8 +900,34 @@
   MagnoliaAskAIUI.prototype.open = function() {
     if (!this.options.enabled) return;
     
+    var self = this;
+    
     this.modal.classList.add('is-open');
     this.isOpen = true;
+    
+    // Lazy load chunks when modal opens (saves bandwidth!)
+    if (!this.ai.loaded && !this.chunksLoading) {
+      this.chunksLoading = true;
+      var contentContainer = this.modal.querySelector('.mgnl-ask-ai-content');
+      contentContainer.innerHTML = 
+        '<div class="mgnl-ask-ai-loading">' +
+          '<div class="mgnl-ask-ai-loading__spinner"></div>' +
+          '<div class="mgnl-ask-ai-loading__text">Loading AI assistant...</div>' +
+        '</div>';
+      
+      this.ai.load().then(function() {
+        self.chunksLoading = false;
+        contentContainer.innerHTML = '';
+      }).catch(function(err) {
+        console.warn('MagnoliaAskAIUI: Failed to load chunks:', err);
+        self.chunksLoading = false;
+        contentContainer.innerHTML = 
+          '<div class="mgnl-ask-ai-error">' +
+            '<div class="mgnl-ask-ai-error__icon">⚠</div>' +
+            '<div class="mgnl-ask-ai-error__text">Failed to load AI assistant. Please refresh the page.</div>' +
+          '</div>';
+      });
+    }
     
     var textarea = this.modal.querySelector('.mgnl-ask-ai-modal__input');
     setTimeout(function() {
