@@ -7,6 +7,10 @@
 {{!-- Native Search Widget --}}
 <script src="{{{uiRootPath}}}/js/vendor/magnolia-search.js"></script>
 
+{{!-- Ask AI Widget --}}
+<script src="{{{uiRootPath}}}/js/vendor/magnolia-ask-ai.js"></script>
+<link rel="stylesheet" href="{{{uiRootPath}}}/css/magnolia-ask-ai.css">
+
 <script type="text/javascript">
 (function() {
   'use strict';
@@ -23,6 +27,19 @@
       return;
     }
     
+    // Enable dev mode ONLY in preview environment (localhost) - NEVER in production
+    // Production will show error message if index fails, never dummy results
+    var isPreview = window.location && (
+      window.location.hostname === 'localhost' || 
+      window.location.hostname === '127.0.0.1' || 
+      window.location.port === '5252'
+    );
+    var hasDisableParam = window.location && window.location.search.indexOf('searchDevMode=false') !== -1;
+    // Dev mode is ONLY enabled in preview (localhost), never in production
+    // Even if ?searchDevMode=true is added to production URL, it will be ignored for safety
+    // This ensures production never shows dummy results, only error messages if index fails
+    var enableDevMode = isPreview && !hasDisableParam;
+    
     new MagnoliaSearchUI({
       container: '#nativeSearch',
       indexUrl: '/search-data/search-index.min.json',
@@ -33,6 +50,7 @@
       showFilters: true,
       showFooter: true,
       branding: 'Powered by Magnolia NativeSearch',
+      devMode: enableDevMode, // Enable dev mode in preview for styling work
       filters: [
         { key: '', label: 'All' },
         { key: 'latest', label: 'Latest' },
@@ -48,6 +66,75 @@
     document.addEventListener('DOMContentLoaded', initNativeSearch);
   } else {
     initNativeSearch();
+  }
+  
+  function initAskAI() {
+    if (typeof MagnoliaAskAIUI === 'undefined') {
+      console.warn('MagnoliaAskAIUI not loaded');
+      return;
+    }
+    
+    var container = document.getElementById('askAI');
+    if (!container) {
+      console.warn('Ask AI container #askAI not found');
+      return;
+    }
+    
+    // Feature flag - set to true to enable Ask AI widget
+    var askAIEnabled = true; // Change to true to enable
+    
+    if (!askAIEnabled) {
+      return;
+    }
+    
+    // Detect preview environment
+    var isPreview = window.location && (
+      window.location.hostname === 'localhost' || 
+      window.location.hostname === '127.0.0.1' || 
+      window.location.port === '5252'
+    );
+    
+    // Configure chunks URL - adjust for your local setup
+    // For local dev, you might need to:
+    // 1. Copy search-data/ to your preview build directory, OR
+    // 2. Use a relative path that works from your preview URL, OR  
+    // 3. Serve search-data/ via a local server
+    var chunksUrl = '/search-data/llm-chunks.json';
+    
+    // Uncomment and adjust if you need a different path for local dev:
+    // if (isPreview) {
+    //   chunksUrl = '../doc-preview-site/native-search/search-data/llm-chunks.json';
+    //   // OR try: chunksUrl = '../../doc-preview-site/native-search/search-data/llm-chunks.json';
+    //   // OR: chunksUrl = 'http://localhost:8080/search-data/llm-chunks.json';
+    // }
+    
+    new MagnoliaAskAIUI({
+      container: '#askAI',
+      chunksUrl: chunksUrl,
+      apiEndpoint: '/api/ask', // Backend endpoint - needs to be configured
+      placeholder: 'Ask a question about Magnolia...',
+      hotkey: '?', // On Mac: Command+/, Windows/Linux: Ctrl+/ or Shift+/
+      enabled: true,
+      position: 'header', // 'header' | 'bottom-left' | 'bottom-right'
+      showFilters: true,
+      showFooter: true,
+      branding: 'Powered by Magnolia AI',
+      maxQuestionsPerSession: 12,
+      filters: [
+        { key: '', label: 'All' },
+        { key: 'latest', label: 'Latest' },
+        { key: '6.3', label: '6.3' },
+        { key: '6.2', label: '6.2' },
+        { key: 'cloud', label: 'DX Cloud' },
+        { key: 'modules', label: 'Modules' }
+      ]
+    });
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAskAI);
+  } else {
+    initAskAI();
   }
   
   function toggleDropDown() {

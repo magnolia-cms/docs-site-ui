@@ -16,7 +16,7 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: #f8fafc;
+  background: var(--rebrand-color-primary-sand);
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   cursor: pointer;
@@ -28,7 +28,6 @@
 }
 
 .mgnl-search-trigger:hover {
-  background: var(--rebrand-color-primary-sand);
   border-color: var(--rebrand-color-primary-green);
 }
 
@@ -111,6 +110,23 @@
   color: #94a3b8;
 }
 
+.mgnl-search-modal__clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  transition: color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.mgnl-search-modal__clear:hover {
+  color: #64748b;
+}
+
 .mgnl-search-modal__close {
   background: none;
   border: none;
@@ -137,7 +153,7 @@
 
 .mgnl-search-filter {
   padding: 4px 10px;
-  background: #f8fafc;
+  background: #f1f5f9;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
   font-size: 12px;
@@ -148,13 +164,13 @@
 }
 
 .mgnl-search-filter:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+  background: var(--rebrand-color-primary-sand);
+  border-color: var(--rebrand-color-primary-green);
 }
 
 .mgnl-search-filter.active {
-  background: #f0eee7;
-  border-color: #068449;
+  background: var(--rebrand-color-primary-sand);
+  border-color: var(--rebrand-color-primary-green);
   color: #02373f;
 }
 
@@ -189,7 +205,8 @@
 
 .mgnl-search-result:hover,
 .mgnl-search-result.is-selected {
-  background: #f8fafc;
+  background: var(--rebrand-color-primary-sand);
+  text-decoration: none;
 }
 
 .mgnl-search-result__category {
@@ -198,20 +215,20 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: #068449;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
 .mgnl-search-result__title {
   font-size: 15px;
   font-weight: 600;
   color: #1e293b;
-  margin-bottom: 2px;
+  margin-bottom: 6px;
 }
 
 .mgnl-search-result__heading {
   font-size: 13px;
   color: #475569;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .mgnl-search-result__content {
@@ -225,7 +242,7 @@
 }
 
 .mgnl-search-result mark {
-  background: #fef08a;
+  background: var(--rebrand-color-primary-lime);
   color: inherit;
   padding: 0 2px;
   border-radius: 2px;
@@ -330,7 +347,7 @@
 
 .mgnl-search-modal__hints kbd {
   padding: 2px 6px;
-  background: #e2e8f0;
+  background: var(--rebrand-color-primary-sand);
   border-radius: 4px;
   font-size: 11px;
   margin-right: 4px;

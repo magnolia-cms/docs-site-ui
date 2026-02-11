@@ -339,7 +339,8 @@
       branding: options.branding || 'Powered by Magnolia Search',
       onResultClick: options.onResultClick || null,
       onOpen: options.onOpen || null,
-      onClose: options.onClose || null
+      onClose: options.onClose || null,
+      devMode: options.devMode !== undefined ? options.devMode : (typeof window !== 'undefined' && window.location && window.location.search.indexOf('searchDevMode=true') !== -1)
     };
     
     this.search = null;
@@ -348,6 +349,7 @@
     this.isOpen = false;
     this.filters = [];
     this.selectedIndex = 0;
+    this.indexLoadFailed = false; // Track if index load failed
     
     this._init();
   }
@@ -359,6 +361,11 @@
     if (typeof MagnoliaSearch === 'undefined') {
       console.error('MagnoliaSearchUI: MagnoliaSearch not found. Include search-client.js first.');
       return;
+    }
+    
+    // Log dev mode status
+    if (this.options.devMode) {
+      console.log('MagnoliaSearchUI: Dev mode enabled - using dummy results for styling');
     }
     
     this.search = new MagnoliaSearch({
@@ -383,6 +390,7 @@
     // Load search index
     this.search.load().catch(function(err) {
       console.warn('MagnoliaSearchUI: Failed to load search index:', err);
+      self.indexLoadFailed = true;
     });
     
     // Load metadata for dynamic filters (if not manually specified)
@@ -505,6 +513,11 @@
               'spellcheck="false" ' +
               'aria-label="Search input"' +
             '/>' +
+            '<button type="button" class="mgnl-search-modal__clear" aria-label="Clear search" style="display: none;">' +
+              '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+                '<path d="M18 6L6 18M6 6l12 12"/>' +
+              '</svg>' +
+            '</button>' +
             '<button type="button" class="mgnl-search-modal__close" aria-label="Close search">' +
               '<kbd>esc</kbd>' +
             '</button>' +
@@ -565,12 +578,25 @@
     
     // Input
     var input = this.modal.querySelector('.mgnl-search-modal__input');
+    var clearButton = this.modal.querySelector('.mgnl-search-modal__clear');
     var debounceTimer;
     
+    // Clear button handler
+    clearButton.addEventListener('click', function() {
+      input.value = '';
+      input.focus();
+      self._updateClearButtonVisibility('');
+      self._performSearch('');
+    });
+    
+    // Update clear button visibility on input
     input.addEventListener('input', function(e) {
+      var value = e.target.value;
+      self._updateClearButtonVisibility(value);
+      
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(function() {
-        self._performSearch(e.target.value);
+        self._performSearch(value);
       }, self.options.debounceMs);
     });
     
@@ -582,7 +608,8 @@
     // Global hotkey
     document.addEventListener('keydown', function(e) {
       // Check if hotkey pressed and not in an input
-      if (e.key === self.options.hotkey && !self._isInputFocused()) {
+      // Don't trigger if Command/Ctrl is pressed (those are for other shortcuts)
+      if (e.key === self.options.hotkey && !self._isInputFocused() && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
         self.open();
       }
@@ -622,13 +649,22 @@
     
     document.body.style.overflow = '';
     
-    // Clear results
+    // Clear results and input
+    var input = this.modal.querySelector('.mgnl-search-modal__input');
     this.modal.querySelector('.mgnl-search-results').innerHTML = '';
-    this.modal.querySelector('.mgnl-search-modal__input').value = '';
+    input.value = '';
     this.selectedIndex = 0;
+    this._updateClearButtonVisibility('');
     
     if (this.options.onClose) {
       this.options.onClose();
+    }
+  };
+
+  MagnoliaSearchUI.prototype._updateClearButtonVisibility = function(value) {
+    var clearButton = this.modal.querySelector('.mgnl-search-modal__clear');
+    if (clearButton) {
+      clearButton.style.display = value && value.length > 0 ? 'block' : 'none';
     }
   };
 
@@ -640,6 +676,22 @@
       return;
     }
     
+    // Check if index load failed - show error in production, dummy results only in dev mode
+    if (this.indexLoadFailed && !this.search.loaded) {
+      if (this.options.devMode) {
+        // Dev mode: show dummy results for styling work
+        var dummyResults = this._getDummyResults(query);
+        this.selectedIndex = 0;
+        this._renderResults(dummyResults, query);
+        return;
+      } else {
+        // Production: show error message
+        resultsContainer.innerHTML = '<div class="mgnl-search-empty">Small issue rendering results. Give us a moment.</div>';
+        return;
+      }
+    }
+    
+    // Index still loading (not failed yet)
     if (!this.search.loaded) {
       resultsContainer.innerHTML = '<div class="mgnl-search-empty">Loading search index...</div>';
       return;
@@ -727,6 +779,236 @@
     var div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+  };
+
+  /**
+   * Generate dummy results for development/styling purposes
+   */
+  MagnoliaSearchUI.prototype._getDummyResults = function(query) {
+    var queryLower = query.toLowerCase();
+    var maxResults = this.options.maxResults || 15;
+    
+    // Sample results that match various scenarios
+    var dummyResults = [
+      {
+        id: 'dummy-1',
+        url: '#getting-started',
+        title: 'Getting Started with Magnolia',
+        heading: 'Introduction',
+        headingLevel: 2,
+        content: 'Learn how to get started with Magnolia CMS. This guide covers installation, configuration, and your first steps with the platform.',
+        category: 'Latest',
+        version: 'latest',
+        breadcrumb: ['Documentation', 'Getting Started']
+      },
+      {
+        id: 'dummy-2',
+        url: '#templating',
+        title: 'Templating in Magnolia',
+        heading: 'Template Development',
+        headingLevel: 2,
+        content: 'Create and customize templates for your Magnolia site. Learn about template types, component development, and best practices.',
+        category: 'Latest',
+        version: 'latest',
+        breadcrumb: ['Documentation', 'Templating']
+      },
+      {
+        id: 'dummy-3',
+        url: '#rest-api',
+        title: 'REST API Documentation',
+        heading: 'API Endpoints',
+        headingLevel: 2,
+        content: 'Complete reference for the Magnolia REST API. Includes authentication, endpoints, request/response formats, and examples.',
+        category: 'Modules',
+        version: 'modules',
+        breadcrumb: ['Documentation', 'REST API']
+      },
+      {
+        id: 'dummy-4',
+        url: '#content-modeling',
+        title: 'Content Modeling',
+        heading: 'Defining Content Types',
+        headingLevel: 2,
+        content: 'Understand how to model your content in Magnolia. Learn about content types, definitions, and structuring your content architecture.',
+        category: 'Latest',
+        version: 'latest',
+        breadcrumb: ['Documentation', 'Content Modeling']
+      },
+      {
+        id: 'dummy-5',
+        url: '#user-management',
+        title: 'User Management and Permissions',
+        heading: 'Managing Users',
+        headingLevel: 2,
+        content: 'Configure users, roles, and permissions in Magnolia. Set up access control and manage user accounts effectively.',
+        category: '6.3',
+        version: '6.3',
+        breadcrumb: ['Documentation', 'Administration']
+      },
+      {
+        id: 'dummy-6',
+        url: '#modules-overview',
+        title: 'Magnolia Modules Overview',
+        heading: 'Available Modules',
+        headingLevel: 1,
+        content: 'Explore the wide range of modules available for Magnolia CMS. Each module extends functionality and adds new capabilities to your site.',
+        category: 'Modules',
+        version: 'modules',
+        breadcrumb: ['Documentation', 'Modules']
+      },
+      {
+        id: 'dummy-7',
+        url: '#cloud-deployment',
+        title: 'Deploying to Magnolia Cloud',
+        heading: 'Cloud Setup',
+        headingLevel: 2,
+        content: 'Deploy your Magnolia site to Magnolia Cloud. Learn about cloud-specific configuration, deployment processes, and best practices.',
+        category: 'Cloud',
+        version: 'cloud',
+        breadcrumb: ['Documentation', 'Cloud']
+      },
+      {
+        id: 'dummy-8',
+        url: '#version-6-2',
+        title: 'Magnolia 6.2 Documentation',
+        heading: 'What\'s New',
+        headingLevel: 2,
+        content: 'Discover the new features and improvements in Magnolia 6.2. This version includes enhanced performance and new capabilities.',
+        category: '6.2',
+        version: '6.2',
+        breadcrumb: ['Documentation', 'Version 6.2']
+      },
+      {
+        id: 'dummy-9',
+        url: '#workflow',
+        title: 'Content Workflow Configuration',
+        heading: 'Setting Up Workflows',
+        headingLevel: 2,
+        content: 'Configure content approval workflows in Magnolia. Set up review processes, approval chains, and content publishing workflows.',
+        category: 'Latest',
+        version: 'latest',
+        breadcrumb: ['Documentation', 'Workflow']
+      },
+      {
+        id: 'dummy-10',
+        url: '#search-configuration',
+        title: 'Search Configuration',
+        heading: 'Configuring Search',
+        headingLevel: 2,
+        content: 'Configure and customize search functionality in Magnolia. Set up search indexes, configure search behavior, and optimize search performance.',
+        category: 'Latest',
+        version: 'latest',
+        breadcrumb: ['Documentation', 'Search']
+      },
+      {
+        id: 'dummy-11',
+        url: '#theming',
+        title: 'Customizing Themes',
+        heading: 'Theme Development',
+        headingLevel: 2,
+        content: 'Create and customize themes for your Magnolia site. Learn about CSS variables, theme structure, and styling best practices.',
+        category: 'Latest',
+        version: 'latest',
+        breadcrumb: ['Documentation', 'Theming']
+      },
+      {
+        id: 'dummy-12',
+        url: '#performance',
+        title: 'Performance Optimization',
+        heading: 'Optimizing Performance',
+        headingLevel: 2,
+        content: 'Optimize your Magnolia site for better performance. Learn about caching strategies, performance tuning, and optimization techniques.',
+        category: 'Latest',
+        version: 'latest',
+        breadcrumb: ['Documentation', 'Performance']
+      }
+    ];
+    
+    // Filter by version if a filter is active
+    var filtered = dummyResults;
+    if (this.currentFilter) {
+      filtered = dummyResults.filter(function(result) {
+        return result.version === this.currentFilter;
+      }.bind(this));
+    }
+    
+    // If no results match the filter, show all (for dev purposes)
+    if (filtered.length === 0) {
+      filtered = dummyResults;
+    }
+    
+    // Score and sort by relevance to query
+    var self = this;
+    var scored = filtered.map(function(result) {
+      var score = self._scoreDummyResult(result, queryLower);
+      return {
+        result: result,
+        score: score
+      };
+    });
+    
+    // Sort by score descending
+    scored.sort(function(a, b) {
+      return b.score - a.score;
+    });
+    
+    // Extract results and limit to maxResults
+    return scored.map(function(item) {
+      return item.result;
+    }).slice(0, maxResults);
+  };
+
+  /**
+   * Score a dummy result against the query for relevance ordering
+   */
+  MagnoliaSearchUI.prototype._scoreDummyResult = function(result, queryLower) {
+    var score = 0;
+    var queryTokens = queryLower.split(/\s+/).filter(function(token) {
+      return token.length >= 2;
+    });
+    
+    if (queryTokens.length === 0) return 0;
+    
+    var titleLower = (result.title || '').toLowerCase();
+    var headingLower = (result.heading || '').toLowerCase();
+    var contentLower = (result.content || '').toLowerCase();
+    var categoryLower = (result.category || '').toLowerCase();
+    
+    // Exact phrase match bonus
+    if (titleLower.indexOf(queryLower) !== -1) {
+      score += 100;
+    }
+    if (headingLower.indexOf(queryLower) !== -1) {
+      score += 80;
+    }
+    if (contentLower.indexOf(queryLower) !== -1) {
+      score += 30;
+    }
+    
+    // Token matches
+    for (var i = 0; i < queryTokens.length; i++) {
+      var token = queryTokens[i];
+      
+      if (titleLower.indexOf(token) !== -1) {
+        score += 50;
+      }
+      if (headingLower.indexOf(token) !== -1) {
+        score += 40;
+      }
+      if (contentLower.indexOf(token) !== -1) {
+        score += 10;
+      }
+      if (categoryLower.indexOf(token) !== -1) {
+        score += 20;
+      }
+    }
+    
+    // Boost for h1 headings
+    if (result.headingLevel === 1) {
+      score *= 1.2;
+    }
+    
+    return score;
   };
 
   // Public API methods
