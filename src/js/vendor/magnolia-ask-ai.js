@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * Magnolia Docs AI Assistant
  * 
