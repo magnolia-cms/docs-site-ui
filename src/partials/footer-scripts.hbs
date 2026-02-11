@@ -94,24 +94,19 @@
       window.location.port === '5252'
     );
     
-    // Configure chunks URL - adjust for your local setup
-    // For local dev, you might need to:
-    // 1. Copy search-data/ to your preview build directory, OR
-    // 2. Use a relative path that works from your preview URL, OR  
-    // 3. Serve search-data/ via a local server
-    var chunksUrl = '/search-data/llm-chunks.json';
+    // Configure chunks URL
+    var chunksUrl = '/search-data/llm-chunks.json'; // Production path
     
-    // Uncomment and adjust if you need a different path for local dev:
-    // if (isPreview) {
-    //   chunksUrl = '../doc-preview-site/native-search/search-data/llm-chunks.json';
-    //   // OR try: chunksUrl = '../../doc-preview-site/native-search/search-data/llm-chunks.json';
-    //   // OR: chunksUrl = 'http://localhost:8080/search-data/llm-chunks.json';
-    // }
+    if (isPreview) {
+      // Local development: file is in public/ directory, served at root
+      var localChunksPath = '/llm-chunks.json';
+      chunksUrl = localChunksPath;
+    }
     
     new MagnoliaAskAIUI({
       container: '#askAI',
       chunksUrl: chunksUrl,
-      apiEndpoint: '/api/ask', // Backend endpoint - needs to be configured
+      apiEndpoint: isPreview ? 'http://localhost:3000/api/ask' : '/api/ask', // Local API for preview, production URL for prod
       placeholder: 'Ask a question about Magnolia...',
       hotkey: '?', // On Mac: Command+/, Windows/Linux: Ctrl+/ or Shift+/
       enabled: true,

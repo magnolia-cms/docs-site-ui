@@ -611,6 +611,11 @@
               'rows="1" ' +
               'aria-label="Question input"' +
             '></textarea>' +
+            '<button type="button" class="mgnl-ask-ai-modal__clear" aria-label="Clear question" style="display: none;">' +
+              '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+                '<path d="M18 6L6 18M6 6l12 12"/>' +
+              '</svg>' +
+            '</button>' +
             '<button type="button" class="mgnl-ask-ai-modal__submit" aria-label="Ask question">' +
               '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
                 '<path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>' +
@@ -703,11 +708,21 @@
     
     // Textarea
     var textarea = this.modal.querySelector('.mgnl-ask-ai-modal__input');
+    var clearButton = this.modal.querySelector('.mgnl-ask-ai-modal__clear');
     
-    // Auto-resize textarea
+    // Clear button handler
+    clearButton.addEventListener('click', function() {
+      textarea.value = '';
+      textarea.style.height = 'auto';
+      textarea.focus();
+      self._updateClearButtonVisibility('');
+    });
+    
+    // Auto-resize textarea and update clear button visibility
     textarea.addEventListener('input', function() {
       this.style.height = 'auto';
       this.style.height = (this.scrollHeight) + 'px';
+      self._updateClearButtonVisibility(this.value);
     });
     
     // Enter to submit (Shift+Enter for new line)
@@ -870,28 +885,171 @@
     
     var self = this;
     
-    // Escape HTML first
-    var escaped = this._escapeHtml(answer);
+    // Remove "Source:" lines - sources are shown separately
+    var formatted = answer.replace(/Source:\s*\*?[^\n]*\n?/gi, '');
+    formatted = formatted.replace(/https?:\/\/[^\s]+/g, ''); // Remove URLs
     
-    // Convert markdown links to HTML (after escaping)
-    escaped = escaped.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(match, text, url) {
+    // Step 1: Convert code blocks (```code```) first - protect multi-line code
+    var codeBlocks = [];
+    var codeBlockIndex = 0;
+    formatted = formatted.replace(/```([\s\S]*?)```/g, function(match, code) {
+      var placeholder = '___CODE_BLOCK_' + codeBlockIndex + '___';
+      codeBlocks[codeBlockIndex] = '<pre><code>' + self._escapeHtml(code.trim()) + '</code></pre>';
+      codeBlockIndex++;
+      return placeholder;
+    });
+    
+    // Step 2: Convert inline code (backticks) - single backticks
+    formatted = formatted.replace(/`([^`\n]+)`/g, function(match, code) {
+      return '<code>' + self._escapeHtml(code) + '</code>';
+    });
+    
+    // Step 3: Restore code blocks
+    codeBlocks.forEach(function(block, index) {
+      formatted = formatted.replace('___CODE_BLOCK_' + index + '___', block);
+    });
+    
+    // Step 4: Convert markdown links [text](url)
+    formatted = formatted.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(match, text, url) {
       return '<a href="' + self._escapeHtml(url) + '" target="_blank" rel="noopener">' + self._escapeHtml(text) + '</a>';
     });
     
-    // Convert double line breaks to paragraphs
-    var paragraphs = escaped.split(/\n\n+/).filter(function(para) {
-      return para.trim().length > 0;
+    // Step 5: Convert bold (**text**) - must come before italic
+    formatted = formatted.replace(/\*\*([^*\n]+)\*\*/g, function(match, text) {
+      return '<strong>' + self._escapeHtml(text) + '</strong>';
     });
     
-    if (paragraphs.length === 0) {
-      // Single paragraph, convert single line breaks to <br>
-      escaped = escaped.replace(/\n/g, '<br>');
-      return '<p>' + escaped + '</p>';
+    // Step 6: Convert italic (*text*) - single asterisk, process after bold
+    formatted = formatted.replace(/\*([^*\n]+?)\*/g, function(match, text) {
+      if (!text.trim()) return match;
+      return '<em>' + self._escapeHtml(text) + '</em>';
+    });
+    
+    // Step 7: Convert lists (numbered and bulleted)
+    var lines = formatted.split('\n');
+    var htmlLines = [];
+    var inOrderedList = false;
+    var inUnorderedList = false;
+    
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var trimmed = line.trim();
+      
+      // Skip empty lines
+      if (!trimmed) {
+        if (inOrderedList || inUnorderedList) {
+          // Keep empty line for list spacing
+          continue;
+        }
+        continue;
+      }
+      
+      // Numbered list item
+      var numMatch = trimmed.match(/^(\d+)\.\s+(.+)$/);
+      if (numMatch) {
+        if (inUnorderedList) {
+          htmlLines.push('</ul>');
+          inUnorderedList = false;
+        }
+        if (!inOrderedList) {
+          htmlLines.push('<ol>');
+          inOrderedList = true;
+        }
+        htmlLines.push('<li>' + numMatch[2] + '</li>');
+        continue;
+      }
+      
+      // Bullet list item
+      var bulletMatch = trimmed.match(/^[-*]\s+(.+)$/);
+      if (bulletMatch) {
+        if (inOrderedList) {
+          htmlLines.push('</ol>');
+          inOrderedList = false;
+        }
+        if (!inUnorderedList) {
+          htmlLines.push('<ul>');
+          inUnorderedList = true;
+        }
+        htmlLines.push('<li>' + bulletMatch[1] + '</li>');
+        continue;
+      }
+      
+      // Not a list item - close any open lists
+      if (inOrderedList) {
+        htmlLines.push('</ol>');
+        inOrderedList = false;
+      }
+      if (inUnorderedList) {
+        htmlLines.push('</ul>');
+        inUnorderedList = false;
+      }
+      
+      // Regular line
+      htmlLines.push(trimmed);
     }
     
-    // Multiple paragraphs
+    // Close any remaining open lists
+    if (inOrderedList) {
+      htmlLines.push('</ol>');
+    }
+    if (inUnorderedList) {
+      htmlLines.push('</ul>');
+    }
+    
+    formatted = htmlLines.join('\n');
+    
+    // Step 8: Escape remaining HTML (but preserve our generated tags)
+    var parts = formatted.split(/(<[^>]+>)/g);
+    var escapedParts = parts.map(function(part) {
+      if (part.match(/^<[^>]+>$/)) {
+        return part; // Keep our HTML tags
+      }
+      return self._escapeHtml(part);
+    });
+    formatted = escapedParts.join('');
+    
+    // Step 9: Convert to paragraphs with proper spacing
+    // Split by double newlines, but preserve lists and code blocks
+    var paragraphs = [];
+    var currentPara = [];
+    
+    var paraLines = formatted.split('\n');
+    for (var j = 0; j < paraLines.length; j++) {
+      var paraLine = paraLines[j].trim();
+      if (!paraLine) {
+        if (currentPara.length > 0) {
+          paragraphs.push(currentPara.join('\n'));
+          currentPara = [];
+        }
+        continue;
+      }
+      
+      // If it's a list or code block, don't add to current para
+      if (paraLine.startsWith('<ol>') || paraLine.startsWith('<ul>') || 
+          paraLine.startsWith('</ol>') || paraLine.startsWith('</ul>') ||
+          paraLine.startsWith('<pre>')) {
+        if (currentPara.length > 0) {
+          paragraphs.push(currentPara.join('\n'));
+          currentPara = [];
+        }
+        paragraphs.push(paraLine);
+        continue;
+      }
+      
+      currentPara.push(paraLine);
+    }
+    
+    if (currentPara.length > 0) {
+      paragraphs.push(currentPara.join('\n'));
+    }
+    
+    // Wrap paragraphs, but not lists or code blocks
     return paragraphs.map(function(para) {
-      // Convert single line breaks to <br>
+      para = para.trim();
+      if (para.startsWith('<ol>') || para.startsWith('<ul>') || para.startsWith('<pre>')) {
+        return para;
+      }
+      // Convert single line breaks to <br> within paragraphs
       para = para.replace(/\n/g, '<br>');
       return '<p>' + para + '</p>';
     }).join('');
@@ -952,9 +1110,17 @@
     this.modal.querySelector('.mgnl-ask-ai-content').innerHTML = '';
     textarea.value = '';
     textarea.style.height = 'auto';
+    this._updateClearButtonVisibility('');
     
     if (this.options.onClose) {
       this.options.onClose();
+    }
+  };
+  
+  MagnoliaAskAIUI.prototype._updateClearButtonVisibility = function(value) {
+    var clearButton = this.modal.querySelector('.mgnl-ask-ai-modal__clear');
+    if (clearButton) {
+      clearButton.style.display = value && value.length > 0 ? 'block' : 'none';
     }
   };
 
