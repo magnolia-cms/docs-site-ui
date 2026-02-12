@@ -488,6 +488,8 @@
     this.isOpen = false;
     this.questionsAsked = 0;
     this.isLoading = false;
+    this.loadingMessageIndex = 0;
+    this.loadingMessageInterval = null;
     
     // Initialize only if enabled
     if (this.options.enabled) {
@@ -815,6 +817,11 @@
       filter: filter
     }).then(function(response) {
       self.isLoading = false;
+      // Clear loading message interval
+      if (self.loadingMessageInterval) {
+        clearInterval(self.loadingMessageInterval);
+        self.loadingMessageInterval = null;
+      }
       
       if (response.answer) {
         self._showAnswer(response.answer, response.sources || []);
@@ -827,22 +834,62 @@
       }
     }).catch(function(err) {
       self.isLoading = false;
+      // Clear loading message interval
+      if (self.loadingMessageInterval) {
+        clearInterval(self.loadingMessageInterval);
+        self.loadingMessageInterval = null;
+      }
       console.error('MagnoliaAskAIUI: Error asking question:', err);
       self._showError('An error occurred. Please try again.');
     });
   };
 
   MagnoliaAskAIUI.prototype._showLoading = function(question) {
+    var self = this;
     var contentContainer = this.modal.querySelector('.mgnl-ask-ai-content');
+    
+    // Loading messages that rotate
+    var loadingMessages = [
+      'Searching documentation...',
+      'Analyzing your question...',
+      'Finding relevant information...',
+      'Crafting your answer...',
+      'Almost there...'
+    ];
+    
+    this.loadingMessageIndex = 0;
+    
+    // Clear any existing interval
+    if (this.loadingMessageInterval) {
+      clearInterval(this.loadingMessageInterval);
+    }
+    
     contentContainer.innerHTML = 
       '<div class="mgnl-ask-ai-question">' +
         '<div class="mgnl-ask-ai-question__label">Question:</div>' +
         '<div class="mgnl-ask-ai-question__text">' + this._escapeHtml(question) + '</div>' +
       '</div>' +
       '<div class="mgnl-ask-ai-loading">' +
-        '<div class="mgnl-ask-ai-loading__spinner"></div>' +
-        '<div class="mgnl-ask-ai-loading__text">Finding relevant documentation...</div>' +
+        '<div class="mgnl-ask-ai-loading__dots">' +
+          '<span class="mgnl-ask-ai-loading__dot"></span>' +
+          '<span class="mgnl-ask-ai-loading__dot"></span>' +
+          '<span class="mgnl-ask-ai-loading__dot"></span>' +
+        '</div>' +
+        '<div class="mgnl-ask-ai-loading__text">' + this._escapeHtml(loadingMessages[0]) + '</div>' +
       '</div>';
+    
+    // Rotate messages every 2.5 seconds
+    var messageElement = contentContainer.querySelector('.mgnl-ask-ai-loading__text');
+    this.loadingMessageInterval = setInterval(function() {
+      self.loadingMessageIndex = (self.loadingMessageIndex + 1) % loadingMessages.length;
+      if (messageElement) {
+        messageElement.style.opacity = '0';
+        setTimeout(function() {
+          messageElement.textContent = loadingMessages[self.loadingMessageIndex];
+          messageElement.style.opacity = '1';
+        }, 200);
+      }
+    }, 2500);
   };
 
   MagnoliaAskAIUI.prototype._showAnswer = function(answer, sources) {
@@ -889,6 +936,9 @@
     var formatted = answer.replace(/Source:\s*\*?[^\n]*\n?/gi, '');
     formatted = formatted.replace(/https?:\/\/[^\s]+/g, ''); // Remove URLs
     
+    // Step 0: Decode HTML entities (must happen before markdown processing)
+    formatted = self._decodeHtmlEntities(formatted);
+    
     // Step 1: Convert code blocks (```code```) first - protect multi-line code
     var codeBlocks = [];
     var codeBlockIndex = 0;
@@ -923,6 +973,20 @@
     formatted = formatted.replace(/\*([^*\n]+?)\*/g, function(match, text) {
       if (!text.trim()) return match;
       return '<em>' + self._escapeHtml(text) + '</em>';
+    });
+    
+    // Step 6.5: Convert markdown headings (##, ###, ####) - must come before lists
+    formatted = formatted.replace(/^####\s+(.+)$/gm, function(match, text) {
+      return '<h4>' + text + '</h4>';
+    });
+    formatted = formatted.replace(/^###\s+(.+)$/gm, function(match, text) {
+      return '<h3>' + text + '</h3>';
+    });
+    formatted = formatted.replace(/^##\s+(.+)$/gm, function(match, text) {
+      return '<h2>' + text + '</h2>';
+    });
+    formatted = formatted.replace(/^#\s+(.+)$/gm, function(match, text) {
+      return '<h1>' + text + '</h1>';
     });
     
     // Step 7: Convert lists (numbered and bulleted)
@@ -1024,10 +1088,14 @@
         continue;
       }
       
-      // If it's a list or code block, don't add to current para
+      // If it's a list, code block, or heading, don't add to current para
       if (paraLine.startsWith('<ol>') || paraLine.startsWith('<ul>') || 
           paraLine.startsWith('</ol>') || paraLine.startsWith('</ul>') ||
-          paraLine.startsWith('<pre>')) {
+          paraLine.startsWith('<pre>') ||
+          paraLine.startsWith('<h1>') || paraLine.startsWith('<h2>') || 
+          paraLine.startsWith('<h3>') || paraLine.startsWith('<h4>') ||
+          paraLine.startsWith('</h1>') || paraLine.startsWith('</h2>') || 
+          paraLine.startsWith('</h3>') || paraLine.startsWith('</h4>')) {
         if (currentPara.length > 0) {
           paragraphs.push(currentPara.join('\n'));
           currentPara = [];
@@ -1043,10 +1111,11 @@
       paragraphs.push(currentPara.join('\n'));
     }
     
-    // Wrap paragraphs, but not lists or code blocks
+    // Wrap paragraphs, but not lists, code blocks, or headings
     return paragraphs.map(function(para) {
       para = para.trim();
-      if (para.startsWith('<ol>') || para.startsWith('<ul>') || para.startsWith('<pre>')) {
+      if (para.startsWith('<ol>') || para.startsWith('<ul>') || para.startsWith('<pre>') ||
+          para.startsWith('<h1>') || para.startsWith('<h2>') || para.startsWith('<h3>') || para.startsWith('<h4>')) {
         return para;
       }
       // Convert single line breaks to <br> within paragraphs
@@ -1076,9 +1145,19 @@
       this.ai.load().then(function() {
         self.chunksLoading = false;
         contentContainer.innerHTML = '';
+        // Clear any loading intervals
+        if (self.loadingMessageInterval) {
+          clearInterval(self.loadingMessageInterval);
+          self.loadingMessageInterval = null;
+        }
       }).catch(function(err) {
         console.warn('MagnoliaAskAIUI: Failed to load chunks:', err);
         self.chunksLoading = false;
+        // Clear any loading intervals
+        if (self.loadingMessageInterval) {
+          clearInterval(self.loadingMessageInterval);
+          self.loadingMessageInterval = null;
+        }
         contentContainer.innerHTML = 
           '<div class="mgnl-ask-ai-error">' +
             '<div class="mgnl-ask-ai-error__icon">⚠</div>' +
@@ -1128,7 +1207,47 @@
     if (!text) return '';
     var div = document.createElement('div');
     div.textContent = text;
-    return div.innerHTML;
+    var escaped = div.innerHTML;
+    // Don't escape > characters - they're safe in HTML text content
+    // Only < and & need escaping for security
+    escaped = escaped.replace(/&gt;/g, '>');
+    return escaped;
+  };
+
+  MagnoliaAskAIUI.prototype._decodeHtmlEntities = function(text) {
+    if (!text) return '';
+    // Use a more robust method to decode HTML entities
+    // Create a temporary element and use innerHTML to decode
+    var temp = document.createElement('div');
+    temp.innerHTML = text;
+    var decoded = temp.textContent || temp.innerText || '';
+    
+    // If textContent didn't decode entities (some browsers), manually decode common ones
+    // Handle both named and numeric entities
+    var entityMap = {
+      '&gt;': '>',
+      '&lt;': '<',
+      '&amp;': '&',
+      '&quot;': '"',
+      '&#39;': "'",
+      '&apos;': "'",
+      '&nbsp;': ' ',
+      '&#62;': '>',
+      '&#60;': '<',
+      '&#38;': '&',
+      '&#34;': '"',
+      '&#39;': "'"
+    };
+    
+    // Replace entities that might still be encoded
+    for (var entity in entityMap) {
+      if (entityMap.hasOwnProperty(entity)) {
+        var regex = new RegExp(entity.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+        decoded = decoded.replace(regex, entityMap[entity]);
+      }
+    }
+    
+    return decoded;
   };
 
   // Export
