@@ -583,11 +583,3 @@
   font-family: 'SF Mono', 'Fira Code', Menlo, Consolas, monospace;
   font-size: 0.88em;
 }
-
-/* Don't double-style code inside pre */
-.mgnl-ask-ai-answer__text pre code {
-  background: none;
-  color: #d4d4d4;
-  padding: 0;
-  border-radius: 0;
-}
