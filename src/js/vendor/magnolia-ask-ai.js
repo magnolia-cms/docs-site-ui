@@ -1003,9 +1003,11 @@
     // Step 1: Convert code blocks (```code```) first
     var codeBlocks = [];
     var codeBlockIndex = 0;
-    formatted = formatted.replace(/```([\s\S]*?)```/g, function(match, code) {
+    formatted = formatted.replace(/```(\w*)\n?([\s\S]*?)```/g, function(match, lang, code) {
       var placeholder = '___CODE_BLOCK_' + codeBlockIndex + '___';
-      codeBlocks[codeBlockIndex] = '<pre><code>' + self._escapeHtml(code.trim()) + '</code></pre>';
+      var langClass = lang ? ' class="language-' + self._escapeHtml(lang) + '"' : '';
+      var langLabel = lang ? '<span class="mgnl-ask-ai-code-lang">' + self._escapeHtml(lang) + '</span>' : '';
+      codeBlocks[codeBlockIndex] = '<div class="mgnl-ask-ai-code-block">' + langLabel + '<pre><code' + langClass + '>' + self._escapeHtml(code.trim()) + '</code></pre></div>';
       codeBlockIndex++;
       return placeholder;
     });

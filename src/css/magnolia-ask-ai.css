@@ -530,3 +530,64 @@
     width: auto;
   }
 }
+
+/* Code blocks in Ask AI answers */
+.mgnl-ask-ai-code-block {
+  position: relative;
+  margin: 12px 0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.mgnl-ask-ai-code-lang {
+  display: block;
+  padding: 4px 12px;
+  background: #1e1e1e;
+  color: #858585;
+  font-size: 11px;
+  font-family: monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #333;
+}
+
+.mgnl-ask-ai-answer__text pre {
+  margin: 0;
+  padding: 14px 16px;
+  background: #1e1e1e;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.mgnl-ask-ai-code-block pre {
+  border-radius: 0 0 6px 6px;
+}
+
+.mgnl-ask-ai-answer__text pre code {
+  color: #d4d4d4;
+  font-family: 'SF Mono', 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
+  font-size: 13px;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+/* Inline code */
+.mgnl-ask-ai-answer__text code {
+  background: #f0f0f0;
+  color: #c7254e;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-family: 'SF Mono', 'Fira Code', Menlo, Consolas, monospace;
+  font-size: 0.88em;
+}
+
+/* Don't double-style code inside pre */
+.mgnl-ask-ai-answer__text pre code {
+  background: none;
+  color: #d4d4d4;
+  padding: 0;
+  border-radius: 0;
+}
