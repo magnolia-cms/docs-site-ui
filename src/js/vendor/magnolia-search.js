@@ -74,7 +74,8 @@
     
     for (var docIndex = 0; docIndex < this.index.length; docIndex++) {
       var doc = this.index[docIndex];
-      var text = doc._searchText || '';
+      var text = (doc.title || '') + ' ' + (doc.heading || '') + ' ' + (doc.content || '');
+      text = text.toLowerCase();
       var words = this._tokenize(text);
       
       for (var i = 0; i < words.length; i++) {
@@ -200,7 +201,6 @@
     var title = (doc.title || '').toLowerCase();
     var heading = (doc.heading || '').toLowerCase();
     var content = (doc.content || '').toLowerCase();
-    var searchText = (doc._searchText || '').toLowerCase();
     
     // Exact phrase match bonus
     if (title.indexOf(lowerQuery) !== -1) {
@@ -225,9 +225,6 @@
       }
       if (content.indexOf(token) !== -1) {
         score += weights.content;
-      }
-      if (searchText.indexOf(token) !== -1) {
-        score += 0.5;
       }
     }
     
