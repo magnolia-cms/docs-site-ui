@@ -25,13 +25,13 @@
 }
 
 .mgnl-ask-ai-trigger:hover {
-  border-color: var(--rebrand-color-primary-lime);
+  border-color: var(--rebrand-color-primary-green);
   color: #475569;
 }
 
 .mgnl-ask-ai-trigger__icon {
   flex-shrink: 0;
-  color: var(--rebrand-color-primary-lime);
+  color: var(--rebrand-color-primary-green);
 }
 
 .mgnl-ask-ai-trigger__text {
@@ -119,7 +119,7 @@
 
 .mgnl-ask-ai-modal__icon {
   flex-shrink: 0;
-  color: var(--rebrand-color-primary-lime);
+  color: var(--rebrand-color-primary-green);
   margin-top: 4px;
 }
 
@@ -161,7 +161,7 @@
 }
 
 .mgnl-ask-ai-modal__submit {
-  background: var(--rebrand-color-primary-lime);
+  background: var(--rebrand-color-primary-green);
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -176,7 +176,7 @@
 }
 
 .mgnl-ask-ai-modal__submit:hover {
-  background: #6bb00f;
+  background: var(--rebrand-color-primary-dark-green);
 }
 
 .mgnl-ask-ai-modal__submit:disabled {
@@ -221,14 +221,14 @@
 }
 
 .mgnl-ask-ai-filter:hover {
-  border-color: var(--rebrand-color-primary-lime);
-  color: #475569;
+  border-color: var(--rebrand-color-primary-green);
+  background: var(--rebrand-color-primary-sand);
 }
 
 .mgnl-ask-ai-filter.active {
-  background: var(--rebrand-color-primary-lime);
-  border-color: var(--rebrand-color-primary-lime);
-  color: #fff;
+  background: var(--rebrand-color-primary-sand);
+  border-color: var(--rebrand-color-primary-green);
+  color: var(--rebrand-color-primary-green);
 }
 
 /* Rate Limit */
@@ -304,7 +304,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--rebrand-color-primary-lime);
+  background: var(--rebrand-color-primary-green);
   animation: mgnl-ask-ai-dot-bounce 1.4s ease-in-out infinite;
   opacity: 0.6;
 }
@@ -364,7 +364,7 @@
 }
 
 .mgnl-ask-ai-answer__text a {
-  color: var(--rebrand-color-primary-lime);
+  color: var(--rebrand-color-primary-green);
   text-decoration: underline;
 }
 
@@ -448,7 +448,7 @@
 
 .mgnl-ask-ai-source:hover {
   background: var(--rebrand-color-primary-sand);
-  border-color: var(--rebrand-color-primary-lime);
+  border-color: var(--rebrand-color-primary-green);
   color: #1e293b;
 }
 

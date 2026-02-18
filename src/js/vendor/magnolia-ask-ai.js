@@ -3,8 +3,8 @@
  * Magnolia Docs AI Assistant
  * 
  * Provides AI-powered answers using:
- * - Semantic search over LLM-optimized chunks
- * - Context retrieval for accurate responses
+ * - Search index for retrieval (keyword matching, scoring)
+ * - Per-page .txt files for full-fidelity LLM context
  * - Streaming responses
  * 
  * ES5 compatible for UglifyJS
@@ -15,27 +15,26 @@
 
   function MagnoliaAI(options) {
     options = options || {};
-    this.chunksUrl = options.chunksUrl || '/search-data/llm-chunks.json';
-    this.apiEndpoint = options.apiEndpoint || '/api/ask'; // Your backend endpoint
-    this.apiKey = options.apiKey || null; // If calling provider directly (not recommended)
-    this.provider = options.provider || 'anthropic'; // 'anthropic' | 'openai'
+    this.indexUrl = options.indexUrl || '/search-data/search-index.min.json';
+    this.pagesBaseUrl = options.pagesBaseUrl || '/search-data/';
+    this.apiEndpoint = options.apiEndpoint || '/api/ask';
+    this.apiKey = options.apiKey || null;
+    this.provider = options.provider || 'anthropic';
     
-    this.chunks = [];
+    this.searchIndex = [];
     this.loaded = false;
     
     // Configuration
     this.config = {
-      maxContextChunks: 5,        // Max chunks to include in context
-      maxContextTokens: 8000,     // Max tokens for context
-      minRelevanceScore: 0.3,     // Minimum relevance to include
+      maxPages: 5,                // Max pages to fetch for context
+      maxContextTokens: 8000,     // Approx max tokens for context
+      maxContextChars: 32000,     // Hard char limit (~8000 tokens)
+      minRelevanceScore: 0.3      // Minimum relevance to include
     };
-    
-    // Simple keyword-based embedding (for POC - use real embeddings in production)
-    this.chunkKeywords = [];
   }
 
   /**
-   * Load LLM chunks
+   * Load search index
    */
   MagnoliaAI.prototype.load = function() {
     var self = this;
@@ -44,42 +43,166 @@
       return Promise.resolve();
     }
     
-    return fetch(this.chunksUrl)
+    return fetch(this.indexUrl)
       .then(function(response) {
-        if (!response.ok) throw new Error('Failed to load LLM chunks');
+        if (!response.ok) throw new Error('Failed to load search index');
         return response.json();
       })
       .then(function(data) {
-        self.chunks = data;
+        self.searchIndex = data;
         self.loaded = true;
-        
-        // Pre-compute keywords for each chunk
-        self._buildKeywordIndex();
-        
-        console.log('MagnoliaAI: Loaded ' + self.chunks.length + ' chunks');
+        console.log('MagnoliaAI: Loaded search index (' + self.searchIndex.length + ' records)');
       })
       .catch(function(err) {
-        console.error('MagnoliaAI: Failed to load chunks', err);
+        console.error('MagnoliaAI: Failed to load search index', err);
         throw err;
       });
   };
 
   /**
-   * Build keyword index for similarity matching
+   * Search the index for relevant pages
    */
-  MagnoliaAI.prototype._buildKeywordIndex = function() {
+  MagnoliaAI.prototype.findRelevantPages = function(question, options) {
+    options = options || {};
     var self = this;
-    this.chunkKeywords = this.chunks.map(function(chunk) {
-      var text = (chunk.title + ' ' + chunk.content).toLowerCase();
-      return self._extractKeywords(text);
+    
+    if (!this.loaded) {
+      throw new Error('MagnoliaAI: Search index not loaded');
+    }
+    
+    var maxPages = options.maxPages || this.config.maxPages;
+    var filter = options.filter || {};
+    
+    var queryKeywords = this._extractKeywords(question.toLowerCase());
+    
+    // Score each record in the index
+    var scored = [];
+    for (var i = 0; i < this.searchIndex.length; i++) {
+      var record = this.searchIndex[i];
+      
+      // Apply version/category filters
+      if (filter.version && record.version !== filter.version) {
+        continue;
+      }
+      if (filter.category && record.category !== filter.category) {
+        continue;
+      }
+      
+      var score = this._scoreRecord(queryKeywords, record, question);
+      if (score >= this.config.minRelevanceScore) {
+        scored.push({ record: record, score: score });
+      }
+    }
+    
+    // Sort by score descending
+    scored.sort(function(a, b) {
+      return b.score - a.score;
     });
+    
+    // Deduplicate by pagePath — keep highest-scoring record per page
+    var seen = {};
+    var uniquePages = [];
+    
+    for (var j = 0; j < scored.length; j++) {
+      var item = scored[j];
+      var pagePath = item.record.pagePath;
+      
+      if (!seen[pagePath]) {
+        seen[pagePath] = true;
+        uniquePages.push({
+          pagePath: pagePath,
+          url: item.record.url,
+          title: item.record.title,
+          category: item.record.category,
+          version: item.record.version,
+          score: item.score,
+          // Track which section matched for potential targeted extraction
+          matchedHeading: item.record.heading,
+          matchedAnchor: item.record.url.split('#')[1] || null
+        });
+      }
+      
+      if (uniquePages.length >= maxPages) {
+        break;
+      }
+    }
+    
+    return uniquePages;
+  };
+
+  /**
+   * Score a search record against the query
+   */
+  MagnoliaAI.prototype._scoreRecord = function(queryKeywords, record, question) {
+    var questionLower = question.toLowerCase();
+    var titleLower = (record.title || '').toLowerCase();
+    var headingLower = (record.heading || '').toLowerCase();
+    var contentLower = (record.content || '').toLowerCase();
+    
+    var score = 0;
+    
+    // Exact title match bonus
+    if (titleLower.indexOf(questionLower) !== -1) {
+      score += 50;
+    }
+    
+    // Exact heading match bonus
+    if (headingLower && headingLower.indexOf(questionLower) !== -1) {
+      score += 30;
+    }
+    
+    // Keyword matching
+    var recordText = titleLower + ' ' + headingLower + ' ' + contentLower;
+    var recordKeywords = this._extractKeywords(recordText);
+    
+    var recordSet = {};
+    recordKeywords.forEach(function(kw) {
+      recordSet[kw] = true;
+    });
+    
+    var matchCount = 0;
+    
+    queryKeywords.forEach(function(keyword) {
+      // Exact keyword match
+      if (recordSet[keyword]) {
+        matchCount++;
+        // Bonus for title/heading keyword match
+        if (titleLower.indexOf(keyword) !== -1) {
+          score += 5;
+        }
+        if (headingLower.indexOf(keyword) !== -1) {
+          score += 3;
+        }
+      }
+      // Partial/prefix match
+      recordKeywords.forEach(function(rk) {
+        if (rk.indexOf(keyword) === 0 || keyword.indexOf(rk) === 0) {
+          matchCount += 0.5;
+        }
+      });
+    });
+    
+    // Jaccard-like similarity
+    var unionSet = {};
+    queryKeywords.forEach(function(kw) { unionSet[kw] = true; });
+    recordKeywords.forEach(function(kw) { unionSet[kw] = true; });
+    var union = Object.keys(unionSet).length;
+    if (union > 0) {
+      score += (matchCount / union) * 100;
+    }
+    
+    // Boost for h1/h2 level headings (more likely to be primary topic)
+    if (record.headingLevel && record.headingLevel <= 2) {
+      score *= 1.1;
+    }
+    
+    return score;
   };
 
   /**
    * Extract keywords from text
    */
   MagnoliaAI.prototype._extractKeywords = function(text) {
-    // Remove common words and extract meaningful terms
     var stopwords = {
       'the': true, 'a': true, 'an': true, 'and': true, 'or': true, 'but': true, 'in': true, 'on': true, 'at': true, 'to': true, 'for': true,
       'of': true, 'with': true, 'by': true, 'from': true, 'as': true, 'is': true, 'was': true, 'are': true, 'were': true, 'been': true,
@@ -106,159 +229,126 @@
     
     // Return unique keywords sorted by frequency
     return Object.keys(freq)
-      .map(function(word) {
-        return [word, freq[word]];
-      })
-      .sort(function(a, b) {
-        return b[1] - a[1];
-      })
+      .map(function(word) { return [word, freq[word]]; })
+      .sort(function(a, b) { return b[1] - a[1]; })
       .slice(0, 50)
-      .map(function(item) {
-        return item[0];
+      .map(function(item) { return item[0]; });
+  };
+
+  /**
+   * Fetch the .txt file for a page
+   */
+  MagnoliaAI.prototype._fetchPage = function(pagePath) {
+    var url = this.pagesBaseUrl + pagePath;
+    
+    return fetch(url)
+      .then(function(response) {
+        if (!response.ok) {
+          console.warn('MagnoliaAI: Failed to fetch ' + pagePath);
+          return null;
+        }
+        return response.text();
+      })
+      .catch(function(err) {
+        console.warn('MagnoliaAI: Error fetching ' + pagePath, err);
+        return null;
       });
   };
 
   /**
-   * Find relevant chunks for a question
+   * Fetch multiple pages and build context
    */
-  MagnoliaAI.prototype.findRelevantChunks = function(question, options) {
-    options = options || {};
+  MagnoliaAI.prototype._fetchAndBuildContext = function(pages) {
     var self = this;
     
-    if (!this.loaded) {
-      throw new Error('MagnoliaAI: Chunks not loaded');
-    }
-    
-    var maxChunks = options.maxChunks || this.config.maxContextChunks;
-    var filter = options.filter || {};
-    
-    var queryKeywords = this._extractKeywords(question.toLowerCase());
-    
-    // Score each chunk
-    var scored = this.chunks.map(function(chunk, index) {
-      // Apply filters
-      if (filter.version && chunk.version !== filter.version) {
-        return null;
-      }
-      if (filter.category && chunk.category !== filter.category) {
-        return null;
-      }
-      
-      // Calculate similarity score
-      var chunkKw = self.chunkKeywords[index];
-      var score = self._calculateSimilarity(queryKeywords, chunkKw, chunk, question);
-      
-      return { chunk: chunk, score: score };
-    }).filter(function(item) {
-      return item !== null;
-    });
-    
-    // Sort by score and return top chunks
-    scored.sort(function(a, b) {
-      return b.score - a.score;
-    });
-    
-    var results = scored
-      .filter(function(item) {
-        return item.score >= self.config.minRelevanceScore;
-      })
-      .slice(0, maxChunks);
-    
-    return results;
-  };
-
-  /**
-   * Calculate similarity between query and chunk
-   */
-  MagnoliaAI.prototype._calculateSimilarity = function(queryKeywords, chunkKeywords, chunk, question) {
-    var questionLower = question.toLowerCase();
-    var titleLower = chunk.title.toLowerCase();
-    var contentLower = chunk.content.toLowerCase();
-    
-    var score = 0;
-    
-    // Title exact match
-    if (titleLower.indexOf(questionLower) !== -1) {
-      score += 50;
-    }
-    
-    // Keyword overlap
-    var chunkSet = {};
-    chunkKeywords.forEach(function(kw) {
-      chunkSet[kw] = true;
-    });
-    
-    var matchCount = 0;
-    var self = this;
-    
-    queryKeywords.forEach(function(keyword) {
-      if (chunkSet[keyword]) {
-        matchCount++;
-        // Bonus for title keyword match
-        if (titleLower.indexOf(keyword) !== -1) {
-          score += 5;
-        }
-      }
-      // Partial/prefix match
-      chunkKeywords.forEach(function(ck) {
-        if (ck.indexOf(keyword) === 0 || keyword.indexOf(ck) === 0) {
-          matchCount += 0.5;
-        }
+    // Fetch all pages in parallel
+    var fetches = pages.map(function(page) {
+      return self._fetchPage(page.pagePath).then(function(content) {
+        return { page: page, content: content };
       });
     });
     
-    // Jaccard-like similarity
-    var unionSet = {};
-    queryKeywords.forEach(function(kw) {
-      unionSet[kw] = true;
-    });
-    chunkKeywords.forEach(function(kw) {
-      unionSet[kw] = true;
-    });
-    var union = Object.keys(unionSet).length;
-    score += (matchCount / union) * 100;
-    
-    // Boost for shorter chunks (more specific)
-    if (chunk.tokenEstimate < 500) {
-      score *= 1.1;
-    }
-    
-    return score;
-  };
-
-  /**
-   * Build context from relevant chunks
-   */
-  MagnoliaAI.prototype.buildContext = function(relevantChunks) {
-    var context = '';
-    var totalTokens = 0;
-    var self = this;
-    
-    var chunks = relevantChunks.map(function(r) {
-      return r.chunk;
-    });
-    
-    for (var i = 0; i < chunks.length; i++) {
-      var chunk = chunks[i];
-      if (totalTokens + chunk.tokenEstimate > this.config.maxContextTokens) {
-        break;
+    return Promise.all(fetches).then(function(results) {
+      var context = '';
+      var totalChars = 0;
+      var sources = [];
+      
+      for (var i = 0; i < results.length; i++) {
+        var result = results[i];
+        if (!result.content) continue;
+        
+        var pageContent = result.content;
+        
+        // Check if adding this page would exceed the char limit
+        if (totalChars + pageContent.length > self.config.maxContextChars) {
+          // Include a trimmed version if we have room
+          var remaining = self.config.maxContextChars - totalChars;
+          if (remaining > 500) {
+            // Try to trim intelligently: find the matched section if possible
+            var trimmed = self._trimToRelevantSection(pageContent, result.page.matchedHeading, remaining);
+            context += '\n\n---\n\n' + trimmed;
+            totalChars += trimmed.length;
+            sources.push({ title: result.page.title, url: result.page.url });
+          }
+          break;
+        }
+        
+        context += '\n\n---\n\n' + pageContent;
+        totalChars += pageContent.length;
+        sources.push({ title: result.page.title, url: result.page.url });
       }
       
-      context += '\n\n---\n\n' + chunk.content;
-      totalTokens += chunk.tokenEstimate;
-    }
-    
-    return {
-      context: context.trim(),
-      tokenEstimate: totalTokens,
-      sources: chunks.map(function(c) {
-        return { title: c.title, url: c.url };
-      })
-    };
+      return {
+        context: context.trim(),
+        sources: sources,
+        charCount: totalChars
+      };
+    });
   };
 
   /**
-   * Ask a question (requires backend or direct API access)
+   * Trim a page to the most relevant section when it doesn't fully fit
+   */
+  MagnoliaAI.prototype._trimToRelevantSection = function(content, matchedHeading, maxChars) {
+    if (!matchedHeading) {
+      // No specific section matched — take from the top
+      return content.slice(0, maxChars);
+    }
+    
+    // Find the matched heading in the content
+    var headingIndex = content.indexOf(matchedHeading);
+    if (headingIndex === -1) {
+      return content.slice(0, maxChars);
+    }
+    
+    // Center the window around the matched heading
+    var halfWindow = Math.floor(maxChars / 2);
+    var start = Math.max(0, headingIndex - halfWindow);
+    var end = Math.min(content.length, start + maxChars);
+    
+    // Adjust start to not cut mid-line
+    if (start > 0) {
+      var newlineIndex = content.indexOf('\n', start);
+      if (newlineIndex !== -1 && newlineIndex < start + 200) {
+        start = newlineIndex + 1;
+      }
+    }
+    
+    var trimmed = content.slice(start, end);
+    
+    // Add indicators if we trimmed
+    if (start > 0) {
+      trimmed = '[...]\n' + trimmed;
+    }
+    if (end < content.length) {
+      trimmed = trimmed + '\n[...]';
+    }
+    
+    return trimmed;
+  };
+
+  /**
+   * Ask a question
    */
   MagnoliaAI.prototype.ask = function(question, options) {
     options = options || {};
@@ -270,13 +360,13 @@
       });
     }
     
-    // Find relevant context
-    var relevantChunks = this.findRelevantChunks(question, {
-      maxChunks: options.maxChunks || this.config.maxContextChunks,
+    // Step 1: Find relevant pages via search index
+    var relevantPages = this.findRelevantPages(question, {
+      maxPages: options.maxPages || this.config.maxPages,
       filter: options.filter || {}
     });
     
-    if (relevantChunks.length === 0) {
+    if (relevantPages.length === 0) {
       return Promise.resolve({
         answer: "I couldn't find relevant documentation to answer your question. Try rephrasing or being more specific.",
         sources: [],
@@ -284,69 +374,79 @@
       });
     }
     
-    var contextData = this.buildContext(relevantChunks);
-    var context = contextData.context;
-    var sources = contextData.sources;
-    
-    // Build prompt
-    var systemPrompt = 'You are a helpful assistant for Magnolia CMS documentation. \n' +
-      'Answer questions based ONLY on the provided documentation context.\n' +
-      'If the context doesn\'t contain enough information to fully answer, say so.\n' +
-      'Always cite specific pages when possible.\n' +
-      'Be concise but thorough.';
-    
-    var userPrompt = 'Documentation Context:\n' +
-      context + '\n\n' +
-      '---\n\n' +
-      'Question: ' + question + '\n\n' +
-      'Please answer based on the documentation above. Cite relevant pages.';
+    // Step 2: Fetch .txt files and build context
+    return this._fetchAndBuildContext(relevantPages).then(function(contextData) {
+      var context = contextData.context;
+      var sources = contextData.sources;
+      
+      if (!context) {
+        return {
+          answer: "I found some relevant pages but couldn't load their content. Please try again.",
+          sources: [],
+          context: null
+        };
+      }
+      
+      // Step 3: Build prompts
+      var systemPrompt = 'You are a helpful assistant for Magnolia CMS documentation. \n' +
+        'Answer questions based ONLY on the provided documentation context.\n' +
+        'If the context doesn\'t contain enough information to fully answer, say so.\n' +
+        'Always cite specific pages when possible.\n' +
+        'Be concise but thorough.';
+      
+      var userPrompt = 'Documentation Context:\n' +
+        context + '\n\n' +
+        '---\n\n' +
+        'Question: ' + question + '\n\n' +
+        'Please answer based on the documentation above. Cite relevant pages.';
 
-    // If using backend endpoint
-    if (this.apiEndpoint && !this.apiKey) {
-      return fetch(this.apiEndpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          question: question,
-          context: context,
-          sources: sources,
-          systemPrompt: systemPrompt,
-          userPrompt: userPrompt
+      // Step 4: Call the API
+      if (self.apiEndpoint && !self.apiKey) {
+        return fetch(self.apiEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            question: question,
+            context: context,
+            sources: sources,
+            systemPrompt: systemPrompt,
+            userPrompt: userPrompt
+          })
         })
-      })
-      .then(function(response) {
-        if (!response.ok) {
-          throw new Error('Failed to get AI response');
-        }
-        return response.json();
-      })
-      .then(function(data) {
-        return {
-          answer: data.answer,
-          sources: sources,
-          context: context
-        };
-      });
-    }
-    
-    // Direct API call (for testing only - don't expose API keys in frontend!)
-    if (this.apiKey) {
-      return this._callLLMDirect(systemPrompt, userPrompt).then(function(answer) {
-        return {
-          answer: answer,
-          sources: sources,
-          context: context
-        };
-      });
-    }
-    
-    // No API configured - return context for manual use
-    return Promise.resolve({
-      answer: null,
-      sources: sources,
-      context: context,
-      prompt: userPrompt,
-      systemPrompt: systemPrompt
+        .then(function(response) {
+          if (!response.ok) {
+            throw new Error('Failed to get AI response');
+          }
+          return response.json();
+        })
+        .then(function(data) {
+          return {
+            answer: data.answer,
+            sources: sources,
+            context: context
+          };
+        });
+      }
+      
+      // Direct API call (for testing only)
+      if (self.apiKey) {
+        return self._callLLMDirect(systemPrompt, userPrompt).then(function(answer) {
+          return {
+            answer: answer,
+            sources: sources,
+            context: context
+          };
+        });
+      }
+      
+      // No API configured
+      return {
+        answer: null,
+        sources: sources,
+        context: context,
+        prompt: userPrompt,
+        systemPrompt: systemPrompt
+      };
     });
   };
 
@@ -354,8 +454,6 @@
    * Direct LLM call (for development/testing only)
    */
   MagnoliaAI.prototype._callLLMDirect = function(systemPrompt, userPrompt) {
-    var self = this;
-    
     if (this.provider === 'anthropic') {
       return fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -371,12 +469,8 @@
           messages: [{ role: 'user', content: userPrompt }]
         })
       })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(data) {
-        return data.content[0].text;
-      });
+      .then(function(response) { return response.json(); })
+      .then(function(data) { return data.content[0].text; });
     }
     
     if (this.provider === 'openai') {
@@ -395,12 +489,8 @@
           max_tokens: 1024
         })
       })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(data) {
-        return data.choices[0].message.content;
-      });
+      .then(function(response) { return response.json(); })
+      .then(function(data) { return data.choices[0].message.content; });
     }
     
     return Promise.reject(new Error('Unknown provider: ' + this.provider));
@@ -411,8 +501,6 @@
    * Note: Generators not supported in ES5, so this is a placeholder
    */
   MagnoliaAI.prototype.askStream = function(question, options) {
-    // Streaming not implemented in ES5 version
-    // Use regular ask() method instead
     return Promise.reject(new Error('Streaming not supported in ES5 version'));
   };
 
@@ -439,7 +527,8 @@
  * Usage:
  *   new MagnoliaAskAIUI({
  *     container: '#askAI',
- *     chunksUrl: '/search-data/llm-chunks.json',
+ *     indexUrl: '/search-data/search-index.min.json',
+ *     pagesBaseUrl: '/search-data/',
  *     apiEndpoint: '/api/ask',
  *     enabled: true,
  *     position: 'header'
@@ -464,17 +553,18 @@
     
     this.options = {
       container: options.container || '#askAI',
-      chunksUrl: options.chunksUrl || '/search-data/llm-chunks.json',
+      indexUrl: options.indexUrl || '/search-data/search-index.min.json',
+      pagesBaseUrl: options.pagesBaseUrl || '/search-data/',
       apiEndpoint: options.apiEndpoint || '/api/ask',
       placeholder: options.placeholder || 'Ask a question about Magnolia...',
       hotkey: options.hotkey || '?',
       enabled: options.enabled !== undefined ? options.enabled : false,
-      position: options.position || 'header', // 'header' | 'bottom-left' | 'bottom-right'
+      position: options.position || 'header',
       showFilters: options.showFilters !== false,
       showFooter: options.showFooter !== false,
       branding: options.branding || 'Powered by Magnolia AI',
       maxQuestionsPerSession: options.maxQuestionsPerSession || 12,
-      maxContextChunks: options.maxContextChunks || 5,
+      maxPages: options.maxPages || 5,
       maxContextTokens: options.maxContextTokens || 8000,
       filters: options.filters || DEFAULT_FILTERS,
       onAnswer: options.onAnswer || null,
@@ -502,13 +592,14 @@
     
     // Check if MagnoliaAI is available
     if (typeof MagnoliaAI === 'undefined') {
-      console.error('MagnoliaAskAIUI: MagnoliaAI not found. Include ai-assistant.js first.');
+      console.error('MagnoliaAskAIUI: MagnoliaAI not found. Include magnolia-ask-ai.js first.');
       return;
     }
     
-    // Initialize AI assistant
+    // Initialize AI assistant with new options
     this.ai = new MagnoliaAI({
-      chunksUrl: this.options.chunksUrl,
+      indexUrl: this.options.indexUrl,
+      pagesBaseUrl: this.options.pagesBaseUrl,
       apiEndpoint: this.options.apiEndpoint
     });
     
@@ -520,7 +611,7 @@
     this._createModal();
     this._bindEvents();
     
-    // NOTE: Chunks are now loaded lazily when user opens Ask AI modal (saves bandwidth!)
+    // NOTE: Search index is loaded lazily when user opens Ask AI modal
   };
 
   MagnoliaAskAIUI.prototype._loadSessionState = function() {
@@ -542,14 +633,6 @@
     }
   };
 
-  MagnoliaAskAIUI.prototype._loadChunks = function() {
-    var self = this;
-    
-    this.ai.load().catch(function(err) {
-      console.warn('MagnoliaAskAIUI: Failed to load chunks:', err);
-    });
-  };
-
   MagnoliaAskAIUI.prototype._createTrigger = function() {
     var container = document.querySelector(this.options.container);
     if (!container) {
@@ -560,7 +643,6 @@
     var self = this;
     var positionClass = 'mgnl-ask-ai-trigger--' + this.options.position;
     
-    // Always show '?' on button (universal symbol), but actual shortcut varies by OS
     container.innerHTML = 
       '<button type="button" class="mgnl-ask-ai-trigger ' + positionClass + '" aria-label="Ask AI">' +
         '<svg class="mgnl-ask-ai-trigger__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
@@ -577,7 +659,6 @@
   };
 
   MagnoliaAskAIUI.prototype._createModal = function() {
-    // Remove existing modal if any
     var existing = document.querySelector('.mgnl-ask-ai-modal');
     if (existing) existing.remove();
     
@@ -639,12 +720,10 @@
     document.body.appendChild(modal);
     this.modal = modal;
     
-    // Render filters
     if (this.options.showFilters) {
       this._renderFilters();
     }
     
-    // Update rate limit display
     this._updateRateLimitDisplay();
   };
 
@@ -662,7 +741,6 @@
       '</button>';
     }).join('');
     
-    // Bind filter click events
     filtersContainer.querySelectorAll('.mgnl-ask-ai-filter').forEach(function(btn) {
       btn.addEventListener('click', function() {
         filtersContainer.querySelectorAll('.mgnl-ask-ai-filter').forEach(function(b) {
@@ -712,7 +790,6 @@
     var textarea = this.modal.querySelector('.mgnl-ask-ai-modal__input');
     var clearButton = this.modal.querySelector('.mgnl-ask-ai-modal__clear');
     
-    // Clear button handler
     clearButton.addEventListener('click', function() {
       textarea.value = '';
       textarea.style.height = 'auto';
@@ -720,7 +797,6 @@
       self._updateClearButtonVisibility('');
     });
     
-    // Auto-resize textarea and update clear button visibility
     textarea.addEventListener('input', function() {
       this.style.height = 'auto';
       this.style.height = (this.scrollHeight) + 'px';
@@ -737,24 +813,15 @@
     
     // Global hotkey
     document.addEventListener('keydown', function(e) {
-      // Check if hotkey pressed and not in an input
       var isHotkey = false;
       
       if (self.options.hotkey === '?') {
-        // Support multiple ways to trigger '?':
-        // 1. Command+/ (Mac standard for help/shortcuts)
-        // 2. Ctrl+/ (Windows/Linux)
-        // 3. Shift+/ (produces '?' character)
-        // 4. Direct '?' key (if available)
         var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
         if (isMac) {
-          // Mac: Command+/ is more standard than Shift+/
           isHotkey = (e.key === '/' && (e.metaKey || e.ctrlKey));
         } else {
-          // Windows/Linux: Ctrl+/ or Shift+/
           isHotkey = ((e.key === '/' && e.ctrlKey) || (e.key === '/' && e.shiftKey));
         }
-        // Also check for direct '?' key
         if (!isHotkey) {
           isHotkey = (e.key === '?');
         }
@@ -766,7 +833,6 @@
         e.preventDefault();
         self.open();
       }
-      // Escape to close
       if (e.key === 'Escape' && self.isOpen) {
         self.close();
       }
@@ -798,7 +864,7 @@
       return;
     }
     
-    if (this.isLoading) return; // Prevent multiple simultaneous requests
+    if (this.isLoading) return;
     
     this.isLoading = true;
     this.questionsAsked++;
@@ -813,11 +879,10 @@
     
     // Ask question
     this.ai.ask(question, {
-      maxChunks: this.options.maxContextChunks,
+      maxPages: this.options.maxPages,
       filter: filter
     }).then(function(response) {
       self.isLoading = false;
-      // Clear loading message interval
       if (self.loadingMessageInterval) {
         clearInterval(self.loadingMessageInterval);
         self.loadingMessageInterval = null;
@@ -834,7 +899,6 @@
       }
     }).catch(function(err) {
       self.isLoading = false;
-      // Clear loading message interval
       if (self.loadingMessageInterval) {
         clearInterval(self.loadingMessageInterval);
         self.loadingMessageInterval = null;
@@ -848,18 +912,16 @@
     var self = this;
     var contentContainer = this.modal.querySelector('.mgnl-ask-ai-content');
     
-    // Loading messages that rotate
     var loadingMessages = [
       'Searching documentation...',
+      'Loading relevant pages...',
       'Analyzing your question...',
-      'Finding relevant information...',
       'Crafting your answer...',
       'Almost there...'
     ];
     
     this.loadingMessageIndex = 0;
     
-    // Clear any existing interval
     if (this.loadingMessageInterval) {
       clearInterval(this.loadingMessageInterval);
     }
@@ -878,7 +940,6 @@
         '<div class="mgnl-ask-ai-loading__text">' + this._escapeHtml(loadingMessages[0]) + '</div>' +
       '</div>';
     
-    // Rotate messages every 2.5 seconds
     var messageElement = contentContainer.querySelector('.mgnl-ask-ai-loading__text');
     this.loadingMessageInterval = setInterval(function() {
       self.loadingMessageIndex = (self.loadingMessageIndex + 1) % loadingMessages.length;
@@ -934,12 +995,12 @@
     
     // Remove "Source:" lines - sources are shown separately
     var formatted = answer.replace(/Source:\s*\*?[^\n]*\n?/gi, '');
-    formatted = formatted.replace(/https?:\/\/[^\s]+/g, ''); // Remove URLs
+    formatted = formatted.replace(/https?:\/\/[^\s]+/g, '');
     
-    // Step 0: Decode HTML entities (must happen before markdown processing)
+    // Step 0: Decode HTML entities
     formatted = self._decodeHtmlEntities(formatted);
     
-    // Step 1: Convert code blocks (```code```) first - protect multi-line code
+    // Step 1: Convert code blocks (```code```) first
     var codeBlocks = [];
     var codeBlockIndex = 0;
     formatted = formatted.replace(/```([\s\S]*?)```/g, function(match, code) {
@@ -949,7 +1010,7 @@
       return placeholder;
     });
     
-    // Step 2: Convert inline code (backticks) - single backticks
+    // Step 2: Convert inline code
     formatted = formatted.replace(/`([^`\n]+)`/g, function(match, code) {
       return '<code>' + self._escapeHtml(code) + '</code>';
     });
@@ -959,23 +1020,23 @@
       formatted = formatted.replace('___CODE_BLOCK_' + index + '___', block);
     });
     
-    // Step 4: Convert markdown links [text](url)
+    // Step 4: Convert markdown links
     formatted = formatted.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(match, text, url) {
       return '<a href="' + self._escapeHtml(url) + '" target="_blank" rel="noopener">' + self._escapeHtml(text) + '</a>';
     });
     
-    // Step 5: Convert bold (**text**) - must come before italic
+    // Step 5: Convert bold
     formatted = formatted.replace(/\*\*([^*\n]+)\*\*/g, function(match, text) {
       return '<strong>' + self._escapeHtml(text) + '</strong>';
     });
     
-    // Step 6: Convert italic (*text*) - single asterisk, process after bold
+    // Step 6: Convert italic
     formatted = formatted.replace(/\*([^*\n]+?)\*/g, function(match, text) {
       if (!text.trim()) return match;
       return '<em>' + self._escapeHtml(text) + '</em>';
     });
     
-    // Step 6.5: Convert markdown headings (##, ###, ####) - must come before lists
+    // Step 6.5: Convert markdown headings
     formatted = formatted.replace(/^####\s+(.+)$/gm, function(match, text) {
       return '<h4>' + text + '</h4>';
     });
@@ -989,7 +1050,7 @@
       return '<h1>' + text + '</h1>';
     });
     
-    // Step 7: Convert lists (numbered and bulleted)
+    // Step 7: Convert lists
     var lines = formatted.split('\n');
     var htmlLines = [];
     var inOrderedList = false;
@@ -999,16 +1060,13 @@
       var line = lines[i];
       var trimmed = line.trim();
       
-      // Skip empty lines
       if (!trimmed) {
         if (inOrderedList || inUnorderedList) {
-          // Keep empty line for list spacing
           continue;
         }
         continue;
       }
       
-      // Numbered list item
       var numMatch = trimmed.match(/^(\d+)\.\s+(.+)$/);
       if (numMatch) {
         if (inUnorderedList) {
@@ -1023,7 +1081,6 @@
         continue;
       }
       
-      // Bullet list item
       var bulletMatch = trimmed.match(/^[-*]\s+(.+)$/);
       if (bulletMatch) {
         if (inOrderedList) {
@@ -1038,7 +1095,6 @@
         continue;
       }
       
-      // Not a list item - close any open lists
       if (inOrderedList) {
         htmlLines.push('</ol>');
         inOrderedList = false;
@@ -1048,32 +1104,25 @@
         inUnorderedList = false;
       }
       
-      // Regular line
       htmlLines.push(trimmed);
     }
     
-    // Close any remaining open lists
-    if (inOrderedList) {
-      htmlLines.push('</ol>');
-    }
-    if (inUnorderedList) {
-      htmlLines.push('</ul>');
-    }
+    if (inOrderedList) htmlLines.push('</ol>');
+    if (inUnorderedList) htmlLines.push('</ul>');
     
     formatted = htmlLines.join('\n');
     
-    // Step 8: Escape remaining HTML (but preserve our generated tags)
+    // Step 8: Escape remaining HTML
     var parts = formatted.split(/(<[^>]+>)/g);
     var escapedParts = parts.map(function(part) {
       if (part.match(/^<[^>]+>$/)) {
-        return part; // Keep our HTML tags
+        return part;
       }
       return self._escapeHtml(part);
     });
     formatted = escapedParts.join('');
     
-    // Step 9: Convert to paragraphs with proper spacing
-    // Split by double newlines, but preserve lists and code blocks
+    // Step 9: Convert to paragraphs
     var paragraphs = [];
     var currentPara = [];
     
@@ -1088,7 +1137,6 @@
         continue;
       }
       
-      // If it's a list, code block, or heading, don't add to current para
       if (paraLine.startsWith('<ol>') || paraLine.startsWith('<ul>') || 
           paraLine.startsWith('</ol>') || paraLine.startsWith('</ul>') ||
           paraLine.startsWith('<pre>') ||
@@ -1111,14 +1159,12 @@
       paragraphs.push(currentPara.join('\n'));
     }
     
-    // Wrap paragraphs, but not lists, code blocks, or headings
     return paragraphs.map(function(para) {
       para = para.trim();
       if (para.startsWith('<ol>') || para.startsWith('<ul>') || para.startsWith('<pre>') ||
           para.startsWith('<h1>') || para.startsWith('<h2>') || para.startsWith('<h3>') || para.startsWith('<h4>')) {
         return para;
       }
-      // Convert single line breaks to <br> within paragraphs
       para = para.replace(/\n/g, '<br>');
       return '<p>' + para + '</p>';
     }).join('');
@@ -1132,9 +1178,9 @@
     this.modal.classList.add('is-open');
     this.isOpen = true;
     
-    // Lazy load chunks when modal opens (saves bandwidth!)
-    if (!this.ai.loaded && !this.chunksLoading) {
-      this.chunksLoading = true;
+    // Lazy load search index when modal opens
+    if (!this.ai.loaded && !this.indexLoading) {
+      this.indexLoading = true;
       var contentContainer = this.modal.querySelector('.mgnl-ask-ai-content');
       contentContainer.innerHTML = 
         '<div class="mgnl-ask-ai-loading">' +
@@ -1143,17 +1189,15 @@
         '</div>';
       
       this.ai.load().then(function() {
-        self.chunksLoading = false;
+        self.indexLoading = false;
         contentContainer.innerHTML = '';
-        // Clear any loading intervals
         if (self.loadingMessageInterval) {
           clearInterval(self.loadingMessageInterval);
           self.loadingMessageInterval = null;
         }
       }).catch(function(err) {
-        console.warn('MagnoliaAskAIUI: Failed to load chunks:', err);
-        self.chunksLoading = false;
-        // Clear any loading intervals
+        console.warn('MagnoliaAskAIUI: Failed to load search index:', err);
+        self.indexLoading = false;
         if (self.loadingMessageInterval) {
           clearInterval(self.loadingMessageInterval);
           self.loadingMessageInterval = null;
@@ -1184,7 +1228,6 @@
     
     document.body.style.overflow = '';
     
-    // Clear content and input
     var textarea = this.modal.querySelector('.mgnl-ask-ai-modal__input');
     this.modal.querySelector('.mgnl-ask-ai-content').innerHTML = '';
     textarea.value = '';
@@ -1208,22 +1251,16 @@
     var div = document.createElement('div');
     div.textContent = text;
     var escaped = div.innerHTML;
-    // Don't escape > characters - they're safe in HTML text content
-    // Only < and & need escaping for security
     escaped = escaped.replace(/&gt;/g, '>');
     return escaped;
   };
 
   MagnoliaAskAIUI.prototype._decodeHtmlEntities = function(text) {
     if (!text) return '';
-    // Use a more robust method to decode HTML entities
-    // Create a temporary element and use innerHTML to decode
     var temp = document.createElement('div');
     temp.innerHTML = text;
     var decoded = temp.textContent || temp.innerText || '';
     
-    // If textContent didn't decode entities (some browsers), manually decode common ones
-    // Handle both named and numeric entities
     var entityMap = {
       '&gt;': '>',
       '&lt;': '<',
@@ -1235,11 +1272,9 @@
       '&#62;': '>',
       '&#60;': '<',
       '&#38;': '&',
-      '&#34;': '"',
-      '&#39;': "'"
+      '&#34;': '"'
     };
     
-    // Replace entities that might still be encoded
     for (var entity in entityMap) {
       if (entityMap.hasOwnProperty(entity)) {
         var regex = new RegExp(entity.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');

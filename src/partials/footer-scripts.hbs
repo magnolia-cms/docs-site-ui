@@ -94,18 +94,19 @@
       window.location.port === '5252'
     );
     
-    // Configure chunks URL
-    var chunksUrl = '/search-data/llm-chunks.json'; // Production path
+    // Configure search data URLs
+    var indexUrl = '/search-data/search-index.min.json';
+    var pagesBaseUrl = '/search-data/';
     
     if (isPreview) {
-      // Local development: file is in public/ directory, served at root
-      var localChunksPath = '/llm-chunks.json';
-      chunksUrl = localChunksPath;
+      indexUrl = '/search-index.min.json';
+      pagesBaseUrl = '/';
     }
     
     new MagnoliaAskAIUI({
       container: '#askAI',
-      chunksUrl: chunksUrl,
+      indexUrl: indexUrl,
+      pagesBaseUrl: pagesBaseUrl,
       apiEndpoint: isPreview ? 'http://localhost:3000/api/ask' : '/api/ask', // Local API for preview, production URL for prod
       placeholder: 'Ask a question about Magnolia...',
       hotkey: '?', // On Mac: Command+/, Windows/Linux: Ctrl+/ or Shift+/
