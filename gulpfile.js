@@ -94,10 +94,15 @@ const buildPreviewPagesTask = createTask({
   call: task.buildPreviewPages(srcDir, previewSrcDir, previewDestDir, livereload),
 })
 
+const generateDummySearchDataTask = createTask({
+  name: 'preview:generate-dummy-search-data',
+  call: task.generateDummySearchData(),
+})
+
 const previewBuildTask = createTask({
   name: 'preview:build',
   desc: 'Process and stage the UI assets and generate pages for the preview',
-  call: parallel(buildTask, buildPreviewPagesTask),
+  call: parallel(buildTask, buildPreviewPagesTask, generateDummySearchDataTask),
 })
 
 const previewServeTask = createTask({
@@ -111,6 +116,12 @@ const previewTask = createTask({
   call: series(previewBuildTask, previewServeTask),
 })
 
+const generateDummySearchDataStandaloneTask = createTask({
+  name: 'generate-dummy-search-data',
+  desc: 'Generate dummy search data for local preview testing',
+  call: generateDummySearchDataTask,
+})
+
 module.exports = exportTasks(
   bundleTask,
   cleanTask,
@@ -121,5 +132,6 @@ module.exports = exportTasks(
   bundlePackTask,
   previewTask,
   previewBuildTask,
-  packTask
+  packTask,
+  generateDummySearchDataStandaloneTask
 )

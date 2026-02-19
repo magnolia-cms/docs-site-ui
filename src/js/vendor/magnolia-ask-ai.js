@@ -957,15 +957,20 @@
     var contentContainer = this.modal.querySelector('.mgnl-ask-ai-content');
     var self = this;
     
+    // Format answer with footnote processing (pass sources for matching)
+    var formattedAnswer = this._formatAnswer(answer, sources || []);
+    
     var sourcesHtml = '';
     if (sources && sources.length > 0) {
       sourcesHtml = 
-        '<div class="mgnl-ask-ai-sources">' +
+        '<div class="mgnl-ask-ai-sources" id="mgnl-ask-ai-sources">' +
           '<div class="mgnl-ask-ai-sources__label">Sources:</div>' +
           '<div class="mgnl-ask-ai-sources__list">' +
-            sources.map(function(source) {
-              return '<a href="' + self._escapeHtml(source.url) + '" target="_blank" class="mgnl-ask-ai-source">' +
-                self._escapeHtml(source.title) +
+            sources.map(function(source, index) {
+              var footnoteId = 'mgnl-source-' + index;
+              return '<a href="' + self._escapeHtml(source.url) + '" target="_blank" class="mgnl-ask-ai-source" id="' + footnoteId + '">' +
+                '<span class="mgnl-ask-ai-source__number">[' + (index + 1) + ']</span> ' +
+                '<span class="mgnl-ask-ai-source__title">' + self._escapeHtml(source.title) + '</span>' +
               '</a>';
             }).join('') +
           '</div>' +
@@ -974,9 +979,80 @@
     
     contentContainer.innerHTML = 
       '<div class="mgnl-ask-ai-answer">' +
-        '<div class="mgnl-ask-ai-answer__text">' + this._formatAnswer(answer) + '</div>' +
+        '<div class="mgnl-ask-ai-answer__text">' + formattedAnswer + '</div>' +
       '</div>' +
       sourcesHtml;
+    
+    // Add smooth scroll behavior for footnote clicks
+    var footnoteLinks = contentContainer.querySelectorAll('.mgnl-ask-ai-footnote');
+    footnoteLinks.forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        var targetId = link.getAttribute('href').substring(1); // Remove #
+        var targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          // Highlight the target briefly
+          targetElement.style.transition = 'background-color 0.3s ease';
+          var originalBg = targetElement.style.backgroundColor;
+          targetElement.style.backgroundColor = 'var(--rebrand-color-primary-sand)';
+          setTimeout(function() {
+            targetElement.style.backgroundColor = originalBg || '';
+          }, 1500);
+        }
+      });
+    });
+    
+    // Add copy-to-clipboard functionality for code blocks
+    var copyButtons = contentContainer.querySelectorAll('.mgnl-ask-ai-code-copy');
+    copyButtons.forEach(function(button) {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var codeId = button.getAttribute('data-copy-target');
+        var codeElement = document.getElementById(codeId);
+        if (codeElement) {
+          var text = codeElement.textContent || codeElement.innerText;
+          
+          // Use modern Clipboard API if available
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function() {
+              // Show success feedback
+              var originalHTML = button.innerHTML;
+              button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+              button.classList.add('copied');
+              setTimeout(function() {
+                button.innerHTML = originalHTML;
+                button.classList.remove('copied');
+              }, 2000);
+            }).catch(function(err) {
+              console.error('Failed to copy:', err);
+            });
+          } else {
+            // Fallback for older browsers
+            var textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+              document.execCommand('copy');
+              var originalHTML = button.innerHTML;
+              button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+              button.classList.add('copied');
+              setTimeout(function() {
+                button.innerHTML = originalHTML;
+                button.classList.remove('copied');
+              }, 2000);
+            } catch (err) {
+              console.error('Fallback copy failed:', err);
+            }
+            document.body.removeChild(textArea);
+          }
+        }
+      });
+    });
   };
 
   MagnoliaAskAIUI.prototype._showError = function(message) {
@@ -988,17 +1064,108 @@
       '</div>';
   };
 
-  MagnoliaAskAIUI.prototype._formatAnswer = function(answer) {
+  MagnoliaAskAIUI.prototype._formatAnswer = function(answer, sources) {
     if (!answer) return '';
     
     var self = this;
+    sources = sources || [];
+    
+    // Step 0: Process citations - replace "(Page: ...)" with footnote numbers
+    var footnoteCounter = 0;
+    var footnoteMap = {}; // Maps footnote number to source index
     
     // Remove "Source:" lines - sources are shown separately
     var formatted = answer.replace(/Source:\s*\*?[^\n]*\n?/gi, '');
     formatted = formatted.replace(/https?:\/\/[^\s]+/g, '');
     
-    // Step 0: Decode HTML entities
+    // Step 0.5: Decode HTML entities FIRST (citations might be HTML-encoded)
     formatted = self._decodeHtmlEntities(formatted);
+    
+    // Step 0.6: Handle HTML-encoded code tags that might still exist after decoding
+    // Some LLMs return &lt;code&gt; which gets decoded to <code>, but we need to process them
+    formatted = formatted.replace(/&lt;code&gt;([^&]+?)&lt;\/code&gt;/gi, function(match, code) {
+      return '<code>' + self._escapeHtml(code.trim()) + '</code>';
+    });
+    
+    // Process "(Page: ...)" citations AFTER HTML decoding
+    // Match patterns like: (Page: "title"), (Page: title), (Page: ), (Page:), (Page: "title":), (Page: "title").
+    // Also handle: Page: "title" (without parentheses) as fallback
+    // Handle variations with trailing colons, quotes, periods, etc.
+    // More flexible regex that handles various formats including trailing punctuation
+    
+    // First, handle citations WITH parentheses (most common)
+    formatted = formatted.replace(/\(Page:\s*([^)]*?)(?::\s*)?\)\.?/gi, function(match, pageText) {
+      footnoteCounter++;
+      var footnoteNum = footnoteCounter;
+      
+      // Try to match the page text to a source
+      var matchedSourceIndex = -1;
+      if (pageText && pageText.trim()) {
+        // Remove quotes if present and trim
+        var cleanPageText = pageText.replace(/^["']|["']$/g, '').trim().toLowerCase();
+        
+        // Try to find matching source by title
+        for (var i = 0; i < sources.length; i++) {
+          var sourceTitle = (sources[i].title || '').toLowerCase();
+          // More flexible matching - check if either contains the other
+          if (sourceTitle.indexOf(cleanPageText) !== -1 || cleanPageText.indexOf(sourceTitle) !== -1) {
+            matchedSourceIndex = i;
+            break;
+          }
+        }
+      }
+      
+      // If no match found, assign sequentially (will map to source index if available)
+      if (matchedSourceIndex === -1 && sources.length > 0) {
+        // Use modulo to cycle through sources if we have more citations than sources
+        matchedSourceIndex = (footnoteCounter - 1) % sources.length;
+      }
+      
+      footnoteMap[footnoteNum] = matchedSourceIndex;
+      
+      // Create footnote link
+      var footnoteId = matchedSourceIndex >= 0 ? 'mgnl-source-' + matchedSourceIndex : '';
+      var footnoteLink = '<a href="#' + (footnoteId || 'mgnl-ask-ai-sources') + '" class="mgnl-ask-ai-footnote" data-footnote="' + footnoteNum + '">[' + footnoteNum + ']</a>';
+      
+      return footnoteLink;
+    });
+    
+    // Also handle citations WITHOUT parentheses (fallback for edge cases)
+    // Pattern: Page: "title" or Page: title (at end of sentence or before punctuation)
+    formatted = formatted.replace(/\bPage:\s*([^.,;:!?)\]]+?)(?::\s*)?(?=[.,;:!?)\]]|$)/gi, function(match, pageText) {
+      footnoteCounter++;
+      var footnoteNum = footnoteCounter;
+      
+      // Try to match the page text to a source
+      var matchedSourceIndex = -1;
+      if (pageText && pageText.trim()) {
+        // Remove quotes if present and trim
+        var cleanPageText = pageText.replace(/^["']|["']$/g, '').trim().toLowerCase();
+        
+        // Try to find matching source by title
+        for (var i = 0; i < sources.length; i++) {
+          var sourceTitle = (sources[i].title || '').toLowerCase();
+          // More flexible matching - check if either contains the other
+          if (sourceTitle.indexOf(cleanPageText) !== -1 || cleanPageText.indexOf(sourceTitle) !== -1) {
+            matchedSourceIndex = i;
+            break;
+          }
+        }
+      }
+      
+      // If no match found, assign sequentially
+      if (matchedSourceIndex === -1 && sources.length > 0) {
+        matchedSourceIndex = (footnoteCounter - 1) % sources.length;
+      }
+      
+      footnoteMap[footnoteNum] = matchedSourceIndex;
+      
+      // Create footnote link
+      var footnoteId = matchedSourceIndex >= 0 ? 'mgnl-source-' + matchedSourceIndex : '';
+      var footnoteLink = '<a href="#' + (footnoteId || 'mgnl-ask-ai-sources') + '" class="mgnl-ask-ai-footnote" data-footnote="' + footnoteNum + '">[' + footnoteNum + ']</a>';
+      
+      return footnoteLink;
+    });
     
     // Step 1: Convert code blocks (```code```) first
     var codeBlocks = [];
@@ -1007,13 +1174,102 @@
       var placeholder = '___CODE_BLOCK_' + codeBlockIndex + '___';
       var langClass = lang ? ' class="language-' + self._escapeHtml(lang) + '"' : '';
       var langLabel = lang ? '<span class="mgnl-ask-ai-code-lang">' + self._escapeHtml(lang) + '</span>' : '';
-      codeBlocks[codeBlockIndex] = '<div class="mgnl-ask-ai-code-block">' + langLabel + '<pre><code' + langClass + '>' + self._escapeHtml(code.trim()) + '</code></pre></div>';
+      
+      // Pretty-print code based on language
+      var formattedCode = code.trim();
+      var langLower = lang ? lang.toLowerCase() : '';
+      
+      if (langLower === 'json') {
+        try {
+          var parsed = JSON.parse(formattedCode);
+          formattedCode = JSON.stringify(parsed, null, 2);
+        } catch (e) {
+          // If JSON parsing fails, use original code
+        }
+      } else if (langLower === 'yaml' || langLower === 'yml') {
+        // YAML is already typically formatted, but ensure consistent indentation
+        // Remove excessive blank lines and normalize indentation
+        var lines = formattedCode.split('\n');
+        var minIndent = Infinity;
+        var nonEmptyLines = lines.filter(function(line) { return line.trim().length > 0; });
+        
+        // Find minimum indentation
+        nonEmptyLines.forEach(function(line) {
+          var indent = line.match(/^(\s*)/)[1].length;
+          if (indent < minIndent) {
+            minIndent = indent;
+          }
+        });
+        
+        // Normalize indentation (remove common leading whitespace)
+        if (minIndent > 0 && minIndent < Infinity) {
+          formattedCode = lines.map(function(line) {
+            if (line.trim().length === 0) return '';
+            return line.substring(minIndent);
+          }).join('\n');
+        }
+      } else if (langLower === 'xml' || langLower === 'html') {
+        // Basic XML/HTML formatting - add indentation
+        try {
+          // Simple indentation for XML/HTML
+          var indentLevel = 0;
+          var indentSize = 2;
+          formattedCode = formattedCode.replace(/>\s*</g, '>\n<');
+          formattedCode = formattedCode.split('\n').map(function(line) {
+            var trimmed = line.trim();
+            if (!trimmed) return '';
+            
+            // Decrease indent before closing tags
+            if (trimmed.match(/^<\/\w/)) {
+              indentLevel = Math.max(0, indentLevel - 1);
+            }
+            
+            var indented = ' '.repeat(indentLevel * indentSize) + trimmed;
+            
+            // Increase indent after opening tags (but not self-closing)
+            if (trimmed.match(/^<\w[^>]*[^/]>$/) && !trimmed.match(/\/>$/)) {
+              indentLevel++;
+            }
+            
+            return indented;
+          }).join('\n');
+        } catch (e) {
+          // If formatting fails, use original
+        }
+      }
+      
+      // Generate unique ID for copy button
+      var codeId = 'mgnl-code-' + codeBlockIndex;
+      
+      codeBlocks[codeBlockIndex] = '<div class="mgnl-ask-ai-code-block" data-code-id="' + codeId + '">' + 
+        langLabel + 
+        '<button type="button" class="mgnl-ask-ai-code-copy" aria-label="Copy code" data-copy-target="' + codeId + '" title="Copy to clipboard">' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+        '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>' +
+        '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>' +
+        '</svg>' +
+        '</button>' +
+        '<pre><code id="' + codeId + '"' + langClass + '>' + self._escapeHtml(formattedCode) + '</code></pre></div>';
       codeBlockIndex++;
       return placeholder;
     });
     
     // Step 2: Convert inline code
+    // Process in order: HTML tags → markdown backticks
+    
+    // Handle plain HTML code tags (after HTML entity decoding converts &lt; to <)
+    // This handles: <code>...</code> that might be in the response
+    formatted = formatted.replace(/<code>([^<]+?)<\/code>/gi, function(match, code) {
+      // Only process if content doesn't already contain HTML (to avoid double-processing)
+      if (code.indexOf('<') === -1) {
+        return '<code>' + self._escapeHtml(code.trim()) + '</code>';
+      }
+      return match;
+    });
+    
+    // Handle markdown backticks (e.g., `code`)
     formatted = formatted.replace(/`([^`\n]+)`/g, function(match, code) {
+      // Skip if already inside a code tag (simple check)
       return '<code>' + self._escapeHtml(code) + '</code>';
     });
     

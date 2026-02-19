@@ -412,10 +412,36 @@
   color: #1e293b;
 }
 
+/* Footnotes in answer text */
+.mgnl-ask-ai-footnote {
+  display: inline-block;
+  margin-left: 2px;
+  padding: 0 2px;
+  font-size: 0.75em;
+  line-height: 1;
+  vertical-align: super;
+  color: var(--rebrand-color-primary-green);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+
+.mgnl-ask-ai-footnote:hover {
+  color: var(--rebrand-color-primary-dark-green);
+  text-decoration: underline;
+}
+
+.mgnl-ask-ai-footnote:focus {
+  outline: 2px solid var(--rebrand-color-primary-green);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 /* Sources */
 .mgnl-ask-ai-sources {
   padding-top: 24px;
   border-top: 1px solid #e2e8f0;
+  scroll-margin-top: 20px; /* For smooth scrolling when clicking footnotes */
 }
 
 .mgnl-ask-ai-sources__label {
@@ -435,7 +461,8 @@
 
 .mgnl-ask-ai-source {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  gap: 8px;
   padding: 8px 12px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -450,6 +477,17 @@
   background: var(--rebrand-color-primary-sand);
   border-color: var(--rebrand-color-primary-green);
   color: #1e293b;
+}
+
+.mgnl-ask-ai-source__number {
+  flex-shrink: 0;
+  font-weight: 600;
+  color: var(--rebrand-color-primary-green);
+  font-size: 0.9em;
+}
+
+.mgnl-ask-ai-source__title {
+  flex: 1;
 }
 
 /* Error */
@@ -534,14 +572,16 @@
 /* Code blocks in Ask AI answers */
 .mgnl-ask-ai-code-block {
   position: relative;
-  margin: 12px 0;
+  margin: 16px 0;
   border-radius: 6px;
   overflow: hidden;
+  background: #1e1e1e;
+  border: 1px solid #333;
 }
 
 .mgnl-ask-ai-code-lang {
-  display: block;
-  padding: 4px 12px;
+  display: inline-block;
+  padding: 6px 12px;
   background: #1e1e1e;
   color: #858585;
   font-size: 11px;
@@ -551,18 +591,66 @@
   border-bottom: 1px solid #333;
 }
 
+.mgnl-ask-ai-code-copy {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 6px 8px;
+  cursor: pointer;
+  color: #d4d4d4;
+  transition: all 0.2s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mgnl-ask-ai-code-copy:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.mgnl-ask-ai-code-copy.copied {
+  background: var(--rebrand-color-primary-green);
+  border-color: var(--rebrand-color-primary-green);
+  color: #fff;
+}
+
+.mgnl-ask-ai-code-copy svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
 .mgnl-ask-ai-answer__text pre {
   margin: 0;
-  padding: 14px 16px;
+  padding: 16px;
   background: #1e1e1e;
-  border-radius: 6px;
+  border-radius: 0 0 6px 6px;
   overflow-x: auto;
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.6;
+  tab-size: 2;
 }
 
 .mgnl-ask-ai-code-block pre {
+  margin: 0;
+  padding: 16px;
+  background: #1e1e1e;
   border-radius: 0 0 6px 6px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.6;
+  tab-size: 2;
+}
+
+/* When code block has no language label, pre should be fully rounded */
+.mgnl-ask-ai-code-block:not(:has(.mgnl-ask-ai-code-lang)) pre {
+  border-radius: 6px;
 }
 
 .mgnl-ask-ai-answer__text pre code {
@@ -572,6 +660,32 @@
   white-space: pre;
   word-break: normal;
   overflow-wrap: normal;
+  display: block;
+}
+
+/* JSON-specific styling for better readability */
+.mgnl-ask-ai-answer__text pre code.language-json {
+  color: #d4d4d4;
+}
+
+.mgnl-ask-ai-answer__text pre code.language-json .token.property {
+  color: #9cdcfe;
+}
+
+.mgnl-ask-ai-answer__text pre code.language-json .token.string {
+  color: #ce9178;
+}
+
+.mgnl-ask-ai-answer__text pre code.language-json .token.number {
+  color: #b5cea8;
+}
+
+.mgnl-ask-ai-answer__text pre code.language-json .token.boolean {
+  color: #569cd6;
+}
+
+.mgnl-ask-ai-answer__text pre code.language-json .token.punctuation {
+  color: #d4d4d4;
 }
 
 /* Inline code */
