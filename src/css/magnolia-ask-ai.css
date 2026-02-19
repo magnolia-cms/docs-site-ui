@@ -576,7 +576,7 @@
 
 /* Inline code */
 .mgnl-ask-ai-answer__text code {
-  background: #f0f0f0;
+  background: inherit;
   color: #c7254e;
   padding: 2px 5px;
   border-radius: 3px;
