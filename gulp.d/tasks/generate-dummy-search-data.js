@@ -4,7 +4,7 @@ const { spawn } = require('child_process')
 const path = require('path')
 
 module.exports = () => (done) => {
-  const scriptPath = path.join(__dirname, '..', '..', 'scripts', 'generate-dummy-search-data.js')
+  const scriptPath = path.join(__dirname, '..', 'scripts', 'generate-dummy-search-data.js')
   const child = spawn('node', [scriptPath], { stdio: 'inherit' })
 
   child.on('close', (code) => {

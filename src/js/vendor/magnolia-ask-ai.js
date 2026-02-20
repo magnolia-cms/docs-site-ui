@@ -1283,14 +1283,20 @@
       return '<a href="' + self._escapeHtml(url) + '" target="_blank" rel="noopener">' + self._escapeHtml(text) + '</a>';
     });
     
-    // Step 5: Convert bold
+    // Step 5: Convert bold (skip when content is/contains <code> so code isn't wrapped in strong)
     formatted = formatted.replace(/\*\*([^*\n]+)\*\*/g, function(match, text) {
+      if (/<code[\s>][\s\S]*?<\/code>/i.test(text.trim())) {
+        return text;
+      }
       return '<strong>' + self._escapeHtml(text) + '</strong>';
     });
     
-    // Step 6: Convert italic
+    // Step 6: Convert italic (skip when content is/contains <code> so code isn't wrapped in em)
     formatted = formatted.replace(/\*([^*\n]+?)\*/g, function(match, text) {
       if (!text.trim()) return match;
+      if (/<code[\s>][\s\S]*?<\/code>/i.test(text.trim())) {
+        return text;
+      }
       return '<em>' + self._escapeHtml(text) + '</em>';
     });
     
@@ -1515,31 +1521,28 @@
 
   MagnoliaAskAIUI.prototype._decodeHtmlEntities = function(text) {
     if (!text) return '';
-    var temp = document.createElement('div');
-    temp.innerHTML = text;
-    var decoded = temp.textContent || temp.innerText || '';
-    
+    // Decode entities by string replacement so we preserve HTML (e.g. footnote links).
+    // Do &amp; last to avoid double-decoding. Order matters.
     var entityMap = {
-      '&gt;': '>',
       '&lt;': '<',
-      '&amp;': '&',
+      '&gt;': '>',
       '&quot;': '"',
       '&#39;': "'",
       '&apos;': "'",
       '&nbsp;': ' ',
-      '&#62;': '>',
       '&#60;': '<',
-      '&#38;': '&',
-      '&#34;': '"'
+      '&#62;': '>',
+      '&#34;': '"',
+      '&amp;': '&',
+      '&#38;': '&'
     };
-    
+    var decoded = text;
     for (var entity in entityMap) {
       if (entityMap.hasOwnProperty(entity)) {
         var regex = new RegExp(entity.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
         decoded = decoded.replace(regex, entityMap[entity]);
       }
     }
-    
     return decoded;
   };
 

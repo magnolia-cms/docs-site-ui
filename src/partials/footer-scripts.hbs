@@ -87,21 +87,10 @@
       return;
     }
     
-    // Detect preview environment
-    var isPreview = window.location && (
-      window.location.hostname === 'localhost' || 
-      window.location.hostname === '127.0.0.1' || 
-      window.location.port === '5252'
-    );
-    
-    // Configure search data URLs
+    // Search data: same paths for preview and production.
+    // Preview uses dummy data from gulp (public/search-data/); production uses real search-data from build.
     var indexUrl = '/search-data/search-index.min.json';
     var pagesBaseUrl = '/search-data/';
-    
-    if (isPreview) {
-      indexUrl = '/search-index.min.json';
-      pagesBaseUrl = '/';
-    }
     
     new MagnoliaAskAIUI({
       container: '#askAI',
