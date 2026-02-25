@@ -5,3 +5,4 @@
 .local-playbook.yml
 .vscode
 .DS_Store
+gulp.d/scripts/
