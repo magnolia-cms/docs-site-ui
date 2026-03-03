@@ -87,16 +87,16 @@
       return;
     }
     
-    // Search data: same paths for preview and production.
-    // Preview uses dummy data from gulp (public/search-data/); production uses real search-data from build.
+    // Backend retrieval: Edge Function does Supabase + LLM; same origin, no index/pages needed for Ask AI
     var indexUrl = '/search-data/search-index.min.json';
-    var pagesBaseUrl = '/search-data/';
+    var pagesBaseUrl = '/';
     
     new MagnoliaAskAIUI({
       container: '#askAI',
       indexUrl: indexUrl,
       pagesBaseUrl: pagesBaseUrl,
-      apiEndpoint: 'https://magnolia-docs-ask-ai.onrender.com/api/ask',
+      apiEndpoint: '/api/ask',
+      useBackendRetrieval: true,
       placeholder: 'Ask a question about Magnolia...',
       hotkey: '?', // On Mac: Command+/, Windows/Linux: Ctrl+/ or Shift+/
       enabled: true,

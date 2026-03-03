@@ -16,10 +16,11 @@
   function MagnoliaAI(options) {
     options = options || {};
     this.indexUrl = options.indexUrl || '/search-data/search-index.min.json';
-    this.pagesBaseUrl = options.pagesBaseUrl || '/search-data/';
+    this.pagesBaseUrl = options.pagesBaseUrl || '/';
     this.apiEndpoint = options.apiEndpoint || '/api/ask';
     this.apiKey = options.apiKey || null;
     this.provider = options.provider || 'anthropic';
+    this.useBackendRetrieval = options.useBackendRetrieval === true;
     
     this.searchIndex = [];
     this.loaded = false;
@@ -34,12 +35,17 @@
   }
 
   /**
-   * Load search index
+   * Load search index (no-op when useBackendRetrieval: API does retrieval)
    */
   MagnoliaAI.prototype.load = function() {
     var self = this;
     
     if (this.loaded) {
+      return Promise.resolve();
+    }
+    
+    if (this.useBackendRetrieval) {
+      this.loaded = true;
       return Promise.resolve();
     }
     
@@ -348,11 +354,43 @@
   };
 
   /**
+   * Ask via backend (Edge Function / API does retrieval + LLM). POST question + filter, get answer + sources.
+   */
+  MagnoliaAI.prototype._askViaBackend = function(question, options) {
+    var self = this;
+    var filter = options.filter || {};
+    return fetch(this.apiEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: question, filter: filter })
+    })
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('Failed to get AI response');
+        }
+        return response.json();
+      })
+      .then(function(data) {
+        return {
+          answer: data.answer || null,
+          sources: data.sources || [],
+          context: null
+        };
+      });
+  };
+
+  /**
    * Ask a question
    */
   MagnoliaAI.prototype.ask = function(question, options) {
     options = options || {};
     var self = this;
+    
+    if (this.useBackendRetrieval && this.apiEndpoint) {
+      return this.load().then(function() {
+        return self._askViaBackend(question, options);
+      });
+    }
     
     if (!this.loaded) {
       return this.load().then(function() {
@@ -528,7 +566,7 @@
  *   new MagnoliaAskAIUI({
  *     container: '#askAI',
  *     indexUrl: '/search-data/search-index.min.json',
- *     pagesBaseUrl: '/search-data/',
+ *     pagesBaseUrl: '/',
  *     apiEndpoint: '/api/ask',
  *     enabled: true,
  *     position: 'header'
@@ -554,8 +592,9 @@
     this.options = {
       container: options.container || '#askAI',
       indexUrl: options.indexUrl || '/search-data/search-index.min.json',
-      pagesBaseUrl: options.pagesBaseUrl || '/search-data/',
+      pagesBaseUrl: options.pagesBaseUrl || '/',
       apiEndpoint: options.apiEndpoint || '/api/ask',
+      useBackendRetrieval: options.useBackendRetrieval === true,
       placeholder: options.placeholder || 'Ask a question about Magnolia...',
       hotkey: options.hotkey || '?',
       enabled: options.enabled !== undefined ? options.enabled : false,
@@ -600,7 +639,8 @@
     this.ai = new MagnoliaAI({
       indexUrl: this.options.indexUrl,
       pagesBaseUrl: this.options.pagesBaseUrl,
-      apiEndpoint: this.options.apiEndpoint
+      apiEndpoint: this.options.apiEndpoint,
+      useBackendRetrieval: this.options.useBackendRetrieval === true
     });
     
     // Load questions asked count from sessionStorage
@@ -858,8 +898,12 @@
       return;
     }
     
-    // Check if AI is loaded
-    if (!this.ai || !this.ai.loaded) {
+    // When using backend retrieval, no index load is required
+    if (!this.ai) {
+      this._showError('AI assistant is not available.');
+      return;
+    }
+    if (!this.options.useBackendRetrieval && !this.ai.loaded) {
       this._showError('AI assistant is still loading. Please wait a moment.');
       return;
     }
