@@ -61,7 +61,5 @@
   "dependencies": {
     "clipboard": "^2.0.6"
   },
-  "scripts": {
-    "generate-dummy-search-data": "node gulp.d/scripts/generate-dummy-search-data.js"
-  }
+  "scripts": {}
 }

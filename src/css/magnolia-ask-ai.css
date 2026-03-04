@@ -412,6 +412,36 @@
   color: #1e293b;
 }
 
+/* Nested lists: indent sub-items for clearer instructions */
+.mgnl-ask-ai-answer__text ul,
+.mgnl-ask-ai-answer__text ol {
+  margin-top: 6px;
+  margin-bottom: 12px;
+  padding-left: 1.5em;
+}
+
+.mgnl-ask-ai-answer__text li {
+  margin-bottom: 6px;
+}
+
+/* Nested list inside a list item (e.g. bullets under a numbered step) */
+.mgnl-ask-ai-answer__text li ul,
+.mgnl-ask-ai-answer__text li ol {
+  margin-top: 6px;
+  margin-bottom: 8px;
+  margin-left: 0.5em;
+  padding-left: 1.5em;
+  border-left: 2px solid #e2e8f0;
+}
+
+/* Code blocks that appear inside a list item: indent to align with list content */
+.mgnl-ask-ai-answer__text li .mgnl-ask-ai-code-block,
+.mgnl-ask-ai-answer__text li pre {
+  margin-left: 0;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
 /* Footnotes in answer text */
 .mgnl-ask-ai-footnote {
   display: inline-block;

@@ -7,7 +7,8 @@
 {{!-- Native Search Widget --}}
 <script src="{{{uiRootPath}}}/js/vendor/magnolia-search.js"></script>
 
-{{!-- Ask AI Widget --}}
+{{!-- Ask AI Widget: marked.js for markdown rendering (CDN so vendor bundle stays unchanged) --}}
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.1/marked.min.js" crossorigin="anonymous"></script>
 <script src="{{{uiRootPath}}}/js/vendor/magnolia-ask-ai.js"></script>
 <link rel="stylesheet" href="{{{uiRootPath}}}/css/magnolia-ask-ai.css">
 
@@ -87,6 +88,14 @@
       return;
     }
     
+    // Style test mode: use dummy data for styling (localhost/preview or ?askAiStyleTest=1)
+    var isPreview = window.location && (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      String(window.location.port) === '5252'
+    );
+    var askAiStyleTestMode = isPreview || (window.location && window.location.search.indexOf('askAiStyleTest=1') !== -1);
+    
     // Backend retrieval: Edge Function does Supabase + LLM; same origin, no index/pages needed for Ask AI
     var indexUrl = '/search-data/search-index.min.json';
     var pagesBaseUrl = '/';
@@ -97,6 +106,7 @@
       pagesBaseUrl: pagesBaseUrl,
       apiEndpoint: '/api/ask',
       useBackendRetrieval: true,
+      styleTestMode: askAiStyleTestMode,
       placeholder: 'Ask a question about Magnolia...',
       hotkey: '?', // On Mac: Command+/, Windows/Linux: Ctrl+/ or Shift+/
       enabled: true,

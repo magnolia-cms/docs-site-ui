@@ -354,29 +354,69 @@
   };
 
   /**
-   * Ask via backend (Edge Function / API does retrieval + LLM). POST question + filter, get answer + sources.
+   * Ask via backend (Edge Function / API). When options.stream is true, streams NDJSON and calls onStreamChunk(partial) then resolves with { answer, sources }.
    */
   MagnoliaAI.prototype._askViaBackend = function(question, options) {
     var self = this;
     var filter = options.filter || {};
+    var stream = options.stream === true;
+    var onStreamChunk = options.onStreamChunk || function() {};
+    var body = { question: question, filter: filter };
+    if (stream) body.stream = true;
     return fetch(this.apiEndpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question: question, filter: filter })
-    })
-      .then(function(response) {
-        if (!response.ok) {
-          throw new Error('Failed to get AI response');
-        }
-        return response.json();
-      })
-      .then(function(data) {
+      body: JSON.stringify(body)
+    }).then(function(response) {
+      if (!response.ok) {
+        throw new Error('Failed to get AI response');
+      }
+      var contentType = (response.headers.get('Content-Type') || '').toLowerCase();
+      var isNdjson = contentType.indexOf('ndjson') !== -1 || contentType.indexOf('x-ndjson') !== -1;
+      if (stream && response.body && isNdjson) {
+        var reader = response.body.getReader();
+        var decoder = new TextDecoder();
+        var buffer = '';
+        var answer = '';
+        var sources = [];
+        var processLine = function(line) {
+          line = line.trim();
+          if (!line) return;
+          try {
+            var obj = JSON.parse(line);
+            if (obj.type === 'content' && typeof obj.delta === 'string') {
+              answer += obj.delta;
+              onStreamChunk(answer);
+            } else if (obj.type === 'done' && Array.isArray(obj.sources)) {
+              sources = obj.sources;
+            }
+          } catch (err) { /* skip */ }
+        };
+        var readNext = function() {
+          return reader.read().then(function(result) {
+            if (result.done) {
+              if (buffer.trim()) processLine(buffer);
+              return { answer: answer, sources: sources, context: null };
+            }
+            buffer += decoder.decode(result.value, { stream: true });
+            var lines = buffer.split('\n');
+            buffer = lines.pop() || '';
+            for (var j = 0; j < lines.length; j++) {
+              processLine(lines[j]);
+            }
+            return readNext();
+          });
+        };
+        return readNext();
+      }
+      return response.json().then(function(data) {
         return {
           answer: data.answer || null,
           sources: data.sources || [],
           context: null
         };
       });
+    });
   };
 
   /**
@@ -608,7 +648,8 @@
       filters: options.filters || DEFAULT_FILTERS,
       onAnswer: options.onAnswer || null,
       onOpen: options.onOpen || null,
-      onClose: options.onClose || null
+      onClose: options.onClose || null,
+      styleTestMode: options.styleTestMode === true
     };
     
     this.ai = null;
@@ -921,12 +962,46 @@
     var self = this;
     var filter = this.currentFilter ? { version: this.currentFilter } : {};
     
-    // Ask question
-    this.ai.ask(question, {
-      maxPages: this.options.maxPages,
-      filter: filter
-    }).then(function(response) {
+    // Style test mode: use dummy data so styling can be tested without the edge function
+    if (this.options.styleTestMode) {
+      var dummy = this._getDummyAskAiResponse();
+      var delay = 600;
+      setTimeout(function() {
+        self.isLoading = false;
+        if (self.loadingMessageInterval) {
+          clearInterval(self.loadingMessageInterval);
+          self.loadingMessageInterval = null;
+        }
+        self._showAnswer(dummy.answer, dummy.sources);
+        if (self.options.onAnswer) {
+          self.options.onAnswer({ answer: dummy.answer, sources: dummy.sources });
+        }
+      }, delay);
+      return;
+    }
+    
+    // Ask question (stream when backend supports it for incremental display)
+    var askOpts = { maxPages: this.options.maxPages, filter: filter };
+    if (!this.options.styleTestMode && this.ai.useBackendRetrieval) {
+      askOpts.stream = true;
+      var lastPartial = '';
+      askOpts.onStreamChunk = (function(q) {
+        return function(partial) {
+          lastPartial = partial;
+          if (self._streamDebounceTimer) return;
+          self._streamDebounceTimer = setTimeout(function() {
+            self._streamDebounceTimer = null;
+            self._updateStreamingAnswer(q, lastPartial);
+          }, 80);
+        };
+      })(question);
+    }
+    this.ai.ask(question, askOpts).then(function(response) {
       self.isLoading = false;
+      if (self._streamDebounceTimer) {
+        clearTimeout(self._streamDebounceTimer);
+        self._streamDebounceTimer = null;
+      }
       if (self.loadingMessageInterval) {
         clearInterval(self.loadingMessageInterval);
         self.loadingMessageInterval = null;
@@ -943,6 +1018,10 @@
       }
     }).catch(function(err) {
       self.isLoading = false;
+      if (self._streamDebounceTimer) {
+        clearTimeout(self._streamDebounceTimer);
+        self._streamDebounceTimer = null;
+      }
       if (self.loadingMessageInterval) {
         clearInterval(self.loadingMessageInterval);
         self.loadingMessageInterval = null;
@@ -995,6 +1074,61 @@
         }, 200);
       }
     }, 2500);
+  };
+
+  /**
+   * Update the content area with a streaming partial answer (question + formatted partial, no sources yet).
+   */
+  MagnoliaAskAIUI.prototype._updateStreamingAnswer = function(question, partialAnswer) {
+    if (this.loadingMessageInterval) {
+      clearInterval(this.loadingMessageInterval);
+      this.loadingMessageInterval = null;
+    }
+    var contentContainer = this.modal.querySelector('.mgnl-ask-ai-content');
+    var formattedAnswer = this._formatAnswer(partialAnswer || '', []);
+    contentContainer.innerHTML =
+      '<div class="mgnl-ask-ai-question">' +
+        '<div class="mgnl-ask-ai-question__label">Question:</div>' +
+        '<div class="mgnl-ask-ai-question__text">' + this._escapeHtml(question) + '</div>' +
+      '</div>' +
+      '<div class="mgnl-ask-ai-answer">' +
+        '<div class="mgnl-ask-ai-answer__text">' + formattedAnswer + '</div>' +
+      '</div>';
+    var self = this;
+    contentContainer.querySelectorAll('.mgnl-ask-ai-code-copy').forEach(function(button) {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var codeId = button.getAttribute('data-copy-target');
+        var codeEl = document.getElementById(codeId);
+        if (codeEl) {
+          var text = codeEl.textContent || codeEl.innerText;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function() {
+              var orig = button.innerHTML;
+              button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+              button.classList.add('copied');
+              setTimeout(function() { button.innerHTML = orig; button.classList.remove('copied'); }, 2000);
+            });
+          } else {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+              document.execCommand('copy');
+              var orig = button.innerHTML;
+              button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+              button.classList.add('copied');
+              setTimeout(function() { button.innerHTML = orig; button.classList.remove('copied'); }, 2000);
+            } catch (err) {}
+            document.body.removeChild(ta);
+          }
+        }
+      });
+    });
   };
 
   MagnoliaAskAIUI.prototype._showAnswer = function(answer, sources) {
@@ -1108,19 +1242,119 @@
       '</div>';
   };
 
+  /**
+   * Dummy response for style-test mode (no API call). Exercises headings, nested lists,
+   * code blocks (XML, JSON, YAML) with angle brackets/special chars, inline code, and sources.
+   */
+  MagnoliaAskAIUI.prototype._getDummyAskAiResponse = function() {
+    var answer = 'To enable multiple languages for your content in Magnolia DXP, follow these steps:\n\n' +
+      '1. Enable Multilanguage Content:\n' +
+      '- Configure the **I18NAuthoringSupport** implementation to support multilanguage editing.\n' +
+      '- Set `i18n: true` in the form fields where you want to allow multilanguage content entry.\n' +
+      '- Set `i18n: true` in the properties of the content types where multilanguage support is needed.\n' +
+      '- Define the available locales in your site configuration.\n\n' +
+      'Configuration Examples:\n' +
+      '- To enable multilanguage authoring, add the following in your module descriptor:\n\n' +
+      '```xml\n' +
+      '<component>\n' +
+      '  <type>info.magnolia.ui.api.i18n.I18NAuthoringSupport</type>\n' +
+      '</component>\n' +
+      '```\n\n' +
+      '- Or in your app config (JSON):\n\n' +
+      '```json\n' +
+      '{\n' +
+      '  "i18n": true,\n' +
+      '  "locales": ["en", "de", "fr"],\n' +
+      '  "defaultLocale": "en"\n' +
+      '}\n' +
+      '```\n\n' +
+      '- Or in YAML:\n\n' +
+      '```yaml\n' +
+      'i18n: true\n' +
+      'locales:\n' +
+      '  - en\n' +
+      '  - de\n' +
+      '  - fr\n' +
+      'defaultLocale: en\n' +
+      '```\n\n' +
+      'Then register the locales in your site definition. Use **Configuration** app for runtime changes.';
+    var sources = [
+      { title: 'Language configuration', url: '/product-docs/6.3/Administration/Language-configuration/' },
+      { title: 'Set up multilanguage content', url: '/product-docs/6.3/Content-authoring/Set-up-multilanguage-content/' },
+      { title: 'Localizing content', url: '/product-docs/6.3/Content-authoring/Localizing-content/' },
+      { title: 'Configuration app', url: '/product-docs/6.3/Administration/Configuration-app/' }
+    ];
+    return { answer: answer, sources: sources };
+  };
+
+  /**
+   * Build one code block HTML (wrapper + copy button + lang label). Used by marked renderer and fallback.
+   */
+  MagnoliaAskAIUI.prototype._renderMarkedCodeBlock = function(rawCode, lang, index) {
+    var self = this;
+    var formattedCode = self._decodeHtmlEntities(rawCode).trim();
+    var langLower = lang ? lang.toLowerCase().replace(/^language-/, '') : '';
+    if (langLower === 'json') {
+      try {
+        var parsed = JSON.parse(formattedCode);
+        formattedCode = JSON.stringify(parsed, null, 2);
+      } catch (e) { /* keep original */ }
+    } else if (langLower === 'yaml' || langLower === 'yml') {
+      var lines = formattedCode.split('\n');
+      var minIndent = Infinity;
+      lines.forEach(function(line) {
+        if (line.trim().length) {
+          var n = (line.match(/^(\s*)/) || ['', ''])[1].length;
+          if (n < minIndent) minIndent = n;
+        }
+      });
+      if (minIndent > 0 && minIndent < Infinity) {
+        formattedCode = lines.map(function(line) {
+          return line.trim().length ? line.substring(minIndent) : '';
+        }).join('\n');
+      }
+    } else if (langLower === 'xml' || langLower === 'html') {
+      try {
+        var indentLevel = 0;
+        formattedCode = formattedCode.replace(/>\s*</g, '>\n<');
+        formattedCode = formattedCode.split('\n').map(function(line) {
+          var trimmed = line.trim();
+          if (!trimmed) return '';
+          if (trimmed.match(/^<\/\w/)) indentLevel = Math.max(0, indentLevel - 1);
+          var indented = ' '.repeat(indentLevel * 2) + trimmed;
+          if (trimmed.match(/^<\w[^>]*[^/]>$/) && !trimmed.match(/\/>$/)) indentLevel++;
+          return indented;
+        }).join('\n');
+      } catch (e) { /* keep original */ }
+    }
+    var codeId = 'mgnl-code-' + index;
+    var langClass = lang ? ' class="language-' + this._escapeHtml(lang) + '"' : '';
+    var langLabel = lang ? '<span class="mgnl-ask-ai-code-lang">' + this._escapeHtml(lang) + '</span>' : '';
+    return '<div class="mgnl-ask-ai-code-block" data-code-id="' + codeId + '">' +
+      langLabel +
+      '<button type="button" class="mgnl-ask-ai-code-copy" aria-label="Copy code" data-copy-target="' + codeId + '" title="Copy to clipboard">' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+      '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>' +
+      '<pre><code id="' + codeId + '"' + langClass + '>' + this._escapeHtmlForCode(formattedCode) + '</code></pre></div>';
+  };
+
   MagnoliaAskAIUI.prototype._formatAnswer = function(answer, sources) {
     if (!answer) return '';
     
     var self = this;
     sources = sources || [];
     
-    // Step 0: Process citations - replace "(Page: ...)" with footnote numbers
-    var footnoteCounter = 0;
-    var footnoteMap = {}; // Maps footnote number to source index
+    // Step 0: Strip the Sources section from the LLM response so we only show the styled sources at the bottom
+    var formatted = answer.replace(/\n\s*#{1,6}\s*Sources?\s*:?\s*\n[\s\S]*$/i, '');
+    formatted = formatted.replace(/\n\s*Sources?\s*:?\s*\n[\s\S]*$/i, '');
     
     // Remove "Source:" lines - sources are shown separately
-    var formatted = answer.replace(/Source:\s*\*?[^\n]*\n?/gi, '');
+    formatted = formatted.replace(/Source:\s*\*?[^\n]*\n?/gi, '');
     formatted = formatted.replace(/https?:\/\/[^\s]+/g, '');
+    
+    // Step 0b: Process citations - replace "(Page: ...)" with footnote numbers
+    var footnoteCounter = 0;
+    var footnoteMap = {}; // Maps footnote number to source index
     
     // Step 0.5: Decode HTML entities FIRST (citations might be HTML-encoded)
     formatted = self._decodeHtmlEntities(formatted);
@@ -1128,7 +1362,7 @@
     // Step 0.6: Handle HTML-encoded code tags that might still exist after decoding
     // Some LLMs return &lt;code&gt; which gets decoded to <code>, but we need to process them
     formatted = formatted.replace(/&lt;code&gt;([^&]+?)&lt;\/code&gt;/gi, function(match, code) {
-      return '<code>' + self._escapeHtml(code.trim()) + '</code>';
+      return '<code>' + self._escapeHtmlForCode(code.trim()) + '</code>';
     });
     
     // Process "(Page: ...)" citations AFTER HTML decoding
@@ -1211,89 +1445,31 @@
       return footnoteLink;
     });
     
-    // Step 1: Convert code blocks (```code```) first
+    // Use marked.js when available; avoid custom renderers to prevent marked v12 token API mismatch (t.text is not a function)
+    if (typeof marked !== 'undefined') {
+      try {
+        var markedHtml = marked.parse(formatted);
+        var codeBlockIdx = 0;
+        // Post-process: wrap marked's <pre><code class="language-x"> in our code-block div + copy button
+        markedHtml = markedHtml.replace(/<pre><code(?:\s+class="[^"]*language-([^"]*)")?>([\s\S]*?)<\/code><\/pre>/gi, function(_, lang, code) {
+          var langStr = (lang != null && lang !== undefined) ? String(lang).trim() : '';
+          var codeStr = (code != null && code !== undefined) ? String(code) : '';
+          var block = self._renderMarkedCodeBlock(self._decodeHtmlEntities(codeStr), langStr, codeBlockIdx);
+          codeBlockIdx++;
+          return block;
+        });
+        return markedHtml;
+      } catch (e) {
+        console.warn('MagnoliaAskAIUI: marked.parse failed, using fallback', e);
+      }
+    }
+    
+    // Step 1: Convert code blocks (```code```) first (fallback when marked not available)
     var codeBlocks = [];
     var codeBlockIndex = 0;
     formatted = formatted.replace(/```(\w*)\n?([\s\S]*?)```/g, function(match, lang, code) {
       var placeholder = '___CODE_BLOCK_' + codeBlockIndex + '___';
-      var langClass = lang ? ' class="language-' + self._escapeHtml(lang) + '"' : '';
-      var langLabel = lang ? '<span class="mgnl-ask-ai-code-lang">' + self._escapeHtml(lang) + '</span>' : '';
-      
-      // Pretty-print code based on language
-      var formattedCode = code.trim();
-      var langLower = lang ? lang.toLowerCase() : '';
-      
-      if (langLower === 'json') {
-        try {
-          var parsed = JSON.parse(formattedCode);
-          formattedCode = JSON.stringify(parsed, null, 2);
-        } catch (e) {
-          // If JSON parsing fails, use original code
-        }
-      } else if (langLower === 'yaml' || langLower === 'yml') {
-        // YAML is already typically formatted, but ensure consistent indentation
-        // Remove excessive blank lines and normalize indentation
-        var lines = formattedCode.split('\n');
-        var minIndent = Infinity;
-        var nonEmptyLines = lines.filter(function(line) { return line.trim().length > 0; });
-        
-        // Find minimum indentation
-        nonEmptyLines.forEach(function(line) {
-          var indent = line.match(/^(\s*)/)[1].length;
-          if (indent < minIndent) {
-            minIndent = indent;
-          }
-        });
-        
-        // Normalize indentation (remove common leading whitespace)
-        if (minIndent > 0 && minIndent < Infinity) {
-          formattedCode = lines.map(function(line) {
-            if (line.trim().length === 0) return '';
-            return line.substring(minIndent);
-          }).join('\n');
-        }
-      } else if (langLower === 'xml' || langLower === 'html') {
-        // Basic XML/HTML formatting - add indentation
-        try {
-          // Simple indentation for XML/HTML
-          var indentLevel = 0;
-          var indentSize = 2;
-          formattedCode = formattedCode.replace(/>\s*</g, '>\n<');
-          formattedCode = formattedCode.split('\n').map(function(line) {
-            var trimmed = line.trim();
-            if (!trimmed) return '';
-            
-            // Decrease indent before closing tags
-            if (trimmed.match(/^<\/\w/)) {
-              indentLevel = Math.max(0, indentLevel - 1);
-            }
-            
-            var indented = ' '.repeat(indentLevel * indentSize) + trimmed;
-            
-            // Increase indent after opening tags (but not self-closing)
-            if (trimmed.match(/^<\w[^>]*[^/]>$/) && !trimmed.match(/\/>$/)) {
-              indentLevel++;
-            }
-            
-            return indented;
-          }).join('\n');
-        } catch (e) {
-          // If formatting fails, use original
-        }
-      }
-      
-      // Generate unique ID for copy button
-      var codeId = 'mgnl-code-' + codeBlockIndex;
-      
-      codeBlocks[codeBlockIndex] = '<div class="mgnl-ask-ai-code-block" data-code-id="' + codeId + '">' + 
-        langLabel + 
-        '<button type="button" class="mgnl-ask-ai-code-copy" aria-label="Copy code" data-copy-target="' + codeId + '" title="Copy to clipboard">' +
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
-        '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>' +
-        '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>' +
-        '</svg>' +
-        '</button>' +
-        '<pre><code id="' + codeId + '"' + langClass + '>' + self._escapeHtml(formattedCode) + '</code></pre></div>';
+      codeBlocks[codeBlockIndex] = self._renderMarkedCodeBlock(code, lang || '', codeBlockIndex);
       codeBlockIndex++;
       return placeholder;
     });
@@ -1306,7 +1482,7 @@
     formatted = formatted.replace(/<code>([^<]+?)<\/code>/gi, function(match, code) {
       // Only process if content doesn't already contain HTML (to avoid double-processing)
       if (code.indexOf('<') === -1) {
-        return '<code>' + self._escapeHtml(code.trim()) + '</code>';
+        return '<code>' + self._escapeHtmlForCode(code.trim()) + '</code>';
       }
       return match;
     });
@@ -1314,7 +1490,7 @@
     // Handle markdown backticks (e.g., `code`)
     formatted = formatted.replace(/`([^`\n]+)`/g, function(match, code) {
       // Skip if already inside a code tag (simple check)
-      return '<code>' + self._escapeHtml(code) + '</code>';
+      return '<code>' + self._escapeHtmlForCode(code) + '</code>';
     });
     
     // Step 3: Restore code blocks
@@ -1358,66 +1534,101 @@
       return '<h1>' + text + '</h1>';
     });
     
-    // Step 7: Convert lists
+    // Step 7: Convert lists with proper nesting (bullets under numbered item = nested <ul> inside <li>)
     var lines = formatted.split('\n');
     var htmlLines = [];
-    var inOrderedList = false;
-    var inUnorderedList = false;
+    var listStack = [];
+    var INDENT_STEP = 2;
+    var pendingOlLiClose = false; // we output <li> for an ol but not </li> so bullets can nest
+    var inNestedUl = false;
+    
+    function closeListsToDepth(depth) {
+      while (listStack.length > depth) {
+        htmlLines.push('</' + listStack.pop() + '>');
+      }
+    }
+    
+    function closePendingNested() {
+      if (inNestedUl) {
+        htmlLines.push('</li></ul>');
+        inNestedUl = false;
+      }
+      if (pendingOlLiClose) {
+        htmlLines.push('</li>');
+        pendingOlLiClose = false;
+      }
+    }
     
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
+      var leadingSpaces = (line.match(/^(\s*)/) || ['', ''])[1].length;
       var trimmed = line.trim();
+      var indentLevel = Math.floor(leadingSpaces / INDENT_STEP);
       
       if (!trimmed) {
-        if (inOrderedList || inUnorderedList) {
-          continue;
-        }
         continue;
       }
       
       var numMatch = trimmed.match(/^(\d+)\.\s+(.+)$/);
       if (numMatch) {
-        if (inUnorderedList) {
-          htmlLines.push('</ul>');
-          inUnorderedList = false;
-        }
-        if (!inOrderedList) {
+        closePendingNested();
+        closeListsToDepth(indentLevel);
+        while (listStack.length < indentLevel) {
+          listStack.push('ol');
           htmlLines.push('<ol>');
-          inOrderedList = true;
         }
-        htmlLines.push('<li>' + numMatch[2] + '</li>');
+        if (listStack.length > 0 && listStack[listStack.length - 1] !== 'ol') {
+          closeListsToDepth(indentLevel);
+          listStack.push('ol');
+          htmlLines.push('<ol>');
+        } else if (listStack.length === 0) {
+          listStack.push('ol');
+          htmlLines.push('<ol>');
+        }
+        htmlLines.push('<li>' + numMatch[2]);
+        pendingOlLiClose = true;
         continue;
       }
       
       var bulletMatch = trimmed.match(/^[-*]\s+(.+)$/);
       if (bulletMatch) {
-        if (inOrderedList) {
-          htmlLines.push('</ol>');
-          inOrderedList = false;
+        var bulletNestedUnderOl = (leadingSpaces === 0 && listStack.length > 0 && listStack[listStack.length - 1] === 'ol' && pendingOlLiClose);
+        if (bulletNestedUnderOl) {
+          htmlLines.push('<ul><li>' + bulletMatch[1]);
+          pendingOlLiClose = false;
+          inNestedUl = true;
+          continue;
         }
-        if (!inUnorderedList) {
+        if (inNestedUl && leadingSpaces === 0) {
+          htmlLines.push('</li><li>' + bulletMatch[1]);
+          continue;
+        }
+        closePendingNested();
+        var effectiveBulletIndent = (leadingSpaces > 0) ? indentLevel : 0;
+        closeListsToDepth(effectiveBulletIndent);
+        while (listStack.length < effectiveBulletIndent) {
+          listStack.push('ul');
           htmlLines.push('<ul>');
-          inUnorderedList = true;
+        }
+        if (listStack.length > 0 && listStack[listStack.length - 1] !== 'ul') {
+          closeListsToDepth(effectiveBulletIndent);
+          listStack.push('ul');
+          htmlLines.push('<ul>');
+        } else if (listStack.length === 0) {
+          listStack.push('ul');
+          htmlLines.push('<ul>');
         }
         htmlLines.push('<li>' + bulletMatch[1] + '</li>');
         continue;
       }
       
-      if (inOrderedList) {
-        htmlLines.push('</ol>');
-        inOrderedList = false;
-      }
-      if (inUnorderedList) {
-        htmlLines.push('</ul>');
-        inUnorderedList = false;
-      }
-      
+      closePendingNested();
+      closeListsToDepth(0);
       htmlLines.push(trimmed);
     }
     
-    if (inOrderedList) htmlLines.push('</ol>');
-    if (inUnorderedList) htmlLines.push('</ul>');
-    
+    closePendingNested();
+    closeListsToDepth(0);
     formatted = htmlLines.join('\n');
     
     // Step 8: Escape remaining HTML
@@ -1445,8 +1656,9 @@
         continue;
       }
       
-      if (paraLine.startsWith('<ol>') || paraLine.startsWith('<ul>') || 
+      if (paraLine.startsWith('<ol>') || paraLine.startsWith('<ul>') ||
           paraLine.startsWith('</ol>') || paraLine.startsWith('</ul>') ||
+          paraLine.startsWith('<li>') || paraLine.startsWith('</li>') ||
           paraLine.startsWith('<pre>') ||
           paraLine.startsWith('<h1>') || paraLine.startsWith('<h2>') || 
           paraLine.startsWith('<h3>') || paraLine.startsWith('<h4>') ||
@@ -1469,7 +1681,8 @@
     
     return paragraphs.map(function(para) {
       para = para.trim();
-      if (para.startsWith('<ol>') || para.startsWith('<ul>') || para.startsWith('<pre>') ||
+      if (para.startsWith('<ol>') || para.startsWith('<ul>') || para.startsWith('<li>') || para.startsWith('</li>') ||
+          para.startsWith('</ol>') || para.startsWith('</ul>') || para.startsWith('<pre>') ||
           para.startsWith('<h1>') || para.startsWith('<h2>') || para.startsWith('<h3>') || para.startsWith('<h4>')) {
         return para;
       }
@@ -1561,6 +1774,14 @@
     var escaped = div.innerHTML;
     escaped = escaped.replace(/&gt;/g, '>');
     return escaped;
+  };
+
+  /** Escape for use inside <code> / <pre> so angle brackets display correctly (e.g. XML). */
+  MagnoliaAskAIUI.prototype._escapeHtmlForCode = function(text) {
+    if (!text) return '';
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
   };
 
   MagnoliaAskAIUI.prototype._decodeHtmlEntities = function(text) {
