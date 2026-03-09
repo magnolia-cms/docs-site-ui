@@ -2,9 +2,9 @@ button#searchBar {
   outline: none;
   border: none;
   background-color: transparent;
-  top: 3vh;
   position: relative;
-  margin-left: 3.75vw;
+  top: 1.2rem;
+  margin-left: 3rem;
 }
 
 .DocSearch-Button {
@@ -20,5 +20,5 @@ button#searchBar {
 }
 
 .DocSearch-Button-Container {
-  margin-left: 2vw !important;
+  margin-left: 1.5rem !important;
 }
