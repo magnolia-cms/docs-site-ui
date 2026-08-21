@@ -538,13 +538,13 @@
               DX Cloud latest updates:
             </h2>
             <p class="paragraph">
-              <a class="link-button button is-primary" href="{{{siteRootPath}}}/paas/changelog/">DX Cloud Changelog</a>
+              <a class="link-button button is-primary" href="https://neo.docs.magnolia-cms.com/changelogs/dx-cloud/">DX Cloud Changelog</a>
             </p>
             <p class="paragraph">
               Magnolia DX Cloud delivers a managed PaaS for scalable, high-availability digital experiences with automated updates and seamless integrations.
             </p>
             <div class="buttons">
-              <a class="link" href="{{{siteRootPath}}}/paas/">
+              <a class="link" href="https://neo.docs.magnolia-cms.com/dx-cloud/">
                 Learn more
               </a>
             </div>
@@ -563,7 +563,7 @@
               <h3 class="card-x__title h3"><i class="fa fa-cloud" aria-hidden="true"></i> Learn</h3>
               <p class="card-x__p">Learn about Magnolia DX Cloud's architecture, including basic, standard, and premium options which include monitoring and automated updates, ensuring high availability and performance.</p>
               <div class="card-x__link-w">
-                <a class="card-x__link link" href="{{{siteRootPath}}}/paas/architecture/">Learn more</a>
+                <a class="card-x__link link" href="https://neo.docs.magnolia-cms.com/dx-cloud/concepts/architecture/">Learn more</a>
               </div>
             </div>
           </div>
@@ -571,9 +571,9 @@
           <div class="column is-4-widescreen is-6-desktop is-6-tablet">
             <div class="card-x">
               <h3 class="card-x__title h3"><i class="fa fa-code" aria-hidden="true"></i> Develop</h3>
-              <p class="card-x__p">Discover how to integrate and deploy applications on DX Cloud using our dedicated CI/CD pipelines. Configure critical items through our <code style="background-color: black !important;"><a href="{{{siteRootPath}}}/paas/deployment/helm-values/">values.yml</a></code> file and check out our headless capabilities for rapid development.</p>
+              <p class="card-x__p">Discover how to integrate and deploy applications on DX Cloud using our dedicated CI/CD pipelines. Configure critical items through our <code style="background-color: black !important;"><a href="https://neo.docs.magnolia-cms.com/dx-cloud/operations/deployment/helm-values/">values.yml</a></code> file and check out our headless capabilities for rapid development.</p>
               <div class="card-x__link-w">
-                <a class="card-x__link link" href="{{{siteRootPath}}}/paas/setup/">Learn more</a>
+                <a class="card-x__link link" href="https://neo.docs.magnolia-cms.com/dx-cloud/operations/setup/">Learn more</a>
               </div>
             </div>
           </div>
@@ -583,7 +583,7 @@
               <h3 class="card-x__title h3"><i class="fa fa-line-chart" aria-hidden="true"></i> Manage</h3>
               <p class="card-x__p">Manage everything about your DX Cloud project directly through the Cockpit, DX Cloud's user interface where you can configure ingresses, set redirects, monitor environments, and much more.</p>
               <div class="card-x__link-w">
-                <a class="card-x__link link" href="{{{siteRootPath}}}/paas/cockpit/">Learn more</a>
+                <a class="card-x__link link" href="https://neo.docs.magnolia-cms.com/dx-cloud/cockpit/">Learn more</a>
               </div>
             </div>
           </div>
@@ -622,8 +622,14 @@
       apiKey: '9117a4e7751be182a32d4e70a11d176a',
       indexName: 'magnolia-cms',
       container: '#docsearch',
-      searchParameters: { hitsPerPage: 12, attributesToHighlight: ["hierarchy.lvl0"] },
-      askAi: 'C6xQL7oXbB6z'
+      searchParameters: { hitsPerPage: 50, attributesToHighlight: ["hierarchy.lvl0"] },
+      askAi: 'C6xQL7oXbB6z',
+      transformItems: function(items) {
+        return items.filter(function(item) {
+          var url = item.url || '';
+          return url.indexOf('/paas/') === -1 && !/\/paas(\.html)?(\?|#|$)/.test(url);
+        }).slice(0, 12);
+      }
     });
   </script>
 </body>

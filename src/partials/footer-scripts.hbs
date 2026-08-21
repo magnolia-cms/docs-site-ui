@@ -13,6 +13,10 @@
   // IMPORTANT: Store filter state on window so it's accessible from transformItems closure
   // and survives DocSearch re-initialization
   window.__magnoliaVersionFilter = sessionStorage.getItem('docsearch-version-filter') || '';
+  if (window.__magnoliaVersionFilter === 'cloud') {
+    window.__magnoliaVersionFilter = '';
+    sessionStorage.removeItem('docsearch-version-filter');
+  }
   
   // Function to determine version/category from URL
   // Uses specific path detection for accurate categorization
@@ -24,10 +28,6 @@
     if (url.includes('/product-docs/6.3/')) return '6.3';
     // Product docs without version number = latest (6.4)
     if (url.includes('/product-docs/')) return 'latest';
-    
-    // Cloud/PaaS docs
-    if (url.includes('/paas/')) return 'cloud';
-    if (url.includes('/cockpit/')) return 'cloud';
     
     // General content (not modules)
     if (url.includes('/support/')) return 'general';
@@ -45,6 +45,12 @@
     return 'modules';
   }
   
+  // Drop leftover Antora PaaS records until Algolia finishes reindexing without /paas/
+  function isRetiredPaasHit(item) {
+    var url = item.url || '';
+    return url.indexOf('/paas/') !== -1 || /\/paas(\.html)?(\?|#|$)/.test(url);
+  }
+
   // Function to check if item matches selected version
   function matchesFilter(item, selectedVersion) {
     if (!selectedVersion) return true; // No filter = show all
@@ -72,8 +78,8 @@
     transformItems: function(items) {
       var selectedVersion = window.__magnoliaVersionFilter || '';
       
-      // Filter items based on selected version
       var filteredItems = items.filter(function(item) {
+        if (isRetiredPaasHit(item)) return false;
         return matchesFilter(item, selectedVersion);
       });
       
@@ -96,7 +102,6 @@
         <button type="button" class="ds-version-filter__btn' + (window.__magnoliaVersionFilter === 'latest' ? ' active' : '') + '" data-version="latest">Latest</button>\
         <button type="button" class="ds-version-filter__btn' + (window.__magnoliaVersionFilter === '6.3' ? ' active' : '') + '" data-version="6.3">6.3</button>\
         <button type="button" class="ds-version-filter__btn' + (window.__magnoliaVersionFilter === '6.2' ? ' active' : '') + '" data-version="6.2">6.2</button>\
-        <button type="button" class="ds-version-filter__btn' + (window.__magnoliaVersionFilter === 'cloud' ? ' active' : '') + '" data-version="cloud">DX Cloud</button>\
         <button type="button" class="ds-version-filter__btn' + (window.__magnoliaVersionFilter === 'modules' ? ' active' : '') + '" data-version="modules">Modules</button>\
       </div>\
     ';
