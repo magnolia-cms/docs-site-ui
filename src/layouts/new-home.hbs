@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
   {{!-- <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" /> --}}
   <link rel="stylesheet" href="{{{uiRootPath}}}/css/site.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@beta" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@4.4.0" />
   <link rel="icon" href="{{{uiRootPath}}}/img/mgnl-favicon-darkTeal-32.png" type="image/png">
   {{> header-scripts}}
   {{> head-scripts}}
@@ -467,9 +467,9 @@
               DX Core latest releases:
             </h2>
             <p class="paragraph">
-              <a class="link-button button is-primary" href="{{{siteRootPath}}}/product-docs/releases/release-notes-for-magnolia-dx-core-6.4.6/"> Magnolia 6.4.6</a>
-              <a class="link-button button is-primary" href="{{{siteRootPath}}}/product-docs/6.3/releases/release-notes-for-magnolia-cms-6.3.24/"> Magnolia 6.3.24</a>
-              <a class="link-button button is-primary" href="{{{siteRootPath}}}/product-docs/6.2/releases/release-notes-for-magnolia-cms-6.2.74/"> Magnolia 6.2.74</a>
+              <a class="link-button button is-primary" href="{{{siteRootPath}}}/product-docs/releases/release-notes-for-magnolia-dx-core-6.4.9/"> Magnolia 6.4.9</a>
+              <a class="link-button button is-primary" href="{{{siteRootPath}}}/product-docs/6.3/releases/release-notes-for-magnolia-cms-6.3.27/"> Magnolia 6.3.27</a>
+              <a class="link-button button is-primary" href="{{{siteRootPath}}}/product-docs/6.2/releases/release-notes-for-magnolia-cms-6.2.77/"> Magnolia 6.2.77</a>
             </p>
             <p class="paragraph">
               Magnolia's modular architecture is well-suited for building industry-specific solutions that require scalability, reliability and excellent support.
@@ -538,13 +538,13 @@
               DX Cloud latest updates:
             </h2>
             <p class="paragraph">
-              <a class="link-button button is-primary" href="{{{siteRootPath}}}/paas/changelog/">DX Cloud Changelog</a>
+              <a class="link-button button is-primary" href="https://neo.docs.magnolia-cms.com/changelogs/dx-cloud/" target="_blank">DX Cloud Changelog</a>
             </p>
             <p class="paragraph">
               Magnolia DX Cloud delivers a managed PaaS for scalable, high-availability digital experiences with automated updates and seamless integrations.
             </p>
             <div class="buttons">
-              <a class="link" href="{{{siteRootPath}}}/paas/">
+              <a class="link" href="https://neo.docs.magnolia-cms.com/dx-cloud/" target="_blank">
                 Learn more
               </a>
             </div>
@@ -563,7 +563,7 @@
               <h3 class="card-x__title h3"><i class="fa fa-cloud" aria-hidden="true"></i> Learn</h3>
               <p class="card-x__p">Learn about Magnolia DX Cloud's architecture, including basic, standard, and premium options which include monitoring and automated updates, ensuring high availability and performance.</p>
               <div class="card-x__link-w">
-                <a class="card-x__link link" href="{{{siteRootPath}}}/paas/architecture/">Learn more</a>
+                <a class="card-x__link link" href="https://neo.docs.magnolia-cms.com/dx-cloud/concepts/architecture/" target="_blank">Learn more</a>
               </div>
             </div>
           </div>
@@ -571,9 +571,9 @@
           <div class="column is-4-widescreen is-6-desktop is-6-tablet">
             <div class="card-x">
               <h3 class="card-x__title h3"><i class="fa fa-code" aria-hidden="true"></i> Develop</h3>
-              <p class="card-x__p">Discover how to integrate and deploy applications on DX Cloud using our dedicated CI/CD pipelines. Configure critical items through our <code style="background-color: black !important;"><a href="{{{siteRootPath}}}/paas/deployment/helm-values/">values.yml</a></code> file and check out our headless capabilities for rapid development.</p>
+              <p class="card-x__p">Discover how to integrate and deploy applications on DX Cloud using our dedicated CI/CD pipelines. Configure critical items through our <code style="background-color: black !important;"><a href="https://neo.docs.magnolia-cms.com/dx-cloud/operations/deployment/helm-values/">values.yml</a></code> file and check out our headless capabilities for rapid development.</p>
               <div class="card-x__link-w">
-                <a class="card-x__link link" href="{{{siteRootPath}}}/paas/setup/">Learn more</a>
+                <a class="card-x__link link" href="https://neo.docs.magnolia-cms.com/dx-cloud/operations/setup/" target="_blank">Learn more</a>
               </div>
             </div>
           </div>
@@ -583,7 +583,7 @@
               <h3 class="card-x__title h3"><i class="fa fa-line-chart" aria-hidden="true"></i> Manage</h3>
               <p class="card-x__p">Manage everything about your DX Cloud project directly through the Cockpit, DX Cloud's user interface where you can configure ingresses, set redirects, monitor environments, and much more.</p>
               <div class="card-x__link-w">
-                <a class="card-x__link link" href="{{{siteRootPath}}}/paas/cockpit/">Learn more</a>
+                <a class="card-x__link link" href="https://neo.docs.magnolia-cms.com/dx-cloud/cockpit/" target="_blank">Learn more</a>
               </div>
             </div>
           </div>
@@ -615,15 +615,21 @@
   })
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@beta"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@4.4.0"></script>
   <script type="text/javascript">
     docsearch({
       appId: 'NZWE7TXMBR',
       apiKey: '9117a4e7751be182a32d4e70a11d176a',
       indexName: 'magnolia-cms',
       container: '#docsearch',
-      searchParameters: { hitsPerPage: 12, attributesToHighlight: ["hierarchy.lvl0"] },
-      askAi: 'C6xQL7oXbB6z'
+      searchParameters: { hitsPerPage: 50, attributesToHighlight: ["hierarchy.lvl0"] },
+      askAi: 'C6xQL7oXbB6z',
+      transformItems: function(items) {
+        return items.filter(function(item) {
+          var url = item.url || '';
+          return url.indexOf('/paas/') === -1 && !/\/paas(\.html)?(\?|#|$)/.test(url);
+        }).slice(0, 12);
+      }
     });
   </script>
 </body>
