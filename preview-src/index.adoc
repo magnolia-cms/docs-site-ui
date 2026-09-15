@@ -10,6 +10,7 @@ Author Name
 :page-pagination:
 :page-layout: default
 :page-beta: true
+:page-upgrade-assistant:
 
 // ++++
 // <style>

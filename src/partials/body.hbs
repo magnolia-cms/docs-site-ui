@@ -1,4 +1,8 @@
 <div class="body">
 {{> nav}}
 {{> main}}
+
+{{#unless (eq page.attributes.upgrade-assistant undefined)}}
+{{> upgrade-assistant}}
+{{/unless}}
 </div>
