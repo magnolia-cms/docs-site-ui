@@ -92,7 +92,7 @@ function buildPageJsonLd (context) {
       url: orgUrl,
       logo: {
         '@type': 'ImageObject',
-        url: `${DOCS_SITE}/welcome/_images/meta-og-2024.png`,
+        url: `${DOCS_SITE}/home/_images/meta-og-2024.png`,
       },
     },
     inLanguage: 'en',

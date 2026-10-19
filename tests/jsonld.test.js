@@ -50,6 +50,10 @@ assert.strictEqual(withDescription.article.headline, 'What is REST?')
 assert.strictEqual(withDescription.article.description, 'How Magnolia exposes content over HTTP.')
 assert.strictEqual(withDescription.article.dateModified, '2026-03-02T08:15:00+00:00')
 assert.strictEqual(withDescription.article.url, base.page.canonicalUrl)
+assert.strictEqual(
+  withDescription.article.publisher.logo.url,
+  'https://docs.magnolia-cms.com/home/_images/meta-og-2024.png'
+)
 assert.strictEqual(withDescription.breadcrumbs['@type'], 'BreadcrumbList')
 assert.strictEqual(withDescription.breadcrumbs.itemListElement[0].name, 'Product documentation')
 assert.strictEqual(
@@ -93,6 +97,8 @@ assert.ok(!angleHtml.includes('< b'))
 
 const bare = Handlebars.compile('{{> head-meta}}')({})
 assert.ok(bare.includes('application/ld+json'))
+assert.ok(bare.includes('https://docs.magnolia-cms.com/home/_images/meta-og-2024.png'))
+assert.ok(!bare.includes('/welcome/_images/'))
 assert.ok(!bare.includes('og:description'))
 assert.ok(!bare.includes('Explore Magnolia CMS documentation for comprehensive guides'))
 
