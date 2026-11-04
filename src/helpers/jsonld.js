@@ -48,15 +48,19 @@ function buildBreadcrumbs (page, siteUrl) {
   for (const item of existing) crumbs.push(item)
 
   const elements = []
-  for (const item of crumbs) {
+  for (let index = 0; index < crumbs.length; index++) {
+    const item = crumbs[index]
     const name = crumbName(item)
     if (!name) continue
+    const itemUrl = absoluteUrl(siteUrl, item.url)
+    // Google requires `item` on every ListItem except the last. Nav groups
+    // such as "Core modules" have a label and no page, so drop them.
+    if (!itemUrl && index !== crumbs.length - 1) continue
     const entry = {
       '@type': 'ListItem',
       position: elements.length + 1,
       name,
     }
-    const itemUrl = absoluteUrl(siteUrl, item.url)
     if (itemUrl) entry.item = itemUrl
     elements.push(entry)
   }

@@ -62,6 +62,51 @@ assert.strictEqual(
 )
 assert.strictEqual(withDescription.breadcrumbs.itemListElement[2].name, 'What is REST?')
 
+const navGroup = articleFrom({
+  site: base.site,
+  page: {
+    title: 'Creating custom traits',
+    canonicalUrl: 'https://docs.magnolia-cms.com/product-docs/Modules/List-of-modules/Personalization-module/Creating-custom-traits/',
+    url: '/product-docs/Modules/List-of-modules/Personalization-module/Creating-custom-traits/',
+    breadcrumbs: [
+      { content: 'DX Core', url: '/product-docs/', urlType: 'internal' },
+      { content: 'Modules', url: '/product-docs/Modules/', urlType: 'internal' },
+      { content: 'Core modules' },
+      { content: 'Personalization module', url: '/product-docs/Modules/List-of-modules/Personalization-module/', urlType: 'internal' },
+      { content: 'Creating custom traits', url: '/product-docs/Modules/List-of-modules/Personalization-module/Creating-custom-traits/', urlType: 'internal' },
+    ],
+  },
+})
+const navItems = navGroup.breadcrumbs.itemListElement
+assert.deepStrictEqual(navItems.map((entry) => entry.name), [
+  'DX Core',
+  'Modules',
+  'Personalization module',
+  'Creating custom traits',
+])
+assert.deepStrictEqual(navItems.map((entry) => entry.position), [1, 2, 3, 4])
+for (const entry of navItems) assert.ok(entry.item, entry.name)
+
+const currentPageUnlinked = articleFrom({
+  site: base.site,
+  page: {
+    title: 'Creating custom traits',
+    url: '/product-docs/traits.html',
+    breadcrumbs: [
+      { content: 'Modules', url: '/product-docs/Modules/', urlType: 'internal' },
+      { content: 'Core modules' },
+      { content: 'Creating custom traits' },
+    ],
+  },
+})
+const currentItems = currentPageUnlinked.breadcrumbs.itemListElement
+assert.strictEqual(currentItems.length, 2)
+assert.strictEqual(currentItems[0].name, 'Modules')
+assert.ok(currentItems[0].item)
+assert.strictEqual(currentItems[1].name, 'Creating custom traits')
+assert.ok(!('item' in currentItems[1]))
+assert.strictEqual(currentItems[1].position, 2)
+
 const withoutDescription = articleFrom(base)
 assert.ok(!('description' in withoutDescription.article))
 
